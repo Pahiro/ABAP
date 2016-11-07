@@ -1,0 +1,1784 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="SALV_GRID">
+ <CLAS CLSNAME="ZCL_FINDATA_SALV_TABLE" VERSION="1" LANGU="E" DESCRIPT="Findata Report" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSCCINCL="X" FIXPT="X" UNICODE="X" RSTAT="K" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <friends CLSNAME="ZCL_FINDATA_SALV_TABLE" REFCLSNAME="CL_SALV_TABLE" FRIENDTYPE="0" VERSION="1" STATE="1"/>
+  <events CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="USER_COMMAND_RECEIVED" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " EVTDECLTYP="0" BCEVTCAT="00">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="USER_COMMAND_RECEIVED" SCONAME="ED_USER_COMMAND" VERSION="1" LANGU="E" DESCRIPT="ALV Function" CMPTYPE="2" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="SALV_DE_FUNCTION" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="USER_COMMAND_RECEIVED" SCONAME="ED_ROW" VERSION="1" LANGU="E" DESCRIPT="Line" CMPTYPE="2" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="SALV_DE_ROW" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="USER_COMMAND_RECEIVED" SCONAME="ED_COLUMN" VERSION="1" LANGU="E" DESCRIPT="Column" CMPTYPE="2" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="SALV_DE_COLUMN" PAROPTIONL="X"/>
+  </events>
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <typeUsage CLSNAME="ZCL_FINDATA_SALV_TABLE" TYPEGROUP="ABAP" VERSION="1" TPUTYPE="0" IMPLICIT="X"/>
+  <forwardDeclaration>ABAP</forwardDeclaration>
+  <typeClasDef CLSNAME="ZCL_FINDATA_SALV_TABLE" TYPEGROUP="CL_SALV_TABLE" VERSION="1" TPUTYPE="1" EXPLICIT="X"/>
+  <typeIntfDef CLSNAME="ZCL_FINDATA_SALV_TABLE" TYPEGROUP="IF_SALV_C_BOOL_SAP" VERSION="1" TPUTYPE="2" IMPLICIT="X"/>
+  <typeIntfDef CLSNAME="ZCL_FINDATA_SALV_TABLE" TYPEGROUP="IF_SALV_C_SORT" VERSION="1" TPUTYPE="2" IMPLICIT="X"/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="DY_CREATED" VERSION="1" LANGU="E" DESCRIPT="Check DynTab created" EXPOSURE="0" STATE="1" EDITORDER="18 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="CHAR01" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="DY_TABLE" VERSION="1" LANGU="E" DESCRIPT="Dynamic Table" EXPOSURE="0" STATE="1" EDITORDER="17 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="DATA" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="GR_CONTENT_MANAGER" VERSION="1" LANGU="E" DESCRIPT="Manages Content" EXPOSURE="0" STATE="1" EDITORDER="14 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="IF_SALV_CSQT_CONTENT_MANAGER" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MD_REPORT_NAME" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="10 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="SY-REPID" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MD_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" EXPOSURE="0" STATE="1" EDITORDER="11 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="DISVARIANT-VARIANT" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_AGGREGATIONS" VERSION="1" LANGU="E" DESCRIPT="All Aggregation Objects" EXPOSURE="0" STATE="1" EDITORDER="9 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_AGGREGATIONS" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_ALV_GRID" VERSION="1" LANGU="E" DESCRIPT="Basis Class for Simple Tables" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_TABLE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_COLUMN" VERSION="1" LANGU="E" DESCRIPT="Column Description of Simple, Two-Dimensional Tables" EXPOSURE="0" STATE="1" EDITORDER="1 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_COLUMN_TABLE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_COLUMNS" VERSION="1" LANGU="E" DESCRIPT="Columns in Simple, Two-Dimensional Tables" EXPOSURE="0" STATE="1" EDITORDER="2 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_COLUMNS_TABLE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Abstract Container for GUI Controls" EXPOSURE="0" STATE="1" EDITORDER="12 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_GUI_CONTAINER" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_EVENTS" VERSION="1" LANGU="E" DESCRIPT="Columns in Simple, Two-Dimensional Tables" EXPOSURE="0" STATE="1" EDITORDER="3 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_EVENTS_TABLE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_FUNCTIONS" VERSION="1" LANGU="E" DESCRIPT="Events in Simple, Two-Dimensional Tables" EXPOSURE="0" STATE="1" EDITORDER="4 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_FUNCTIONS_LIST" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_LAYOUT" VERSION="1" LANGU="E" DESCRIPT="Generic and User-Defined Functions in List-Type Tables" EXPOSURE="0" STATE="1" EDITORDER="5 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_LAYOUT" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_SELECTIONS" VERSION="1" LANGU="E" DESCRIPT="Settings for Layout" EXPOSURE="0" STATE="1" EDITORDER="6 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_SELECTIONS" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_SETTINGS" VERSION="1" LANGU="E" DESCRIPT="Appearance" EXPOSURE="0" STATE="1" EDITORDER="8 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_DISPLAY_SETTINGS" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MO_SORTS" VERSION="1" LANGU="E" DESCRIPT="Selections in List-Type Output Tables" EXPOSURE="0" STATE="1" EDITORDER="7 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_SORTS" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MS_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout (External Use)" EXPOSURE="0" STATE="1" EDITORDER="15 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="DISVARIANT" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MT_DATA_TABLE" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="16 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="DATA" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="MT_USER_COMMANDS" VERSION="1" LANGU="E" DESCRIPT="Toolbar Buttons" EXPOSURE="0" STATE="1" EDITORDER="13 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="TTB_BUTTON" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="17 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="ID_COLUMNNAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="ID_POSITION" VERSION="1" LANGU="E" DESCRIPT="Priority" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="I" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="IF_DESCENDING" VERSION="1" LANGU="E" DESCRIPT="Boolean Variable (X=True, Space=False)" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="IF_SUBTOTAL" VERSION="1" LANGU="E" DESCRIPT="Boolean Variable (X=True, Space=False)" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SAP_BOOL" PARVALUE="IF_SALV_C_BOOL_SAP=&gt;FALSE"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="ID_GROUP" VERSION="1" LANGU="E" DESCRIPT="Control Break" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SALV_DE_SORT_GROUP" PARVALUE="IF_SALV_C_SORT=&gt;GROUP_NONE"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="IF_OBLIGATORY" VERSION="1" LANGU="E" DESCRIPT="Boolean Variable (X=True, Space=False)" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SAP_BOOL" PARVALUE="IF_SALV_C_BOOL_SAP=&gt;FALSE"/>
+   <source>METHOD add_sort_criteria.
+    DATA: ld_sequence TYPE salv_de_sort_sequence.
+    IF if_descending = abap_true.
+      ld_sequence = if_salv_c_sort=&gt;sort_down.
+    ELSE.
+      ld_sequence = if_salv_c_sort=&gt;sort_up.
+    ENDIF.
+    TRY.
+        mo_sorts = mo_alv_grid-&gt;get_sorts( ).
+        mo_sorts-&gt;add_sort( columnname = id_columnname
+        position = id_position
+        sequence = ld_sequence
+        subtotal = if_subtotal
+        group    = id_group
+        obligatory = if_obligatory ).
+      CATCH cx_salv_data_error
+            cx_salv_existing
+            cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="APPLICATION_SPECIFIC_CHANGES" VERSION="1" LANGU="E" DESCRIPT="Application Specific Changes" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD application_specific_changes.
+    DATA: lo_error TYPE REF TO cx_salv_msg,
+    lo_not_found TYPE REF TO cx_salv_not_found,
+    lo_data_error TYPE REF TO cx_salv_data_error,
+    ls_message TYPE bal_s_msg.
+    TRY.
+        optimise_column_width( ).
+      CATCH cx_salv_not_found INTO lo_not_found.
+        ls_message = lo_not_found-&gt;get_message( ).
+        IF ls_message-msgid IS INITIAL.
+          MESSAGE w000(zfi). &quot;Report in Trouble
+        ELSE.
+          MESSAGE ID
+          ls_message-msgid TYPE &apos;I&apos; NUMBER ls_message-msgno
+          WITH ls_message-msgv1 ls_message-msgv2
+          ls_message-msgv3 ls_message-msgv4.
+        ENDIF.
+      CATCH cx_salv_data_error INTO lo_data_error.
+        ls_message = lo_data_error-&gt;get_message( ).
+        IF ls_message-msgid IS INITIAL.
+          MESSAGE w000(zfi). &quot;Report in Trouble
+        ELSE.
+          MESSAGE ID
+          ls_message-msgid TYPE &apos;I&apos; NUMBER ls_message-msgno
+          WITH ls_message-msgv1 ls_message-msgv2
+          ls_message-msgv3 ls_message-msgv4.
+        ENDIF.
+      CATCH cx_salv_msg INTO lo_error.
+        IF lo_error-&gt;msgid IS INITIAL.
+          MESSAGE w000(zfi). &quot;Report in Trouble
+        ELSE.
+          MESSAGE ID
+          lo_error-&gt;msgid TYPE &apos;I&apos; NUMBER lo_error-&gt;msgno
+          WITH lo_error-&gt;msgv1 lo_error-&gt;msgv2
+          lo_error-&gt;msgv3 lo_error-&gt;msgv4.
+        ENDIF.
+        RETURN.
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="5 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="ID_REPORT_NAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-REPID"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="ID_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DISVARIANT-VARIANT"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="IO_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Abstract Container for GUI Controls" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_GUI_CONTAINER"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="IT_USER_COMMANDS" VERSION="1" LANGU="E" DESCRIPT="Toolbar Buttons" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TTB_BUTTON"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="ID_TITLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="CT_DATA_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY TABLE"/>
+   <source>METHOD create_container_prep_display.
+    md_report_name = id_report_name.
+    ms_variant-report = id_report_name.
+    ms_variant-variant = id_variant.
+    mt_user_commands[] = it_user_commands[].
+
+    CREATE DATA mt_data_table LIKE ct_data_table.
+    GET REFERENCE OF ct_data_table INTO mt_data_table.
+    CALL FUNCTION &apos;ZSALV_CSQT_CREATE_CONTAINER&apos;
+      EXPORTING
+        r_content_manager = me
+        title             = id_title.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="DISPLAY" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD display.
+*{   INSERT         P01K900027                                        1
+    data: lr_functions type ref to cl_salv_functions_list,
+          l_text       type string,
+          l_icon       type string.
+
+    call method mo_alv_grid-&gt;set_screen_status
+       exporting
+         report = &apos;ZFINDATA_REPORT2&apos;
+         pfstatus = &apos;CUSTOM&apos;
+         set_functions = mo_alv_grid-&gt;c_functions_all.
+
+*}   INSERT
+    mo_alv_grid-&gt;display( ).
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="DISPLAY_BASIC_TOOLBAR" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="11 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD display_basic_toolbar.
+    mo_functions = mo_alv_grid-&gt;get_functions( ).
+    mo_functions-&gt;set_all( if_salv_c_bool_sap=&gt;true ).
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="EXPORT" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="7 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="EXPORT" SCONAME="CT_DATA_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY TABLE"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="EXPORT" SCONAME="CV_FILENAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="IBIPPARMS-PATH"/>
+   <source>METHOD export.
+    DATA: ls_layout TYPE salv_s_layout,
+          rt_fcat TYPE lvc_t_fcat,
+          rw_fcat LIKE LINE OF rt_fcat,
+          is_layout TYPE lvc_s_layo,
+          ls_variant TYPE disvariant,
+          wa_table TYPE REF TO data,
+          lv_string TYPE string,
+          lv_value TYPE string,
+          lv_lines TYPE num03.
+
+    FIELD-SYMBOLS: &lt;data&gt; TYPE any,
+                   &lt;dynt&gt; TYPE table,
+                   &lt;dynw&gt; TYPE any,
+                   &lt;value&gt; TYPE any.
+
+    &quot;Get the current variant name.
+    ls_layout = mo_layout-&gt;get_current_layout( ).
+    rt_fcat =  cl_salv_controller_metadata=&gt;get_lvc_fieldcatalog(
+        r_columns             = mo_columns
+        r_aggregations        = mo_aggregations ).
+
+    &quot;Create our table.
+    IF dy_created IS INITIAL.
+      CALL METHOD cl_alv_table_create=&gt;create_dynamic_table
+        EXPORTING
+          it_fieldcatalog = rt_fcat
+        IMPORTING
+          ep_table        = dy_table.
+      dy_created = &apos;X&apos;.
+    ENDIF.
+    &quot;After our dynamic table has been created, create the work area.
+    ASSIGN dy_table-&gt;* TO &lt;dynt&gt;.
+    CREATE DATA wa_table LIKE LINE OF &lt;dynt&gt;.
+    ASSIGN wa_table-&gt;* TO &lt;dynw&gt;.
+    &quot;Move our data into our new dynamic table.
+    LOOP AT ct_data_table ASSIGNING &lt;data&gt;.
+      MOVE-CORRESPONDING &lt;data&gt; TO &lt;dynw&gt;.
+      APPEND &lt;dynw&gt; TO &lt;dynt&gt;.
+    ENDLOOP.
+
+    DATA: f_filename TYPE authb-filename.
+    f_filename = cv_filename.
+
+    CALL FUNCTION &apos;AUTHORITY_CHECK_DATASET&apos;
+      EXPORTING
+        program          = sy-repid
+        activity         = &apos;WRITE&apos;
+        filename         = f_filename
+      EXCEPTIONS
+        no_authority     = 1
+        activity_unknown = 2
+        OTHERS           = 3.
+    IF sy-subrc &lt;&gt; 0.
+      DATA(lv_msg) = COND #( WHEN sy-subrc = 1 THEN &apos;Authorization failure. Cannot open dataset.&apos;
+                             WHEN sy-subrc = 2 THEN &apos;Activity WRITE is unknown.&apos;
+                             WHEN sy-subrc = 3 THEN &apos;Authority check failed. Unknown error.&apos; ).
+
+      MESSAGE lv_msg TYPE &apos;E&apos;.
+
+    ELSE.
+      OPEN DATASET cv_filename FOR OUTPUT IN TEXT MODE ENCODING DEFAULT.
+      &quot;Header Line
+      LOOP AT rt_fcat INTO rw_fcat WHERE no_out = &apos;&apos;.
+        CASE sy-tabix.
+          WHEN 1.
+            lv_string = rw_fcat-reptext.
+          WHEN OTHERS.
+            CONCATENATE lv_string &apos;|&apos; rw_fcat-reptext INTO lv_string.
+        ENDCASE.
+      ENDLOOP.
+      TRANSFER lv_string TO cv_filename.
+
+      &quot;Line Items
+      LOOP AT &lt;dynt&gt; INTO &lt;dynw&gt;.
+        LOOP AT rt_fcat INTO rw_fcat WHERE no_out = &apos;&apos;.
+          ASSIGN COMPONENT rw_fcat-fieldname OF STRUCTURE &lt;dynw&gt; TO &lt;value&gt;.
+          lv_value = &lt;value&gt;.
+          CASE sy-tabix.
+            WHEN 1.
+              lv_string = lv_value.
+            WHEN OTHERS.
+              CONCATENATE lv_string &apos;|&apos; lv_value INTO lv_string.
+          ENDCASE.
+        ENDLOOP.
+        TRANSFER lv_string TO cv_filename.
+        CLEAR lv_string.
+      ENDLOOP.
+      REFRESH &lt;dynt&gt;.
+      CLOSE DATASET  cv_filename.
+    ENDIF.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="FILL_CONTAINER_CONTENT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="18 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="FILL_CONTAINER_CONTENT" SCONAME="R_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Container for Custom Controls in Screen Area" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_GUI_CUSTOM_CONTAINER"/>
+   <source>METHOD fill_container_content.
+    FIELD-SYMBOLS: &lt;lt_data_table&gt; TYPE ANY TABLE.
+
+    ASSIGN mt_data_table-&gt;* TO &lt;lt_data_table&gt;.
+
+    prepare_display_data(
+      EXPORTING
+          id_report_name = md_report_name &quot; Calling program
+          id_variant = ms_variant-variant
+          io_container = r_container
+          it_user_commands = mt_user_commands
+      CHANGING
+          ct_data_table = &lt;lt_data_table&gt; ). &quot; Data Table
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="GET_FCAT" VERSION="1" LANGU="E" DESCRIPT="New export using temp table" EXPOSURE="2" STATE="1" EDITORDER="6 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="GET_FCAT" SCONAME="RT_FCAT" VERSION="1" LANGU="E" DESCRIPT="Field Catalog for List Viewer Control" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_T_FCAT"/>
+   <source>METHOD GET_FCAT.
+    DATA: ls_layout TYPE salv_s_layout,
+          rw_fcat LIKE LINE OF rt_fcat,
+          is_layout TYPE lvc_s_layo,
+          ls_variant TYPE disvariant,
+          wa_table TYPE REF TO data,
+          lv_string TYPE string,
+          lv_value TYPE string,
+          lv_lines TYPE num03.
+
+    FIELD-SYMBOLS: &lt;data&gt; TYPE any,
+                   &lt;dynt&gt; TYPE table,
+                   &lt;dynw&gt; TYPE any,
+                   &lt;value&gt; TYPE any.
+
+    &quot;Get the current variant name.
+    ls_layout = mo_layout-&gt;get_current_layout( ).
+    rt_fcat =  cl_salv_controller_metadata=&gt;get_lvc_fieldcatalog(
+        r_columns             = mo_columns
+        r_aggregations        = mo_aggregations ).
+
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="HANDLE_LINK_CLICK" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="14 " DISPID="0 " MTDTYPE="1" MTDDECLTYP="0" REFCLSNAME="CL_SALV_EVENTS_TABLE" REFCMPNAME="LINK_CLICK" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="HANDLE_LINK_CLICK" SCONAME="ROW" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="1" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="0"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="HANDLE_LINK_CLICK" SCONAME="COLUMN" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="1" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="0"/>
+   <source>METHOD handle_link_click.
+* No type conversions needed
+    RAISE EVENT user_command_received
+    EXPORTING ed_user_command = &apos;&amp;IC1&apos;
+              ed_row = row
+              ed_column = column.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="HANDLE_USER_COMMAND" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="15 " DISPID="0 " MTDTYPE="1" MTDDECLTYP="0" REFCLSNAME="CL_SALV_EVENTS" REFCMPNAME="ADDED_FUNCTION" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="HANDLE_USER_COMMAND" SCONAME="E_SALV_FUNCTION" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="1" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="0"/>
+   <source>METHOD handle_user_command.
+    DATA: ld_command TYPE sy-ucomm.
+* Convert view specific data type to generic data type
+    ld_command = e_salv_function.
+    RAISE EVENT user_command_received
+    EXPORTING ed_user_command = e_salv_function.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="INITIALIZE" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="13 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="ID_REPORT_NAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-REPID"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="ID_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DISVARIANT-VARIANT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="IO_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Abstract Container for GUI Controls" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_GUI_CONTAINER" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="IT_USER_COMMANDS" VERSION="1" LANGU="E" DESCRIPT="Toolbar Buttons" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TTB_BUTTON" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="CT_DATA_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY TABLE" PAROPTIONL="X"/>
+   <source>METHOD initialize.
+    TRY.
+        cl_salv_table=&gt;factory(
+          IMPORTING
+             r_salv_table = mo_alv_grid
+         	 CHANGING
+             t_table = ct_data_table[] ).
+
+        display_basic_toolbar( ).
+        mo_columns = mo_alv_grid-&gt;get_columns( ).
+        set_layout( id_variant ).
+        set_handlers( ).
+      CATCH cx_salv_msg.
+        &quot;Raise fatal error – there is a serious bug in the program
+        RETURN.
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="OPTIMISE_COLUMN_WIDTH" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD optimise_column_width.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" VERSION="1" LANGU="E" DESCRIPT="Prepare Display" EXPOSURE="2" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="ID_REPORT_NAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-REPID"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="ID_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DISVARIANT-VARIANT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="IO_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Abstract Container for GUI Controls" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_GUI_CONTAINER" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="IT_USER_COMMANDS" VERSION="1" LANGU="E" DESCRIPT="Toolbar Buttons" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TTB_BUTTON" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="CT_DATA_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY TABLE" PAROPTIONL="X"/>
+   <source>METHOD prepare_display_data.
+    initialize(
+      EXPORTING
+        id_report_name = id_report_name &quot; Calling program
+        id_variant = id_variant &quot; Layout
+        io_container = io_container
+        it_user_commands = it_user_commands &quot; Toolbar Buttons
+      CHANGING
+        ct_data_table = ct_data_table ).
+* Step Two - Application Specific
+    application_specific_changes( ).
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_CHECKBOX" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_CHECKBOX" SCONAME="ID_COLUMN_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD set_checkbox.
+* Local Variables
+    DATA: lo_not_found TYPE REF TO cx_salv_not_found,
+    lf_error_occurred TYPE abap_bool.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_column_name ).
+        CALL METHOD mo_column-&gt;set_cell_type
+          EXPORTING
+            value = if_salv_c_cell_type=&gt;checkbox_hotspot.
+      CATCH cx_salv_not_found INTO lo_not_found.
+        lf_error_occurred = abap_true.
+        &quot;Object = Column
+        &quot;Key = Field Name e.g. VBELN
+*      zcl_dbc=&gt;require( id_that =
+*      |{ lo_not_found-&gt;object } { lo_not_found-&gt;key } must exist|
+*      if_true = boolc( lf_error_occurred = abap_false ) ).
+    ENDTRY.
+  ENDMETHOD.&quot;set checkbox</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_AS_BUTTON" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_AS_BUTTON" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD set_column_as_button.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_icon( if_salv_c_bool_sap=&gt;true ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="8 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_TABLE_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Reference table name for internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_S_FCAT-REF_TABLE" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_A_CHECKBOX" VERSION="1" LANGU="E" DESCRIPT="Is the field a checkbox?" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_HOTSPOT" VERSION="1" LANGU="E" DESCRIPT="Can you drill down?" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_VISIBLE" VERSION="1" LANGU="E" DESCRIPT="Is the field hidden?" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_TECHNICAL" VERSION="1" LANGU="E" DESCRIPT="Is the field for internal use only?" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_A_BUTTON" VERSION="1" LANGU="E" DESCRIPT="Is the field a push button?" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_SUBTOTAL" VERSION="1" LANGU="E" DESCRIPT="Do you want a subtotal?" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_LONG_TEXT" VERSION="1" LANGU="E" DESCRIPT="Long Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_L" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_MEDIUM_TEXT" VERSION="1" LANGU="E" DESCRIPT="Medium Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_M" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_SHORT_TEXT" VERSION="1" LANGU="E" DESCRIPT="Short Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_S" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_TOOLTIP" VERSION="1" LANGU="E" DESCRIPT="ALV control: Tool tip for column header" CMPTYPE="1" MTDTYPE="0" EDITORDER="12 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_TIP" PAROPTIONL="X"/>
+   <source>METHOD set_column_attributes.
+* Preconditions
+    CHECK id_field_name IS NOT INITIAL.
+    IF if_is_a_checkbox = abap_true.
+      set_checkbox( id_field_name ).
+    ENDIF.
+    IF if_is_hotspot = abap_true.
+      set_hotspot( id_field_name ).
+    ENDIF.
+    IF if_is_visible IS SUPPLIED.
+      set_visible( id_field_name = id_field_name
+      if_is_visible = if_is_visible ).
+    ENDIF.
+    IF if_is_technical = abap_true.
+      set_technical( id_field_name ).
+    ENDIF.
+    IF if_is_a_button = abap_true.
+      set_column_as_button( id_field_name ).
+    ENDIF.
+    IF if_is_subtotal = abap_true.
+      set_subtotal( id_field_name ).
+    ENDIF.
+    IF id_long_text IS NOT INITIAL.
+      set_long_text( id_field_name = id_field_name
+                     id_long_text = id_long_text ).
+    ENDIF.
+    IF id_medium_text IS NOT INITIAL.
+      set_medium_text( id_field_name = id_field_name
+                       id_medium_text = id_medium_text ).
+    ENDIF.
+    IF id_short_text IS NOT INITIAL.
+      set_short_text( id_field_name = id_field_name
+                      id_short_text = id_short_text ).
+    ENDIF.
+    IF id_tooltip IS NOT INITIAL.
+      set_tooltip( id_field_name = id_field_name
+                   id_tooltip = id_tooltip ).
+    ENDIF.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_HANDLERS" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="16 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD set_handlers.
+    mo_events = mo_alv_grid-&gt;get_event( ).
+    SET HANDLER handle_link_click FOR mo_events.
+    SET HANDLER handle_user_command FOR mo_events.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_HOTSPOT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_HOTSPOT" SCONAME="ID_COLUMN_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD set_hotspot.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_column_name ).
+        CALL METHOD mo_column-&gt;set_cell_type
+          EXPORTING
+            value = if_salv_c_cell_type=&gt;hotspot.
+      CATCH cx_salv_not_found.
+        &quot;Raise fatal exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_LAYOUT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="12 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_LAYOUT" SCONAME="ID_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DISVARIANT-VARIANT" PAROPTIONL="X"/>
+   <source>METHOD set_layout.
+* Local Variables
+    DATA: ls_key TYPE salv_s_layout_key.
+    mo_layout = mo_alv_grid-&gt;get_layout( ).
+* Set the Layout Key
+    ls_key-report = sy-cprog.
+    mo_layout-&gt;set_key( ls_key ).
+* set usage of default Layouts
+    mo_layout-&gt;set_default( &apos;X&apos; ).
+* set initial Layout
+    IF id_variant IS NOT INITIAL.
+      mo_layout-&gt;set_initial_layout( id_variant ).
+    ENDIF.
+* Set save restriction
+* Check authority to change display variants.
+    AUTHORITY-CHECK OBJECT &apos;S_ALV_LAYO&apos; ID &apos;ACTVT&apos; FIELD &apos;*&apos;.
+    IF sy-subrc = 0. &quot; does he ride a white horse?
+      mo_layout-&gt;set_save_restriction( if_salv_c_layout=&gt;restrict_none ).
+      &quot; yes, allow user and global display variants
+    ELSE.
+      mo_layout-&gt;set_save_restriction( if_salv_c_layout=&gt;restrict_user_dependant ).
+    ENDIF.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_LONG_TEXT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_LONG_TEXT" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_LONG_TEXT" SCONAME="ID_LONG_TEXT" VERSION="1" LANGU="E" DESCRIPT="Long Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_L"/>
+   <source>METHOD set_long_text.
+    DATA: ld_medium_text TYPE scrtext_m,
+          ld_short_text TYPE scrtext_s.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_long_text( id_long_text ).
+        IF strlen( id_long_text ) LE 20.
+          ld_medium_text = id_long_text.
+          mo_column-&gt;set_medium_text( ld_medium_text ).
+        ENDIF.
+        IF strlen( id_long_text ) LE 10.
+          ld_short_text = id_long_text.
+          mo_column-&gt;set_short_text( ld_short_text ).
+        ENDIF.
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_MEDIUM_TEXT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="5 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_MEDIUM_TEXT" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_MEDIUM_TEXT" SCONAME="ID_MEDIUM_TEXT" VERSION="1" LANGU="E" DESCRIPT="Medium Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_M"/>
+   <source>METHOD set_medium_text.
+    DATA: ld_short_text TYPE scrtext_s.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_medium_text( id_medium_text ).
+        IF strlen( id_medium_text ) LE 10.
+          ld_short_text = id_medium_text.
+          mo_column-&gt;set_short_text( ld_short_text ).
+        ENDIF.
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_SHORT_TEXT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="6 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_SHORT_TEXT" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_SHORT_TEXT" SCONAME="ID_SHORT_TEXT" VERSION="1" LANGU="E" DESCRIPT="Short Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_S"/>
+   <source>METHOD set_short_text.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_short_text( id_short_text ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_SUBTOTAL" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="7 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_SUBTOTAL" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD set_subtotal.
+    mo_aggregations = mo_alv_grid-&gt;get_aggregations( ).
+    TRY.
+        mo_aggregations-&gt;add_aggregation( columnname = id_field_name ).
+      CATCH cx_salv_not_found
+      cx_salv_data_error
+      cx_salv_existing.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_TECHNICAL" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="8 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_TECHNICAL" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD set_technical.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_technical( abap_true ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_TOOLTIP" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="9 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_TOOLTIP" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_TOOLTIP" SCONAME="ID_TOOLTIP" VERSION="1" LANGU="E" DESCRIPT="ALV control: Tool tip for column header" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_TIP"/>
+   <source>METHOD set_tooltip.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_tooltip( id_tooltip ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_VISIBLE" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="10 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_VISIBLE" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_FINDATA_SALV_TABLE" CMPNAME="SET_VISIBLE" SCONAME="IF_IS_VISIBLE" VERSION="1" LANGU="E" DESCRIPT="Is the field visible?" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL"/>
+   <source>METHOD set_visible.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_visible( if_is_visible ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+ </CLAS>
+ <CLAS CLSNAME="ZCL_FINDATA5" VERSION="1" LANGU="E" DESCRIPT="Findata Report" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <types CLSNAME="ZCL_FINDATA5" CMPNAME="TS_PPOIX" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="1 " TYPTYPE="4" SRCROW1="4 " SRCCOLUMN1="6 " SRCROW2="15 " SRCCOLUMN2="20 " TYPESRC_LENG="0 " TYPESRC='BEGIN OF ts_ppoix,
+             seqno TYPE cdseq, &quot;Sequence Number
+             actsign TYPE srtza, &quot;Indicator: Result
+             postnum TYPE numc_5, &quot;Post number
+             pernr TYPE pernr_d, &quot;Personnel Number
+             runid TYPE runid, &quot;Run ID
+             koart TYPE koart, &quot;Account Assignment
+             komok TYPE p_komok40, &quot;Symbolic Account
+             lgart TYPE lgart, &quot;Wage Type
+             betrg TYPE prbetrg, &quot;Amount
+             neg_postng TYPE xnegp_bf, &quot;Indicator
+      END OF ts_ppoix
+'/>
+  <types CLSNAME="ZCL_FINDATA5" CMPNAME="TT_PPOIX" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="2 " TYPTYPE="4" SRCROW1="17 " SRCCOLUMN1="6 " SRCROW2="17 " SRCCOLUMN2="36 " TYPESRC_LENG="0 " TYPESRC="tt_ppoix TYPE TABLE OF ts_ppoix
+"/>
+  <types CLSNAME="ZCL_FINDATA5" CMPNAME="TS_MYPPOPX" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="3 " TYPTYPE="4" SRCROW1="19 " SRCCOLUMN1="6 " SRCROW2="27 " SRCCOLUMN2="27 " TYPESRC_LENG="0 " TYPESRC='BEGIN OF ts_myppopx,            &quot;str für ppopx +alte RUNID
+            pernr TYPE pernr_d,
+            seqno TYPE cdseq,
+            runid TYPE p_evnum,
+            postnum TYPE numc_5,
+            tslin TYPE hrpp_linum,
+            actsign TYPE srtza,
+            my_runid TYPE p_evnum,
+           END OF ts_myppopx
+'/>
+  <types CLSNAME="ZCL_FINDATA5" CMPNAME="TT_MYPPOPX" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="4 " TYPTYPE="4" SRCROW1="29 " SRCCOLUMN1="6 " SRCROW2="29 " SRCCOLUMN2="40 " TYPESRC_LENG="0 " TYPESRC="tt_myppopx TYPE TABLE OF ts_myppopx
+"/>
+  <types CLSNAME="ZCL_FINDATA5" CMPNAME="TS_LINK" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="5 " TYPTYPE="4" SRCROW1="31 " SRCCOLUMN1="6 " SRCROW2="34 " SRCCOLUMN2="19 " TYPESRC_LENG="0 " TYPESRC="BEGIN OF ts_link,
+           runid TYPE p_evnum,
+           linum TYPE hrpp_linum,
+      END OF ts_link
+"/>
+  <types CLSNAME="ZCL_FINDATA5" CMPNAME="TT_LINK" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="6 " TYPTYPE="4" SRCROW1="36 " SRCCOLUMN1="6 " SRCROW2="36 " SRCCOLUMN2="34 " TYPESRC_LENG="0 " TYPESRC="tt_link TYPE TABLE OF ts_link
+"/>
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <attribute CLSNAME="ZCL_FINDATA5" CMPNAME="LINE" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="2 " ATTDECLTYP="0" ATTVALUE="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="NUM20" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_FINDATA5" CMPNAME="PT_REPORT" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="ZTFINDATA2" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <method CLSNAME="ZCL_FINDATA5" CMPNAME="AUTHORITY_CHECK" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="AUTHORITY_CHECK" SCONAME="ZPCM_BFA" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="CEPC-ZPCM_BFA"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="AUTHORITY_CHECK" SCONAME="KOSTL" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PPDIT-KOSTL"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="AUTHORITY_CHECK" SCONAME="BUKRS" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PPDHD-BUKRS"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="AUTHORITY_CHECK" SCONAME="RESULT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-SUBRC"/>
+   <source>METHOD authority_check.
+    &quot;   Functional Area Authorizations
+    AUTHORITY-CHECK OBJECT &apos;Z_PCM_BFA&apos;
+      ID &apos;ZPCM_BFA&apos; FIELD zpcm_bfa
+      ID &apos;ACTVT&apos; FIELD &apos;03&apos;.
+    IF sy-subrc = 0.
+      AUTHORITY-CHECK OBJECT &apos;F_BKPF_BUK&apos;
+        ID &apos;BUKRS&apos; FIELD bukrs
+        ID &apos;ACTVT&apos; FIELD &apos;03&apos;.
+      IF sy-subrc = 0.
+        AUTHORITY-CHECK OBJECT &apos;F_BKPF_BUK&apos;
+            ID &apos;BUKRS&apos; FIELD bukrs
+            ID &apos;ACTVT&apos; FIELD &apos;08&apos;.
+        IF sy-subrc = 0.
+          AUTHORITY-CHECK OBJECT &apos;K_CSKS&apos;
+              ID &apos;KOSTL&apos; FIELD kostl
+              ID &apos;ACTVT&apos; FIELD &apos;03&apos;.
+        ENDIF.
+      ENDIF.
+    ENDIF.
+    result = COND #( WHEN sy-subrc = 4 THEN 4 ).
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="2" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="BUKRS" VERSION="1" LANGU="E" DESCRIPT="Company Code" CMPTYPE="1" MTDTYPE="2" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="BUDAT" VERSION="1" LANGU="E" DESCRIPT="Posting Date" CMPTYPE="1" MTDTYPE="2" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="BLDAT" VERSION="1" LANGU="E" DESCRIPT="Document Date" CMPTYPE="1" MTDTYPE="2" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PPDHD-BLDAT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="RUNID" VERSION="1" LANGU="E" DESCRIPT="Run ID" CMPTYPE="1" MTDTYPE="2" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PPDHD-RUNID" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="PRCTR" VERSION="1" LANGU="E" DESCRIPT="Profit Centre" CMPTYPE="1" MTDTYPE="2" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="ZPCMA" VERSION="1" LANGU="E" DESCRIPT="Bank Functional Area" CMPTYPE="1" MTDTYPE="2" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="HKONT" VERSION="1" LANGU="E" DESCRIPT="GL Account" CMPTYPE="1" MTDTYPE="2" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="PERNR" VERSION="1" LANGU="E" DESCRIPT="Personnel Number" CMPTYPE="1" MTDTYPE="2" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="VERAK" VERSION="1" LANGU="E" DESCRIPT="Responsible User" CMPTYPE="1" MTDTYPE="2" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="LGART" VERSION="1" LANGU="E" DESCRIPT="Wage Type" CMPTYPE="1" MTDTYPE="2" EDITORDER="10 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="KOMOK" VERSION="1" LANGU="E" DESCRIPT="Symbolic Account" CMPTYPE="1" MTDTYPE="2" EDITORDER="11 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="PIQ_SELOPT_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="CONSTRUCTOR" SCONAME="EXTRA" VERSION="1" LANGU="E" DESCRIPT="Bool" CMPTYPE="1" MTDTYPE="2" EDITORDER="12 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="1" TYPE="CHAR01" PAROPTIONL="X"/>
+   <source>METHOD constructor.
+
+    DATA: it_bukrs TYPE TABLE OF selopt,
+          it_budat TYPE TABLE OF selopt,
+          it_bldat TYPE TABLE OF selopt,
+          it_runid TYPE TABLE OF selopt,
+          it_zpcma TYPE TABLE OF selopt,
+          wa_selopt TYPE selopt,
+          wa_vend TYPE ppoix.
+*{   INSERT         P01K900027                                        7
+    DATA: lv_coarea TYPE kokrs.
+    DATA: it_link TYPE tt_link,
+          wa_link TYPE ts_link.
+*}   INSERT
+
+    DATA: it_pernr TYPE TABLE OF selopt.
+    DATA: wa_pernr TYPE selopt.
+    DATA: it_prctr TYPE TABLE OF selopt.
+    DATA: wa_prctr TYPE selopt.
+
+    DATA: it_myppopx TYPE tt_myppopx,
+          wa_myppopx TYPE ts_myppopx.
+
+    DATA:  BEGIN OF prev_ppopx_entry,
+         pernr TYPE pernr_d,
+         seqno TYPE cdseq,
+         my_runid TYPE p_evnum,
+       END OF prev_ppopx_entry.
+
+    DATA: dbcursor TYPE cursor.
+    DATA: wa_report TYPE zfindata_temp,
+          wa_buff TYPE zfindata_temp.
+    DATA runmode TYPE aqlimode.
+    DATA auth_tabs TYPE aqttabname.
+    DATA lv_result TYPE sy-subrc.
+
+    APPEND &apos;PPDIT&apos; TO auth_tabs.
+    APPEND &apos;PPDIX&apos; TO auth_tabs.
+    APPEND &apos;PPOIX&apos; TO auth_tabs.
+    APPEND &apos;T52EL&apos; TO auth_tabs.
+
+    &quot;   Authorization to display data from tables.
+    CALL FUNCTION &apos;RSAQRT_AUTHORITY_CHECK&apos;
+      EXPORTING
+        auth_tabs        = auth_tabs
+        auth_clas        = &apos;CL_QUERY_TAB_ACCESS_AUTHORITY&apos;
+      CHANGING
+        rtmode           = runmode
+      EXCEPTIONS
+        no_authorization = 1
+        OTHERS           = 2.
+    IF sy-subrc &lt;&gt; 0.
+      MESSAGE e317(aq).
+    ENDIF.
+
+
+    wa_selopt-sign = &apos;I&apos;.
+    wa_selopt-option = &apos;EQ&apos;.
+
+    IF budat IS NOT INITIAL.
+      it_budat = budat.
+    ENDIF.
+    IF bldat IS NOT INITIAL.
+      wa_selopt-low = bldat.
+      APPEND wa_selopt TO it_bldat.
+    ENDIF.
+    IF runid IS NOT INITIAL.
+      wa_selopt-low = runid.
+      APPEND wa_selopt TO it_runid.
+    ENDIF.
+*{   INSERT         P01K900027                                        8
+
+*}   INSERT
+
+    OPEN CURSOR dbcursor FOR
+    SELECT csks~verak_user &quot;User Responsible
+           csks~verak &quot;User Name
+           csks~kostl &quot;Transaction key
+           ppdhd~docnum &quot;Document Number
+           ppdhd~doctyp &quot;Doucment Type
+           ppdhd~budat &quot;Posting date
+           ppdhd~bldat &quot;Document Date
+           ppdhd~xblnr &quot;Reference Document
+           ppdhd~blart &quot;Document Type
+           ppdhd~runid &quot;Run ID
+           ppdhd~revdoc &quot;Reversal Doc
+           ppdit~docnum &quot;Document Number
+           ppdit~doclin &quot;Document Line
+           ppdit~ittyp &quot;Line Type
+           ppdit~bukrs &quot;Company code
+           ppdit~hkont &quot;GL Account
+           ppdit~lifnr &quot;Vendor
+           &quot;ppdit~pernr &quot;Personnel
+           ppdit~kostl &quot;Cost Centre
+           ppdit~wrbtr &quot;Finance Amount
+           ppdit~prctr &quot;Profit Centre
+*           csks~verak &quot;Person Responsible
+*           csks~bkzob &quot;Lock Indicator
+*           t52el~spprc &quot;Special Processing
+*           t52el~molga &quot;Country Grouping
+*           cepc~zpcm_bfa &quot;Bank Functional Area
+           ppdix~linum  &quot;Line number
+           tka02~kokrs &quot;Controlling Area
+      FROM ppdhd
+      INNER JOIN pevsh ON pevsh~runid = ppdhd~runid
+      INNER JOIN ppdit ON ppdit~docnum = ppdhd~docnum
+      INNER JOIN ppdix ON ppdix~docnum = ppdit~docnum AND
+                          ppdix~doclin = ppdit~doclin
+      INNER JOIN ppoix ON ppoix~runid = ppdix~runid AND
+                          ppoix~tslin = ppdix~linum
+      INNER JOIN tka02 ON tka02~bukrs = ppdit~bukrs
+      INNER JOIN csks  ON csks~prctr = ppdit~prctr AND
+                          csks~kokrs = tka02~kokrs
+      INNER JOIN cepc  ON cepc~prctr = ppdit~prctr  AND
+                          cepc~kokrs = tka02~kokrs
+      WHERE ppdhd~budat IN it_budat AND
+            ppdhd~bldat IN it_bldat AND
+            ppdhd~runid IN it_runid AND
+            ppdhd~bukrs IN bukrs AND
+            ppdhd~evtyp = &apos;PP&apos; AND
+*            ppoix~pernr IN pernr AND
+            ppdit~hkont IN hkont AND
+            pevsh~status = 40 AND
+            pevsh~actual = &apos;X&apos; AND
+            pevsh~type = &apos;PP&apos; AND
+            ppdit~prctr IN prctr AND
+            cepc~zpcm_bfa  IN zpcma AND
+            cepc~datab &lt;= sy-datum AND &quot;From
+            cepc~datbi &gt;= sy-datum AND &quot;To
+            csks~datab &lt;= sy-datum AND &quot;From
+            csks~datbi &gt;= sy-datum AND
+            csks~verak_user IN verak AND
+            cepc~zpcm_bfa IN it_zpcma. &quot;To
+
+    DO.
+      FETCH NEXT CURSOR dbcursor INTO CORRESPONDING FIELDS OF wa_report.
+      IF sy-subrc &lt;&gt; 0.
+        EXIT.
+      ENDIF.
+
+      APPEND wa_report TO me-&gt;pt_report.
+    ENDDO.
+    CLOSE CURSOR dbcursor.
+
+    SORT me-&gt;pt_report BY docnum doclin.
+
+    DATA: it_ppoix TYPE tt_ppoix,
+          wa_ppoix TYPE ts_ppoix.
+
+    LOOP AT me-&gt;pt_report INTO wa_report.
+      &quot;Link for PPOPX.
+      wa_link-linum = wa_report-linum.
+      wa_link-runid = wa_report-runid.
+      APPEND wa_link TO it_link.
+
+      &quot;PPOIX data for initial select.
+      SELECT * FROM ppoix INTO CORRESPONDING FIELDS OF wa_ppoix
+          WHERE tslin = wa_report-linum AND
+                runid = wa_report-runid AND
+                actsign = &apos;A&apos; AND
+                lgart IN lgart AND
+                komok IN komok AND
+                pernr IN pernr.
+
+        MOVE-CORRESPONDING wa_ppoix TO wa_report.
+
+        SELECT SINGLE text FROM t52ekt
+          INTO wa_report-text
+          WHERE symko = wa_report-komok AND
+                sprsl = &apos;EN&apos;.
+        IF wa_report-kostl IS INITIAL AND wa_report-prctr IS NOT INITIAL.
+          SELECT SINGLE kostl FROM csks
+             INTO wa_report-kostl
+            WHERE prctr = wa_report-prctr AND
+                  kokrs = wa_report-kokrs AND
+                  datab &lt;= sy-datum AND &quot;From
+                  datbi &gt;= sy-datum AND
+                  verak_user = wa_report-verak_user.
+        ENDIF.
+        SELECT SINGLE ltext FROM cskt
+          INTO wa_report-ltext
+          WHERE kostl = wa_report-kostl AND
+               spras = &apos;EN&apos;.
+
+        SELECT SINGLE butxt FROM t001
+          INTO wa_report-butxt
+          WHERE bukrs = wa_report-bukrs.
+
+        SELECT SINGLE lgtxt FROM t512t
+          INTO wa_report-lgtxt
+          WHERE lgart = wa_report-lgart AND
+                sprsl = &apos;EN&apos;.
+
+
+        ADD 1 TO line.
+        INSERT zfindata_temp FROM wa_report.
+      ENDSELECT.
+
+    ENDLOOP.
+
+    SORT it_link.
+    DELETE ADJACENT DUPLICATES FROM it_link.
+
+    TYPES: BEGIN OF t_pernr,
+            pernr TYPE pernr_d,
+           END OF t_pernr.
+
+    TYPES: BEGIN OF t_prctr,
+            prctr TYPE prctr,
+           END OF t_prctr.
+
+    DATA: lt_pernr TYPE TABLE OF t_pernr,
+          ls_pernr LIKE LINE OF lt_pernr.
+
+    DATA: lt_prctr TYPE TABLE OF t_prctr,
+          ls_prctr LIKE LINE OF lt_prctr.
+    it_pernr[] = pernr[].
+
+    LOOP AT lt_pernr INTO ls_pernr.
+      wa_pernr-low = ls_pernr-pernr.
+      IF wa_pernr-low IS NOT INITIAL.
+        APPEND wa_pernr TO it_pernr.
+      ENDIF.
+    ENDLOOP.
+
+    SORT it_pernr BY low.
+    DELETE ADJACENT DUPLICATES FROM it_pernr.
+
+    IF prctr IS INITIAL.
+      wa_prctr-sign = &apos;I&apos;.
+      wa_prctr-option = &apos;EQ&apos;.
+      SELECT DISTINCT prctr
+        FROM zfindata_temp
+        INTO TABLE lt_prctr.
+      IF sy-subrc = 4.
+        REFRESH lt_prctr.
+      ENDIF.
+    ENDIF.
+
+    REFRESH it_prctr.
+
+    IF prctr IS NOT INITIAL.
+      it_prctr[] = prctr[].
+    ENDIF.
+
+    LOOP AT lt_prctr INTO ls_prctr.
+      wa_prctr-low = ls_prctr-prctr.
+      IF wa_prctr-low IS NOT INITIAL.
+        APPEND wa_prctr TO it_prctr.
+      ENDIF.
+    ENDLOOP.
+
+    REFRESH it_runid.
+    DATA: wa_runid LIKE LINE OF it_runid.
+
+    wa_runid-sign = &apos;I&apos;.
+    wa_runid-option = &apos;EQ&apos;.
+
+    SELECT DISTINCT runid
+      FROM zfindata_temp
+      INTO wa_runid-low.
+      APPEND wa_runid TO it_runid.
+    ENDSELECT.
+
+    DELETE ADJACENT DUPLICATES FROM it_pernr.
+    me-&gt;select_data_ppopx(
+      EXPORTING  so_pernr = it_pernr
+                 so_budat = it_budat
+                 so_bukrs = bukrs
+                 so_prctr = it_prctr
+                 so_hkont = hkont
+                 so_verak = verak
+                 so_lgart = lgart
+                 so_komok = komok
+                 t_link   = it_link
+      IMPORTING lc_it_myppopx = it_myppopx
+      CHANGING  so_runid = it_runid
+                so_bldat = it_bldat ).
+
+    SORT me-&gt;pt_report BY docnum doclin.
+
+    &quot;Add persnr data.
+    SELECT DISTINCT pernr FROM zfindata_temp INTO wa_report-pernr.
+      IF extra = &apos;X&apos;.
+        me-&gt;process_data(
+          EXPORTING wi_report = wa_report
+          IMPORTING we_report = wa_report
+                    le_result = lv_result ).
+        IF lv_result = 0.
+          SELECT * FROM zfindata_temp INTO wa_buff
+            WHERE pernr = wa_report-pernr.
+
+            wa_buff-hire_date = wa_report-hire_date.
+            wa_buff-ename = wa_report-ename.
+            wa_buff-persg = wa_report-persg.
+            wa_buff-persk = wa_report-persk.
+            wa_buff-stell = wa_report-stell.
+            wa_buff-gbdat = wa_report-gbdat.
+            wa_buff-termination_date = wa_report-termination_date.
+            wa_buff-stext = wa_report-stext.
+*          wa_buff-ltext = wa_report-ltext. &quot;Kostl text
+            wa_buff-cash_salary = wa_report-cash_salary.
+            wa_buff-pens_salary = wa_report-pens_salary.
+            wa_buff-total_packg = wa_report-total_packg.
+
+            UPDATE zfindata_temp FROM wa_buff.
+          ENDSELECT.
+        ENDIF.
+      ENDIF.
+    ENDSELECT.
+
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA5" CMPNAME="PROCESS_DATA" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="PROCESS_DATA" SCONAME="WI_REPORT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ZFINDATA_TEMP"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="PROCESS_DATA" SCONAME="WE_REPORT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ZFINDATA_TEMP"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="PROCESS_DATA" SCONAME="LE_RESULT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-SUBRC"/>
+   <source>METHOD process_data.
+    DATA wa_pa0041 TYPE pa0041.
+    DATA lv_month TYPE num02.
+    DATA lv_field TYPE string.
+    FIELD-SYMBOLS &lt;field&gt; TYPE any.
+    DATA: it_rt TYPE TABLE OF pc207,
+          wa_rt LIKE LINE OF it_rt.
+
+    &quot;Symbolic Account Description.
+    we_report = wi_report.
+
+    SELECT SINGLE ename persg persk stell FROM pa0001
+      INTO (we_report-ename, we_report-persg, we_report-persk, we_report-stell)
+      WHERE pernr = we_report-pernr AND
+            begda &lt;= sy-datum AND
+            endda &gt;= sy-datum.
+
+    SELECT SINGLE gbdat FROM pa0002
+      INTO we_report-gbdat
+      WHERE pernr = we_report-pernr AND
+            begda &lt;= sy-datum AND
+            endda &gt;= sy-datum.
+
+    SELECT SINGLE * FROM pa0041
+      INTO wa_pa0041
+      WHERE pernr = we_report-pernr AND
+            begda &lt;= sy-datum AND
+            endda &gt;= sy-datum.
+
+    we_report-hire_date = wa_pa0041-dat01.
+    DO 12 TIMES.
+      ADD 1 TO lv_month.
+      CONCATENATE &apos;DAR&apos; lv_month INTO lv_field.
+      ASSIGN COMPONENT lv_field OF STRUCTURE wa_pa0041 TO &lt;field&gt;.
+      IF &lt;field&gt; = &apos;ZZ&apos;.
+        CONCATENATE &apos;DAT&apos; lv_month INTO lv_field.
+        ASSIGN COMPONENT lv_field OF STRUCTURE wa_pa0041 TO &lt;field&gt;.
+        we_report-termination_date = &lt;field&gt;.
+        EXIT.
+      ENDIF.
+    ENDDO.
+
+    SELECT SINGLE stext FROM hrp1000
+       INTO we_report-stext
+       WHERE objid = we_report-stell AND
+             otype = &apos;C&apos; AND
+             begda &lt;= sy-datum AND
+             endda &gt;= sy-datum.
+
+    CALL FUNCTION &apos;Z_PAYROLL_CLUSTER&apos;
+      EXPORTING
+        pernr = we_report-pernr
+      TABLES
+        gt_rt = it_rt.
+
+    READ TABLE it_rt INTO wa_rt WITH KEY lgart = &apos;0TPC&apos;.
+    IF wa_rt-betpe IS NOT INITIAL.
+      we_report-cash_salary = wa_rt-betpe.
+    ELSE.
+      we_report-cash_salary = wa_rt-betrg * 12.
+    ENDIF.
+
+    READ TABLE it_rt INTO wa_rt WITH KEY lgart = &apos;0TPP&apos;.
+    IF wa_rt-betpe IS NOT INITIAL.
+      we_report-pens_salary = wa_rt-betpe.
+    ELSE.
+      we_report-pens_salary = wa_rt-betrg * 12.
+    ENDIF.
+
+    READ TABLE it_rt INTO wa_rt WITH KEY lgart = &apos;0TPA&apos;.
+    IF wa_rt-betpe IS NOT INITIAL.
+      we_report-total_packg = wa_rt-betpe.
+    ELSE.
+      we_report-total_packg = wa_rt-betrg * 12.
+    ENDIF.
+
+    authority_check( EXPORTING zpcm_bfa =  we_report-zpcm_bfa
+                               bukrs    =  we_report-bukrs
+                               kostl    =  we_report-kostl
+                     IMPORTING result   = le_result ).
+
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_PERNR" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_BUDAT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_BUKRS" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_HKONT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_PRCTR" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_LGART" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_KOMOK" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="T_LINK" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TT_LINK"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_VERAK" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="LC_IT_MYPPOPX" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="TT_MYPPOPX"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_BLDAT" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <parameter CLSNAME="ZCL_FINDATA5" CMPNAME="SELECT_DATA_PPOPX" SCONAME="SO_RUNID" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="12 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="PIQ_SELOPT_T"/>
+   <source>METHOD select_data_ppopx.
+    DATA: lc_wa_myppopx1 LIKE LINE OF lc_it_myppopx,
+            lc_it_myppopx1 TYPE tt_myppopx.
+    DATA: dbcursor TYPE cursor.
+    DATA: maxsize TYPE string.
+    DATA: wa_report LIKE LINE OF me-&gt;pt_report.
+    DATA: wa_ppoix TYPE zfindata_ppoix.
+
+    SELECT SINGLE low FROM tvarvc
+      INTO maxsize
+      WHERE name = &apos;ZFINDATA_REPORT_LOOPSIZE&apos;.
+    IF sy-subrc = 4.
+      maxsize = 1000.
+    ENDIF.
+    DATA: wa_runid LIKE LINE OF so_runid.
+    DATA: wa_bldat LIKE LINE OF so_bldat.
+
+    SORT so_runid BY low.
+    DELETE FROM zfindata_ppoix.
+
+    SELECT ppopx~runid &quot;Original RunID
+           ppopx~tslin &quot;Line number
+           ppoix~pernr &quot;Personnel Number
+           ppoix~seqno &quot;Sequence Number
+           ppoix~actsign &quot;Indicator: Result
+           ppoix~postnum &quot;Post number
+           ppoix~rtline &quot;RT Line
+           ppoix~komok &quot;Symbolic Account
+           ppoix~lgart &quot;Wage Type
+           ppoix~betrg &quot;Amount
+           ppoix~neg_postng &quot;Indicator
+           ppoix~hashcode &quot;Hash Code
+     FROM ppopx
+     INNER JOIN pcalac ON pcalac~pernr = ppopx~pernr AND
+                          pcalac~seqno = ppopx~seqno
+     INNER JOIN pevsh ON pevsh~runid = pcalac~runid
+     INNER JOIN ppoix ON ppoix~runid = pcalac~runid AND
+                         ppoix~pernr = pcalac~pernr AND
+                         ppoix~seqno = pcalac~seqno AND
+                         ppoix~postnum = ppopx~postnum
+     INTO CORRESPONDING FIELDS OF wa_ppoix
+     FOR ALL ENTRIES IN t_link
+     WHERE ppoix~lgart IN so_lgart AND
+           pcalac~srtza = &apos;A&apos; AND
+           pcalac~type = &apos;PP&apos; AND
+           pevsh~status = 40 AND
+           pevsh~actual = &apos;X&apos; AND
+           pevsh~type = &apos;PP&apos; AND
+           &quot;ppoix~actsign &lt;&gt; &apos;A&apos; AND
+           ppopx~pernr IN so_pernr AND
+           ppopx~tslin = t_link-linum  AND
+           ppopx~runid = t_link-runid.
+      &quot;          IF wa_ppoix-actsign &lt;&gt; &apos;A&apos;.
+      wa_ppoix-betrg = wa_ppoix-betrg * -1.
+*          ENDIF.
+*          IF wa_ppoix-tslin = 0.
+*            SELECT SINGLE tslin FROM PPOIX
+*              INTO wa_ppoix-tslin
+*              WHERE pernr = wa_ppoix-pernr AND
+*                    runid = wa_ppoix-runid AND
+*                    hashcode = wa_ppoix-hashcode AND
+*                    tslin &lt;&gt; 0.
+*          ENDIF.
+
+      MODIFY zfindata_ppoix FROM wa_ppoix.
+    ENDSELECT.
+
+    SELECT  zfindata_ppoix~runid &quot;Run ID
+            zfindata_ppoix~pernr &quot;Personnel Number
+            zfindata_ppoix~seqno &quot;Sequence Number
+            zfindata_ppoix~actsign &quot;Indicator: Result
+            zfindata_ppoix~postnum &quot;Post number
+            zfindata_ppoix~tslin &quot;Line number
+            zfindata_ppoix~komok &quot;Symbolic Account
+            zfindata_ppoix~lgart &quot;Wage Type
+            zfindata_ppoix~betrg &quot;Amount
+            zfindata_ppoix~neg_postng &quot;Indicator
+            zfindata_ppoix~hashcode &quot;Hash Code
+            zfindata_ppoix~rtline &quot;RT Line
+            csks~verak_user &quot;User Responsible
+            ppdhd~docnum &quot;Document Number
+            ppdhd~doctyp &quot;Doucment Type
+            ppdhd~budat &quot;Posting date
+            ppdhd~bldat &quot;Document Date
+            ppdhd~xblnr &quot;Reference Document
+            ppdhd~blart &quot;Document Type
+            ppdhd~revdoc &quot;Reversal Doc
+            ppdit~docnum &quot;Document Number
+            ppdit~doclin &quot;Document Line
+            ppdit~ittyp &quot;Line Type
+            ppdit~bukrs &quot;Company code
+            ppdit~ktosl &quot;Transaction key
+            ppdit~hkont &quot;GL Account
+            ppdit~lifnr &quot;Vendor
+            ppdit~kostl &quot;Cost Centre
+            ppdit~wrbtr &quot;Finance Amount
+            ppdit~prctr &quot;Profit Centre
+            csks~verak &quot;Person Responsible
+            csks~bkzob &quot;Lock Indicator
+            cepc~zpcm_bfa &quot;Bank Functional Area
+      FROM zfindata_ppoix
+      INNER JOIN ppdix ON ppdix~runid = zfindata_ppoix~runid AND
+                          ppdix~linum = zfindata_ppoix~tslin
+      INNER JOIN ppdit ON ppdit~docnum = ppdix~docnum AND
+                          ppdit~doclin = ppdix~doclin
+      INNER JOIN ppdhd ON ppdhd~docnum = ppdix~docnum
+      INNER JOIN tka02 ON tka02~bukrs = ppdit~bukrs
+      INNER JOIN csks  ON csks~prctr = ppdit~prctr AND
+                          csks~kokrs = tka02~kokrs
+      INNER JOIN cepc  ON cepc~prctr = ppdit~prctr AND
+                          cepc~kokrs = tka02~kokrs
+      INTO CORRESPONDING FIELDS OF wa_report
+      WHERE ppdit~hkont IN so_hkont AND
+            ppdit~prctr IN so_prctr AND
+            cepc~datab &lt;= sy-datum AND &quot;From
+            cepc~datbi &gt;= sy-datum AND &quot;To
+            csks~datab &lt;= sy-datum AND &quot;From
+            csks~datbi &gt;= sy-datum AND
+            csks~verak_user IN so_verak.
+
+      SELECT SINGLE text FROM t52ekt
+        INTO wa_report-text
+        WHERE symko = wa_report-komok AND
+              sprsl = &apos;EN&apos;.
+
+      SELECT SINGLE ltext FROM cskt
+       INTO wa_report-ltext
+       WHERE kostl = wa_report-kostl AND
+             spras = &apos;EN&apos;.
+
+      SELECT SINGLE butxt FROM t001
+        INTO wa_report-butxt
+        WHERE bukrs = wa_report-bukrs.
+
+      SELECT SINGLE lgtxt FROM t512t
+         INTO wa_report-lgtxt
+         WHERE lgart = wa_report-lgart AND
+               sprsl = &apos;EN&apos;.
+
+*        wa_report-linum = wa_report-tslin.
+*        SELECT SINGLE wrbtr FROM zfindata_temp
+*          INTO wa_report-wrbtr
+*          WHERE prctr = wa_report-prctr AND
+*                lifnr = wa_report-lifnr AND
+*                hkont = wa_report-hkont.
+
+      ADD 1 TO line.
+      MODIFY zfindata_temp FROM wa_report.
+    ENDSELECT.
+
+  ENDMETHOD.</source>
+  </method>
+ </CLAS>
+ <PROG NAME="ZFINDATA_REPORT5" VARCL="X" SUBC="1" RSTAT="K" RMAND="210" RLOAD="E" FIXPT="X" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="I" KEY="001" ENTRY="Selection Options" LENGTH="17 "/>
+    <textElement ID="I" KEY="002" ENTRY="Variant Selection" LENGTH="17 "/>
+    <textElement ID="I" KEY="003" ENTRY="Bank Functional Area" LENGTH="20 "/>
+    <textElement ID="I" KEY="004" ENTRY="File Output" LENGTH="11 "/>
+    <textElement ID="R" ENTRY="Findata Report" LENGTH="14 "/>
+    <textElement ID="S" KEY="P_DISP" ENTRY="        Display Data (For small sets)" LENGTH="37 "/>
+    <textElement ID="S" KEY="P_EXTRA" ENTRY="        Find the additional data" LENGTH="32 "/>
+    <textElement ID="S" KEY="P_FILENM" ENTRY="        Folder Name" LENGTH="19 "/>
+    <textElement ID="S" KEY="P_RALL" ENTRY="        Create Audit &amp; User Files" LENGTH="33 "/>
+    <textElement ID="S" KEY="P_RFLL" ENTRY="        Create a full file" LENGTH="26 "/>
+    <textElement ID="S" KEY="P_RUNID" ENTRY="        Number of Posting Run" LENGTH="29 "/>
+    <textElement ID="S" KEY="P_RUSR" ENTRY="        Create a file by User" LENGTH="29 "/>
+    <textElement ID="S" KEY="P_VARI" ENTRY="        Variant" LENGTH="15 "/>
+    <textElement ID="S" KEY="S_BUDAT" ENTRY="        Posting Date of Document" LENGTH="32 "/>
+    <textElement ID="S" KEY="S_BUKRS" ENTRY="        Company Code" LENGTH="20 "/>
+    <textElement ID="S" KEY="S_HKONT" ENTRY="        G/L Account" LENGTH="19 "/>
+    <textElement ID="S" KEY="S_KOMOK" ENTRY="        Symbolic Account" LENGTH="24 "/>
+    <textElement ID="S" KEY="S_LGART" ENTRY="        WageType" LENGTH="16 "/>
+    <textElement ID="S" KEY="S_PERNR" ENTRY="        Personnel Number" LENGTH="24 "/>
+    <textElement ID="S" KEY="S_PRCTR" ENTRY="        Profit Center" LENGTH="21 "/>
+    <textElement ID="S" KEY="S_VERAK" ENTRY="        User Responsible" LENGTH="24 "/>
+    <textElement ID="S" KEY="S_ZPCMA" ENTRY="        Bank Functional Area" LENGTH="28 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Report  ZFINDATA_REPORT
+*&amp;
+*&amp;---------------------------------------------------------------------*
+*&amp;
+*&amp;
+*&amp;---------------------------------------------------------------------*
+
+REPORT zfindata_report5.
+*{   REPLACE        P01K900026                                        2
+*\TABLES: ppdhd, cepc, ppdit, zfindata_temp.
+TABLES: ppdhd, cepc, ppdit, zfindata_temp, ppopx, csks, ppoix.
+*}   REPLACE
+SELECTION-SCREEN BEGIN OF BLOCK funcarea WITH FRAME TITLE text-003.
+SELECT-OPTIONS: s_zpcma FOR cepc-zpcm_bfa.
+SELECTION-SCREEN END OF BLOCK funcarea.
+
+SELECTION-SCREEN BEGIN OF BLOCK selection WITH FRAME TITLE text-001.
+SELECT-OPTIONS: s_bukrs FOR ppdit-bukrs,
+                s_prctr FOR ppdit-prctr.
+SELECT-OPTIONS: s_hkont FOR ppdit-hkont.
+PARAMETERS: p_bldat TYPE ppdhd-bldat NO-DISPLAY,
+            p_runid TYPE ppdhd-runid.
+SELECT-OPTIONS: s_budat FOR ppdhd-budat.
+*{   INSERT         P01K900026                                        1
+SELECT-OPTIONS: s_pernr FOR ppopx-pernr.
+SELECT-OPTIONS: s_verak FOR csks-verak_user.
+SELECT-OPTIONS: s_lgart FOR ppoix-lgart.
+SELECT-OPTIONS: s_komok FOR ppoix-komok.
+DATA: it_pernr TYPE piq_selopt_t.
+*}   INSERT
+DATA: it_budat TYPE piq_selopt_t.
+DATA: it_bukrs TYPE piq_selopt_t.
+DATA: it_prctr TYPE piq_selopt_t.
+DATA: it_zpcma TYPE piq_selopt_t.
+DATA: it_hkont TYPE piq_selopt_t.
+DATA: it_veraks TYPE piq_selopt_t.
+DATA: it_lgart TYPE piq_selopt_t.
+DATA: it_komok TYPE piq_selopt_t.
+SELECTION-SCREEN END OF BLOCK selection.
+
+SELECTION-SCREEN BEGIN OF BLOCK layout WITH FRAME TITLE text-002.
+PARAMETERS: p_vari TYPE disvariant-variant.
+PARAMETERS: p_disp AS CHECKBOX.
+PARAMETERS: p_extra AS CHECKBOX DEFAULT &apos;X&apos;.
+SELECTION-SCREEN END OF BLOCK layout.
+SELECTION-SCREEN BEGIN OF BLOCK file WITH FRAME TITLE text-004.
+*{   REPLACE        P01K900026                                        3
+*\PARAMETERS: p_rusr RADIOBUTTON GROUP grp1,
+*\            p_rfll RADIOBUTTON GROUP grp1.
+PARAMETERS: p_rusr RADIOBUTTON GROUP grp1,
+            p_rfll RADIOBUTTON GROUP grp1,
+            p_rall RADIOBUTTON GROUP grp1.
+*}   REPLACE
+PARAMETERS: p_filenm LIKE ibipparms-path.
+SELECTION-SCREEN END OF BLOCK file.
+
+CLASS lcl_view DEFINITION INHERITING FROM zcl_findata_salv_table.
+  PUBLIC SECTION.
+    METHODS application_specific_changes REDEFINITION.
+ENDCLASS.
+
+CLASS lcl_view IMPLEMENTATION.
+  METHOD application_specific_changes.
+    &quot;Why does set_column_attributes have to be a public method??
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;HIRE_DATE&apos;
+        id_short_text = &apos;Hire&apos;
+        id_medium_text = &apos;HireDate&apos;
+        id_long_text = &apos;Hire Date&apos; ).
+
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;TERMINATION_DATE&apos;
+        id_short_text = &apos;Trm. Date&apos;
+        id_medium_text = &apos;Termination Dt&apos;
+        id_long_text = &apos;Termination Date&apos; ).
+
+    me-&gt;set_column_attributes(
+         id_field_name = &apos;CASH_SALARY&apos;
+         id_short_text = &apos;CashSalary&apos;
+         id_medium_text = &apos;Cash Salary&apos;
+         id_long_text = &apos;Cash Salary&apos; ).
+
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;PENS_SALARY&apos;
+        id_short_text = &apos;PensSalary&apos;
+        id_medium_text = &apos;Pensionable Salary&apos;
+        id_long_text = &apos;Pensionable Salary&apos; ).
+
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;TOTAL_PACKG&apos;
+        id_short_text = &apos;TtlPackage&apos;
+        id_medium_text = &apos;Total Package&apos;
+        id_long_text = &apos;Total Package&apos; ).
+
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;STEXT&apos;
+        id_short_text = &apos;JobDesc&apos;
+        id_medium_text = &apos;Job Description&apos;
+        id_long_text = &apos;Job Description&apos; ).
+
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;TEXT&apos;
+        id_short_text = &apos;SymAccDesc&apos;
+        id_medium_text = &apos;Symbolic Acc Desc&apos;
+        id_long_text = &apos;Symbolic Account Description&apos; ).
+
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;LTEXT&apos;
+        id_short_text = &apos;CCDesc&apos;
+        id_medium_text = &apos;Cost Center Desc&apos;
+        id_long_text = &apos;Cost Center Description&apos; ).
+
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;BETRG&apos;
+        id_short_text = &apos;PyrlAmt&apos;
+        id_medium_text = &apos;Payroll Amount&apos;
+        id_long_text = &apos;Payroll Amount&apos; ).
+
+    me-&gt;set_column_attributes(
+        id_field_name = &apos;WRBTR&apos;
+        id_short_text = &apos;FinAmnt&apos;
+        id_medium_text = &apos;Finance Amount&apos;
+        id_long_text = &apos;Finance Amount&apos; ).
+  ENDMETHOD.
+ENDCLASS.
+
+DATA: zcl_fin TYPE REF TO zcl_findata5.
+DATA: lo_view TYPE REF TO lcl_view,
+      ld_repid TYPE sy-repid.
+DATA: lv_spool TYPE tsp01_sp0r-rqid_char.
+DATA : lv_applserv         TYPE char01,
+       lv_title            TYPE string,
+       lv_gui_extension    TYPE string,
+       lv_gui_ext_filter   TYPE string,
+       lv_canceled         TYPE as4flag,
+       lv_applserv_logical TYPE as4flag,
+       lv_applserv_al11    TYPE as4flag,
+       lv_logical_file     TYPE as4flag,
+       lv_file_name        TYPE string,
+       lp_file_name        LIKE ibipparms-path,
+       lv_pernr            TYPE pernr_d,
+       lv_vuser            TYPE verak_user.
+DATA: lv_full TYPE char01.
+DATA: wa_report TYPE zfindata_temp,
+      it_report TYPE TABLE OF zfindata_temp.
+DATA: filnm TYPE ibipparms-path.
+DATA: rt_fcat TYPE lvc_t_fcat.
+DATA: ct_data_table TYPE REF TO data.
+
+DATA: lv_lock TYPE string,
+      wa_zconfig TYPE zconfig.
+
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_vari.
+  DATA:l_disvariant TYPE disvariant.
+  l_disvariant-report = sy-repid.
+  l_disvariant-variant = p_vari.
+
+  CALL FUNCTION &apos;LVC_VARIANT_SAVE_LOAD&apos;
+    EXPORTING
+      i_save_load = &apos;F&apos;
+    CHANGING
+      cs_variant  = l_disvariant.
+  p_vari = l_disvariant-variant.
+
+AT SELECTION-SCREEN ON VALUE-REQUEST FOR p_filenm.
+  CLEAR : lv_canceled , lv_file_name, lv_logical_file.
+  MOVE &apos;X&apos; TO lv_applserv.
+  MOVE &apos;Select File from Application Server&apos; TO lv_title.
+  MOVE &apos;X&apos; TO lv_applserv_logical.
+  MOVE &apos;X&apos; TO lv_applserv_al11.
+
+  CALL METHOD cl_rsan_ut_files=&gt;f4
+    EXPORTING
+      i_applserv         = lv_applserv
+      i_title            = lv_title
+      i_gui_extension    = lv_gui_extension
+      i_gui_ext_filter   = lv_gui_ext_filter
+*     i_gui_initial_directory =
+      i_applserv_logical = lv_applserv_logical
+      i_applserv_al11    = lv_applserv_al11
+    IMPORTING
+      e_canceled         = lv_canceled
+      e_logical_file     = lv_logical_file
+*     e_al11_chosen      =
+    CHANGING
+      c_file_name        = lv_file_name
+    EXCEPTIONS
+      failed             = 1
+      OTHERS             = 2.
+  IF sy-subrc &lt;&gt; 0.
+    MESSAGE ID sy-msgid TYPE sy-msgty NUMBER sy-msgno
+               WITH sy-msgv1 sy-msgv2 sy-msgv3 sy-msgv4.
+  ELSE.
+    IF lv_canceled NE &apos;X&apos;.
+      MOVE lv_file_name TO p_filenm.
+    ENDIF.
+  ENDIF.
+
+START-OF-SELECTION.
+  SELECT SINGLE zvalue FROM zconfig INTO lv_lock
+    WHERE zkeyfield1 = &apos;ZFIN5_LOCK&apos;.
+  IF sy-subrc = 0.
+    MESSAGE |User ID { lv_lock } is busy executing the report| TYPE &apos;E&apos;.
+  ELSE.
+    wa_zconfig-zkeyfield1 = &apos;ZFIN5_LOCK&apos;.
+    wa_zconfig-zkeyfield2 = sy-repid.
+    wa_zconfig-zvalue = sy-uname.
+    MODIFY zconfig FROM wa_zconfig.
+  ENDIF.
+
+  DATA: wa_budat LIKE LINE OF it_budat.
+  DATA: wa_hkont LIKE LINE OF it_hkont.
+  LOOP AT s_budat INTO DATA(ws_budat).
+    MOVE-CORRESPONDING ws_budat TO wa_budat.
+    APPEND wa_budat TO it_budat.
+  ENDLOOP.
+*{   INSERT         P01K900026                                        2
+  DATA: wa_pernr LIKE LINE OF it_pernr.
+
+  LOOP AT s_pernr INTO DATA(ws_pernr).
+    MOVE-CORRESPONDING ws_pernr TO wa_pernr.
+    APPEND wa_pernr TO it_pernr.
+  ENDLOOP.
+
+  DATA: wa_veraks LIKE LINE OF it_veraks.
+  LOOP AT s_verak INTO DATA(ws_verak).
+    MOVE-CORRESPONDING ws_verak TO wa_veraks.
+    APPEND wa_veraks TO it_veraks.
+  ENDLOOP.
+
+  DATA: wa_prctr LIKE LINE OF it_prctr.
+  LOOP AT s_prctr INTO DATA(ws_prctr).
+    MOVE-CORRESPONDING ws_prctr TO wa_prctr.
+    APPEND wa_prctr TO it_prctr.
+  ENDLOOP.
+
+  LOOP AT s_hkont INTO DATA(ws_hkont).
+    MOVE-CORRESPONDING ws_hkont TO wa_hkont.
+    APPEND wa_hkont TO it_hkont.
+  ENDLOOP.
+
+  DATA: wa_bukrs LIKE LINE OF it_bukrs.
+  LOOP AT s_bukrs INTO DATA(ws_bukrs).
+    MOVE-CORRESPONDING ws_bukrs TO wa_bukrs.
+    APPEND wa_bukrs TO it_bukrs.
+  ENDLOOP.
+
+  DATA: wa_zpcma LIKE LINE OF it_zpcma.
+  LOOP AT s_zpcma INTO DATA(ws_zpcma).
+    MOVE-CORRESPONDING ws_zpcma TO wa_zpcma.
+    APPEND wa_zpcma TO it_zpcma.
+  ENDLOOP.
+
+  DATA: wa_lgart LIKE LINE OF it_lgart.
+  LOOP AT s_lgart INTO DATA(ws_lgart).
+    MOVE-CORRESPONDING ws_lgart TO wa_lgart.
+    APPEND wa_lgart TO it_lgart.
+  ENDLOOP.
+
+  DATA: wa_komok LIKE LINE OF it_komok.
+  LOOP AT s_komok INTO DATA(ws_komok).
+    MOVE-CORRESPONDING ws_komok TO wa_komok.
+    APPEND wa_komok TO it_komok.
+  ENDLOOP.
+
+
+  DELETE FROM zfindata_temp.
+*{   REPLACE        P01K900026                                        1
+*\  CREATE OBJECT zcl_fin
+*\    EXPORTING
+*\      budat = it_budat
+*\      bldat = p_bldat
+*\      runid = p_runid
+*\      prctr = it_prctr
+*\      bukrs = it_bukrs
+*\      zpcma = it_zpcma
+*\      hkont = it_hkont.
+  CREATE OBJECT zcl_fin
+    EXPORTING
+      budat = it_budat
+      bldat = p_bldat
+      runid = p_runid
+      verak = it_veraks
+      prctr = it_prctr
+      bukrs = it_bukrs
+      zpcma = it_zpcma
+      hkont = it_hkont
+      pernr = it_pernr
+      lgart = it_lgart
+      komok = it_komok
+      extra = p_extra.
+*}   REPLACE
+
+  ld_repid = sy-repid.
+  IF p_disp = &apos;X&apos;.
+    SELECT * FROM zfindata_temp
+    INTO CORRESPONDING FIELDS OF TABLE zcl_fin-&gt;pt_report.
+  ENDIF.
+  CREATE OBJECT lo_view.
+  DATA: lt_user_commands TYPE ttb_button,
+        ls_user_commands TYPE stb_button.
+  lo_view-&gt;prepare_display_data(
+    EXPORTING
+      id_report_name = ld_repid
+      id_variant     = p_vari
+    CHANGING
+      ct_data_table  = zcl_fin-&gt;pt_report ).
+  AUTHORITY-CHECK OBJECT &apos;ZFIN_FILE&apos;
+      ID &apos;ACTVT&apos; FIELD &apos;08&apos;.
+  IF sy-subrc &lt;&gt; 0.
+    MESSAGE &apos;Authority check failed. You cannot output this data to the server.&apos; TYPE &apos;S&apos; DISPLAY LIKE &apos;E&apos;.
+  ENDIF.
+  DELETE zconfig FROM wa_zconfig.
+  lo_view-&gt;display( ).
+  IF sy-batch = &apos;X&apos;.
+    lv_spool = sy-spono.
+    CALL FUNCTION &apos;RSPO_R_RDELETE_SPOOLREQ&apos;
+      EXPORTING
+        spoolid = lv_spool.
+  ENDIF.
+
+  &quot;New way - Large dataset.
+  lo_view-&gt;get_fcat(
+    IMPORTING
+      rt_fcat = rt_fcat
+      ).
+
+  &quot;Create our table.
+  CALL METHOD cl_alv_table_create=&gt;create_dynamic_table
+    EXPORTING
+      it_fieldcatalog = rt_fcat
+    IMPORTING
+      ep_table        = ct_data_table.
+
+
+*{   REPLACE        P01K900026                                        3
+*\  IF p_rusr = &apos;X&apos; AND p_filenm IS NOT INITIAL.
+  IF ( p_rusr = &apos;X&apos; OR p_rall = &apos;X&apos; ) AND p_filenm IS NOT INITIAL.
+*}   REPLACE
+    TYPES: BEGIN OF t_verak,
+            verak_user TYPE verak_user,
+           END OF t_verak.
+
+    DATA: it_verak TYPE TABLE OF t_verak,
+          wa_verak LIKE LINE OF it_verak.
+
+    DATA: dbcursor TYPE cursor.
+    DATA: lv_string TYPE string,
+          lv_buff TYPE string.
+
+    SELECT DISTINCT verak_user FROM zfindata_temp
+    INTO TABLE it_verak.
+
+    SORT it_verak BY verak_user.
+
+    LOOP AT it_verak INTO wa_verak.
+      OPEN CURSOR dbcursor FOR
+        SELECT * FROM zfindata_temp
+        WHERE verak_user = wa_verak-verak_user.
+      CASE wa_verak-verak_user.
+        WHEN &apos;&apos;.
+          filnm = |{ p_filenm }000000.TXT|.
+        WHEN OTHERS.
+          SELECT SINGLE pernr FROM pa0105
+            INTO lv_pernr
+            WHERE usrid = wa_verak-verak_user AND
+          subty = &apos;0001&apos;.
+
+          IF sy-subrc = 0.
+            filnm = |{ p_filenm }{ lv_pernr+2(6) }.TXT|.
+          ELSEIF sy-subrc = 4.
+            filnm = |{ p_filenm }ERROR - { wa_verak-verak_user }.TXT|.
+          ENDIF.
+      ENDCASE.
+      PERFORM extract_new USING filnm
+                                dbcursor
+                                rt_fcat
+                                ct_data_table.
+
+    ENDLOOP.
+*{   INSERT         P01K900026                                        4
+    IF p_rall = &apos;X&apos;.
+*}   INSERT
+      &quot;Seperate files &amp; full file.
+      OPEN CURSOR dbcursor FOR
+      SELECT * FROM zfindata_temp.
+      filnm = |{ p_filenm }AUDIT.TXT|.
+      PERFORM extract_new USING filnm
+                                dbcursor
+                                rt_fcat
+                                ct_data_table.
+
+      OPEN CURSOR dbcursor FOR
+      SELECT * FROM zfindata_temp
+        WHERE lifnr &lt;&gt; &apos;&apos;.
+      filnm = |{ p_filenm }VENDORS.TXT|.
+      PERFORM extract_new USING filnm
+                                dbcursor
+                                rt_fcat
+                                ct_data_table.
+*{   INSERT         P01K900026                                        5
+    ENDIF.
+*}   INSERT
+
+  ELSEIF p_rfll = &apos;X&apos; AND p_filenm IS NOT INITIAL.
+    &quot;Only full file.
+    OPEN CURSOR dbcursor FOR
+        SELECT * FROM zfindata_temp.
+    filnm = |{ p_filenm }AUDIT.TXT|.
+    PERFORM extract_new USING filnm
+                              dbcursor
+                              rt_fcat
+                              ct_data_table.
+
+    OPEN CURSOR dbcursor FOR
+    SELECT * FROM zfindata_temp
+      WHERE lifnr &lt;&gt; &apos;&apos;.
+    filnm = |{ p_filenm }VENDORS.TXT|.
+    PERFORM extract_new USING filnm
+                              dbcursor
+                              rt_fcat
+                              ct_data_table.
+
+  ENDIF.
+
+*==============================================================================================================
+  &quot;New version of extract that reads from table.
+*==============================================================================================================
+FORM extract_new USING filnm TYPE ibipparms-path
+                       dbcursor TYPE cursor
+                       rt_fcat TYPE lvc_t_fcat
+                       ct_data_table TYPE any.
+  DATA: lv_first TYPE char01.
+  DATA: rw_fcat LIKE LINE OF rt_fcat.
+  DATA: wa_data_table TYPE REF TO data.
+  FIELD-SYMBOLS:  &lt;dynt&gt; TYPE table,
+                  &lt;dynw&gt; TYPE any.
+
+  ASSIGN ct_data_table-&gt;* TO &lt;dynt&gt;.
+  CREATE DATA wa_data_table LIKE LINE OF &lt;dynt&gt;.
+  ASSIGN wa_data_table-&gt;* TO &lt;dynw&gt;.
+
+  AUTHORITY-CHECK OBJECT &apos;ZFIN_FILE&apos;
+   ID &apos;ACTVT&apos; FIELD &apos;08&apos;.
+  IF sy-subrc = 0.
+    DATA(lv_len) = strlen( p_filenm ) - 1.
+    IF p_filenm+lv_len(1) = &apos;/&apos; OR p_filenm+lv_len(1) = &apos;\&apos;.
+      OPEN DATASET filnm FOR OUTPUT IN TEXT MODE ENCODING DEFAULT.
+
+      LOOP AT rt_fcat INTO rw_fcat WHERE no_out = &apos;&apos;.
+        CASE sy-tabix.
+          WHEN 2.
+            lv_string = rw_fcat-reptext.
+          WHEN OTHERS.
+            CONCATENATE lv_string &apos;|&apos; rw_fcat-reptext INTO lv_string.
+        ENDCASE.
+      ENDLOOP.
+      TRANSFER lv_string TO filnm.
+      CLEAR lv_string.
+
+      DO.
+        FETCH NEXT CURSOR dbcursor
+          INTO CORRESPONDING FIELDS OF TABLE &lt;dynt&gt;
+          PACKAGE SIZE 1000.
+
+        IF sy-subrc &lt;&gt; 0.
+          EXIT.
+        ENDIF.
+
+        LOOP AT &lt;dynt&gt; INTO &lt;dynw&gt;.
+          CLEAR lv_first.
+          LOOP AT rt_fcat INTO rw_fcat WHERE no_out = &apos;&apos;.
+            ASSIGN COMPONENT rw_fcat-fieldname OF STRUCTURE &lt;dynw&gt; TO FIELD-SYMBOL(&lt;field&gt;).
+            IF sy-subrc &lt;&gt; 0.
+              EXIT.
+            ENDIF.
+            lv_buff = &lt;field&gt;.
+            IF lv_first = &apos;&apos;.
+              lv_string = lv_buff.
+              lv_first = &apos;X&apos;.
+            ELSE.
+              CONCATENATE lv_string lv_buff INTO lv_string SEPARATED BY &apos;|&apos;.
+            ENDIF.
+            CLEAR lv_buff.
+          ENDLOOP.
+          TRANSFER lv_string TO filnm.
+          CLEAR lv_string.
+        ENDLOOP.
+      ENDDO.
+
+      CLOSE DATASET filnm.
+      CLOSE CURSOR dbcursor.
+
+      MESSAGE &apos;File(s) extracted successfully.&apos; TYPE &apos;S&apos;.
+      IF sy-batch = &apos;X&apos;.
+        WRITE:/ &apos;File(s) extracted successfully.&apos;.
+      ENDIF.
+    ELSE.
+      MESSAGE &apos;File(s) failed to extract. Please select only a folder. Don&apos;&apos;t specify a filename.&apos; TYPE &apos;S&apos; DISPLAY LIKE &apos;E&apos;.
+      IF sy-batch = &apos;X&apos;.
+        WRITE:/ &apos;File(s) failed to extract. Please select only a folder. Don&apos;&apos;t specify a filename.&apos;.
+      ENDIF.
+    ENDIF.
+  ELSE.
+    MESSAGE &apos;File(s) failed to extract. Please select only a folder. Don&apos;&apos;t specify a filename.&apos; TYPE &apos;S&apos; DISPLAY LIKE &apos;E&apos;.
+    IF sy-batch = &apos;X&apos;.
+      WRITE:/ &apos;File(s) failed to extract. Please select only a folder. Don&apos;&apos;t specify a filename.&apos;.
+    ENDIF.
+  ENDIF.
+ENDFORM.</source>
+ </PROG>
+</nugget>

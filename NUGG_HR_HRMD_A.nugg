@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="HRMD_A">
+ <PROG NAME="ZXHALU07" VARCL="X" SUBC="I" APPL="S" RMAND="200" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZXHALU07" LENGTH="16 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp;  Include           ZXHALU07
+*&amp;---------------------------------------------------------------------*
+
+TYPES: BEGIN OF t_mpid,
+*         poguid TYPE reorpoguid,
+         mpid        TYPE reorpompid,
+         permoccfrom TYPE reorpovalidfrom,
+         permoccto   TYPE reorpovalidto,
+       END OF t_mpid.
+
+DATA: wa_p0000 TYPE e1p0000,
+      lv_bpnr  TYPE bu_partner.
+DATA: it_mpid TYPE TABLE OF t_mpid,
+      wa_mpid TYPE t_mpid.
+
+DATA: wa_hrp1001 TYPE hrp1001.
+DATA: lv_uname  TYPE xubname,
+      it_actgrp TYPE TABLE OF bapiagr,
+      wa_actgrp LIKE LINE OF it_actgrp,
+      it_return TYPE TABLE OF bapiret2.
+
+DATA: eo_busobj         TYPE REF TO if_reor_move_plan,
+      lo_perm_occupancy TYPE REF TO if_reor_perm_occupancy_mp,
+      lo_msglist        TYPE REF TO if_reca_message_list,
+      id_objnr          TYPE recaobjnr,
+      gs_detail         TYPE reor_move_plan,
+      go_bus_obj        TYPE REF TO if_reca_bus_object.
+DATA: lv_resgn          TYPE endda.
+
+LOOP AT idoc_data ASSIGNING FIELD-SYMBOL(&lt;fs_data&gt;)
+  WHERE segnam = &apos;E1P0000&apos;.
+
+  IF &lt;fs_data&gt; IS NOT INITIAL.
+    ASSIGN COMPONENT &apos;SDATA&apos; OF STRUCTURE &lt;fs_data&gt; TO FIELD-SYMBOL(&lt;fs_sdata&gt;).
+    IF &lt;fs_sdata&gt; IS NOT INITIAL.
+      MOVE &lt;fs_sdata&gt; TO wa_p0000.
+
+      &quot;===========Section - Assign additional role to managerial staff=====================
+      &quot;Find the position for the current employee
+      SELECT SINGLE * FROM hrp1001 INTO wa_hrp1001
+         WHERE otype = &apos;P&apos; AND &quot;Person
+               objid = wa_p0000-pernr AND
+               rsign = &apos;B&apos; AND &quot;Top Down
+               relat = &apos;008&apos;. &quot;Holder of position.
+
+      &quot;Check if his position manages any other positions.
+      SELECT SINGLE * FROM hrp1001 INTO wa_hrp1001
+         WHERE objid = wa_hrp1001-sobid AND
+               relat = &apos;012&apos;. &quot;Manages...
+
+      IF sy-subrc = 0.
+        &quot;He&apos;s a manager so assign the new role to him.
+        &quot;Find his SAP username
+        SELECT SINGLE usrid FROM pa0105
+          INTO lv_uname
+          WHERE pernr = wa_p0000-pernr AND
+                subty = &apos;0001&apos;.
+        IF sy-subrc = 0.
+          &quot;Get the role that needs to be assigned.
+          SELECT SINGLE value FROM zconfig
+            INTO wa_actgrp-agr_name
+            WHERE keyfield = &apos;HCMMNGRGRP&apos;.
+
+          IF sy-subrc = 0.
+            &quot;Get his existing roles.
+            CALL FUNCTION &apos;BAPI_USER_GET_DETAIL&apos;
+              EXPORTING
+                username       = lv_uname
+              TABLES
+                activitygroups = it_actgrp
+                return         = it_return.
+
+            &quot;Append the new role.
+            wa_actgrp-from_dat = sy-datum.
+            wa_actgrp-to_dat = &apos;99991231&apos;.
+            APPEND wa_actgrp TO it_actgrp.
+
+            &quot;Update his roles (Apparently a commit work isn&apos;t necessary for this BAPI.
+            &quot; If you find that it is, move the existing commit work to after the ENDIF below it.)
+            CALL FUNCTION &apos;SUSR_BAPI_USER_ACTGROUPS_ASSIG&apos;
+              EXPORTING
+                username       = lv_uname
+              TABLES
+                activitygroups = it_actgrp
+                return         = it_return.
+          ENDIF.
+        ENDIF.
+      ENDIF.
+
+      &quot;===========Section - Employee resignation===========================================
+      &quot;Description: If an employee is terminated, use the termination start date as the end
+      &quot;             date of the move plan. If his contract is extended use the end date of
+      &quot;             the contract as the end date of the move plan.
+      IF wa_p0000-stat2 = &apos;0&apos;. &quot;If the employee resigns, expire his employee role and expire his current locations.
+        CONCATENATE &apos;EE&apos; wa_p0000-pernr INTO lv_bpnr.
+        SELECT viormp~mpid viormp~permoccfrom viormp~permoccto FROM viorpo
+          INNER JOIN viormp ON viorpo~mpid = viormp~mpid
+          UP TO 1 ROWS
+          INTO TABLE it_mpid &quot;Get all active locations for the employee.
+          WHERE occupant = lv_bpnr
+                 AND viorpo~validfrom     &lt;= sy-datum
+                 AND viorpo~planind        = reor1_planind-actual
+                 AND viorpo~mpid          &lt;&gt; &apos;&apos;
+                 AND viormp~mpstatus       = 2
+        order by viormp~mpid descending.
+
+        IF sy-subrc = 0.
+          READ TABLE it_mpid INTO wa_mpid INDEX 1.
+          IF ( wa_p0000-begda &gt; wa_mpid-permoccto OR wa_mpid-permoccto = &apos;99991231&apos; ) AND
+             ( wa_mpid-permoccfrom &lt; wa_p0000-begda ).
+
+            SELECT SINGLE objnr FROM viormp
+              INTO id_objnr
+              WHERE mpid = wa_mpid-mpid.
+
+            CALL METHOD cf_reor_move_plan=&gt;find_by_objnr
+              EXPORTING
+                id_objnr    = id_objnr
+              RECEIVING
+                ro_instance = eo_busobj
+              EXCEPTIONS
+                error       = 1
+                OTHERS      = 2.
+
+            &quot;Set to change.
+            go_bus_obj ?= eo_busobj.
+            gs_detail = eo_busobj-&gt;ms_detail.
+
+            CALL METHOD go_bus_obj-&gt;init_bus_object
+              EXPORTING
+                is_detail     = gs_detail
+                id_activity   = reca1_activity-change
+                if_auth_check = abap_false
+                if_enqueue    = abap_false
+                if_archived   = abap_false.
+
+            &quot;Set perm occ end date.
+            lo_msglist = cf_reca_message_list=&gt;create( ).
+
+            eo_busobj-&gt;set_permoccto( wa_p0000-begda ).
+*          eo_busobj-&gt;set_permoccto( lv_resgn ).
+            lo_perm_occupancy ?= eo_busobj-&gt;get_perm_occupancy( ).
+*         @(&gt;_&lt;)@ - Lets hope this works... Occupancy didn&apos;t update previously.
+            &quot;Deactivate and activate to refresh occupancy.
+            lo_perm_occupancy-&gt;activate_all_undo( lo_msglist ).
+            lo_perm_occupancy-&gt;release_all_undo( lo_msglist ).
+            eo_busobj-&gt;store( if_in_update_task = &apos;X&apos;
+                              if_force_check    = &apos;&apos; ).
+
+
+            lo_perm_occupancy-&gt;release_all( lo_msglist ).
+            lo_perm_occupancy-&gt;activate_all( lo_msglist ).
+            eo_busobj-&gt;store( if_in_update_task = &apos;X&apos;
+                              if_force_check    = &apos;&apos; ).
+
+            CALL FUNCTION &apos;BAPI_BUPA_ROLE_CHANGE&apos; &quot;Expire employee role
+              EXPORTING
+                businesspartner     = lv_bpnr
+                businesspartnerrole = &apos;BUP003&apos;
+                validuntildate      = wa_p0000-begda
+                validuntildate_x    = &apos;X&apos;.
+
+            COMMIT WORK AND WAIT.
+          ENDIF.
+        ENDIF.
+      ELSEIF wa_p0000-stat2 = &apos;3&apos;.
+        &quot;Create record.
+        &quot;Check for existing moveplan for employee.
+        CONCATENATE &apos;EE&apos; wa_p0000-pernr INTO lv_bpnr.
+        SELECT viormp~mpid viormp~permoccfrom viormp~permoccto FROM viorpo
+          INNER JOIN viormp ON viorpo~mpid = viormp~mpid
+          UP TO 1 ROWS
+          INTO TABLE it_mpid &quot;Get all active locations for the employee.
+          WHERE occupant = lv_bpnr
+                 AND viorpo~validfrom     &lt;= sy-datum
+                 AND viorpo~planind        = reor1_planind-actual
+                 AND viorpo~mpid          &lt;&gt; &apos;&apos;
+                 AND viormp~mpstatus       = 2
+          ORDER BY viormp~mpid DESCENDING.
+        IF sy-subrc = 0.
+          READ TABLE it_mpid INTO wa_mpid INDEX 1.
+          IF ( wa_p0000-endda &gt; wa_mpid-permoccto OR wa_mpid-permoccto = &apos;99991231&apos; ) AND
+             ( wa_mpid-permoccfrom &lt; wa_p0000-endda ).
+            SELECT SINGLE objnr FROM viormp
+                INTO id_objnr
+                WHERE mpid = wa_mpid-mpid.
+
+            CALL METHOD cf_reor_move_plan=&gt;find_by_objnr
+              EXPORTING
+                id_objnr    = id_objnr
+              RECEIVING
+                ro_instance = eo_busobj
+              EXCEPTIONS
+                error       = 1
+                OTHERS      = 2.
+
+            &quot;Set to change.
+            go_bus_obj ?= eo_busobj.
+            gs_detail = eo_busobj-&gt;ms_detail.
+
+            CALL METHOD go_bus_obj-&gt;init_bus_object
+              EXPORTING
+                is_detail     = gs_detail
+                id_activity   = reca1_activity-change
+                if_auth_check = abap_false
+                if_enqueue    = abap_false
+                if_archived   = abap_false.
+
+            &quot;Set perm occ end date.
+            lo_msglist = cf_reca_message_list=&gt;create( ).
+
+            eo_busobj-&gt;set_permoccto( wa_p0000-endda ).
+*          eo_busobj-&gt;set_permoccto( lv_resgn ).
+            lo_perm_occupancy ?= eo_busobj-&gt;get_perm_occupancy( ).
+*         @(&gt;_&lt;)@ - Lets hope this works... Occupancy didn&apos;t update previously.
+            &quot;Deactivate and activate to refresh occupancy.
+            lo_perm_occupancy-&gt;activate_all_undo( lo_msglist ).
+            lo_perm_occupancy-&gt;release_all_undo( lo_msglist ).
+            eo_busobj-&gt;store( if_in_update_task = &apos;X&apos;
+                              if_force_check    = &apos;&apos; ).
+
+
+            lo_perm_occupancy-&gt;release_all( lo_msglist ).
+            lo_perm_occupancy-&gt;activate_all( lo_msglist ).
+            eo_busobj-&gt;store( if_in_update_task = &apos;X&apos;
+                              if_force_check    = &apos;&apos; ).
+
+            CALL FUNCTION &apos;BAPI_BUPA_ROLE_CHANGE&apos; &quot;Expire employee role
+              EXPORTING
+                businesspartner     = lv_bpnr
+                businesspartnerrole = &apos;BUP003&apos;
+                validuntildate      = wa_p0000-endda
+                validuntildate_x    = &apos;X&apos;.
+
+            COMMIT WORK AND WAIT.
+          ENDIF.
+        ENDIF.
+        &quot;Replaced with start date of resignation record.
+*      lv_resgn = wa_p0000-endda. &quot;Resignation End-date on previous record.
+      ENDIF.
+    ENDIF.
+  ENDIF.
+ENDLOOP.</source>
+ </PROG>
+</nugget>

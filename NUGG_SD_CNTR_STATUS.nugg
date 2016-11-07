@@ -1,0 +1,2926 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="NUGG_CNTR_STATUS">
+ <CLAS CLSNAME="ZCL_SD_CONTRACT_STATUS" VERSION="1" LANGU="E" DESCRIPT="Class for BAdI Impl.: ZSD_CONTRACT_STATUS" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <implementing CLSNAME="ZCL_SD_CONTRACT_STATUS" REFCLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" VERSION="1" EXPOSURE="2" STATE="1" RELTYPE="1" EDITORDER="0 "/>
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~DELETE_DOCUMENT">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~DELETE_DOCUMENT.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBAK">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBAK.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBAP">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBAP.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBEP">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBEP.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBKD">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBKD.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~NUMBER_RANGE">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~NUMBER_RANGE.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~PRICING_PREPARE_TKOMK">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~PRICING_PREPARE_TKOMK.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~PRICING_PREPARE_TKOMP">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~PRICING_PREPARE_TKOMP.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~READ_DOCUMENT">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~READ_DOCUMENT.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~SAVE_DOCUMENT">
+   <source>METHOD zif_sd_enh_sls_mv45afzz~save_document.
+  &quot;Following transport to go through as well.
+  &quot;GTDK914640       BRENDANVVLIE 04.10.2016 CHM111727862:SD: MV45AFZZ - BADI Definition
+
+  DATA: wa_vbap LIKE LINE OF fxvbap,
+        wa_veda LIKE LINE OF fxveda,
+        lv_stat TYPE j_estat.
+
+  IF fvbak-vbtyp = &apos;G&apos;. &quot;Contracts
+    LOOP AT fxveda INTO wa_veda.
+      READ TABLE fxvbap INTO wa_vbap WITH KEY vbeln = wa_veda-vbeln posnr = wa_veda-vposn.
+
+      SELECT SINGLE stat FROM jest
+        INTO lv_stat
+        WHERE objnr = wa_vbap-objnr AND
+              stat LIKE &apos;E%&apos; AND
+              inact = &apos;&apos;.
+
+      IF wa_veda-vkuesch IS NOT INITIAL AND wa_veda-venddat &gt; sy-datum.
+
+        CALL FUNCTION &apos;I_CHANGE_STATUS&apos;
+          EXPORTING
+            objnr          = wa_vbap-objnr
+            estat_inactive = lv_stat &quot;Current status
+            estat_active   = &apos;E0005&apos; &quot;ACCA
+            stsma          = &apos;YMS00001&apos;
+          EXCEPTIONS
+            cannot_update  = 1
+            OTHERS         = 2.
+      ELSEIF wa_veda-vkuesch IS NOT INITIAL AND wa_veda-venddat &lt;= sy-datum.
+        CALL FUNCTION &apos;I_CHANGE_STATUS&apos;
+          EXPORTING
+            objnr          = wa_vbap-objnr
+            estat_inactive = lv_stat &quot;Current status
+            estat_active   = &apos;E0012&apos; &quot;CANC
+            stsma          = &apos;YMS00001&apos;
+          EXCEPTIONS
+            cannot_update  = 1
+            OTHERS         = 2.
+      ENDIF.
+    ENDLOOP.
+  ENDIF.
+ENDMETHOD.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_CONTRACT_STATUS" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~SAVE_DOCUMENT_PREPARE">
+   <source>METHOD zif_sd_enh_sls_mv45afzz~save_document_prepare.
+  &quot;BAPI Parameters
+  DATA: ls_head TYPE bapisdh1,
+        ls_headx TYPE bapisdh1x,
+        ls_item TYPE bapisditm,
+        lt_item TYPE TABLE OF bapisditm,
+        ls_itemx TYPE bapisditmx,
+        lt_itemx TYPE TABLE OF bapisditmx,
+        ls_return TYPE bapiret2,
+        lt_return TYPE TABLE OF bapiret2.
+
+  &quot;Sales Order - With Rejection Reason
+  TYPES BEGIN OF t_sofa.
+          INCLUDE TYPE vbfa.
+  TYPES abgru TYPE vbap-abgru.
+  TYPES END OF t_sofa.
+
+  &quot;Purchase Order - With Deletion Indicator
+  TYPES BEGIN OF t_pofa.
+          INCLUDE TYPE vbfa.
+  TYPES loekz TYPE ekpo-loekz.
+  TYPES vgabe TYPE ekbe-vgabe.
+  TYPES END OF t_pofa.
+
+
+  &quot;Contract with current User-Status
+  TYPES BEGIN OF t_cont.
+          INCLUDE TYPE vbap.
+  TYPES stat TYPE j_status.
+  TYPES stsma TYPE j_stsma.
+  TYPES END OF t_cont.
+
+  DATA: it_vbfa TYPE TABLE OF vbfa, &quot;Quote/Contracts
+        wa_vbfa LIKE LINE OF it_vbfa,
+        it_sofa TYPE TABLE OF t_sofa, &quot;Quote/Sales Order
+        wa_sofa LIKE LINE OF it_sofa,
+        it_pofa TYPE TABLE OF t_pofa, &quot;Sales Order/Purchase Order
+        wa_pofa LIKE LINE OF it_pofa,
+        it_bdfa TYPE TABLE OF vbfa, &quot;Sales Order (Or Contract)/Billing Document
+        wa_bdfa LIKE LINE OF it_bdfa,
+        it_vbap TYPE TABLE OF vbap,
+        wa_vbap LIKE LINE OF it_vbap,
+        it_cont TYPE TABLE OF t_cont,
+        wa_cont LIKE LINE OF it_cont,
+        lv_heads TYPE j_status,
+        lv_process TYPE char01.
+
+  IF fvbak-vbtyp = &apos;C&apos;.
+    break bennetvdgryp.
+    &quot;Grab all line items with a rejection reason.
+    LOOP AT fxvbap INTO wa_vbap WHERE abgru IS NOT INITIAL.
+      APPEND wa_vbap TO it_vbap.
+    ENDLOOP.
+    IF it_vbap IS NOT INITIAL. &quot;If we have line items with a rejection reason.
+      &quot;Retrieve Contracts
+      SELECT vbfa~vbelv vbfa~posnv vbfa~vbeln vbfa~posnn vbfa~vbtyp_n vbfa~vbtyp_v FROM vbfa
+        INNER JOIN vbap ON vbap~vbeln = vbfa~vbelv AND vbap~posnr = vbfa~posnv
+        INTO CORRESPONDING FIELDS OF TABLE it_vbfa
+        FOR ALL ENTRIES IN it_vbap
+        WHERE vbfa~vbelv   = it_vbap-vgbel AND &quot;Reference Doc = Quote
+              vbap~uepos   = it_vbap-vgpos AND
+              vbfa~vbtyp_v = &apos;B&apos; AND &quot;Quote
+              vbfa~vbtyp_n = &apos;G&apos;. &quot;Contract
+      IF sy-subrc = 0.
+        &quot;Catering for rolling up of mulitple SO Items into one contract line.
+        &quot;Retrieve Sales Orders
+        SELECT vbfa~vbelv vbfa~posnv vbfa~vbeln vbfa~posnn vbfa~vbtyp_n vbfa~vbtyp_v FROM vbfa
+          INNER JOIN vbap ON vbap~vbeln = vbfa~vbelv AND vbap~uepos = vbfa~posnv &quot;Still on Quote here.
+          INTO CORRESPONDING FIELDS OF TABLE it_sofa
+          FOR ALL ENTRIES IN it_vbfa
+          WHERE vbap~vbeln   = it_vbfa-vbelv AND
+                vbap~posnr   = it_vbfa-posnv AND
+                vbfa~vbtyp_v = &apos;B&apos; AND
+                vbfa~vbtyp_n = &apos;C&apos;. &quot;AND
+*              vbap~abgru IS NULL.
+
+        IF sy-subrc = 0.
+          &quot;If Sales Order Item linked to contract doesn&apos;t have a rejection reason
+          &quot;exclude contract from processing.
+          LOOP AT it_sofa INTO wa_sofa.
+            SELECT SINGLE abgru FROM vbap &quot;Grab the rejection reason for the sales doc.
+              INTO wa_sofa-abgru
+              WHERE vbeln = wa_sofa-vbeln AND
+                    posnr = wa_sofa-posnn.
+            IF wa_sofa-abgru IS INITIAL.
+              DELETE it_vbfa WHERE vbeln = wa_sofa-vbelv AND posnn = wa_sofa-posnv.
+            ENDIF.
+          ENDLOOP.
+
+          &quot;More rules.
+          &quot;1. No good reciept VBFA-VBTYP = V -&gt; EKBE-VGABE= 1
+          &quot;2. PO must be cancelled VBFA-VBTYP = V -&gt; EKPO-LOEKZ = L
+          &quot;3. No outbound delivery VBFA-VBTYP = V -&gt; EKBE-VGABE = 8
+          &quot;4. No billing document for SO or Contract VBFA-VBTYP = M
+          &quot;5. Not in ITSM (Check either header or item status = &apos;NDEP&apos;)/OBJNR &amp; ITSM header table - IN_ITSM
+          IF it_sofa IS NOT INITIAL.
+            SELECT * FROM vbfa
+              INNER JOIN ekpo ON ekpo~ebeln = vbfa~vbeln AND ekpo~ebelp = vbfa~posnn
+              INNER JOIN ekbe ON ekbe~ebeln = ekpo~ebeln AND ekbe~ebelp = ekpo~ebelp
+              INTO CORRESPONDING FIELDS OF TABLE it_pofa
+              FOR ALL ENTRIES IN it_sofa
+              WHERE vbfa~vbelv = it_sofa-vbeln AND
+                    vbfa~posnv = it_sofa-posnn AND
+                    vbfa~vbtyp_n = &apos;V&apos;.
+          ENDIF.
+          LOOP AT it_pofa INTO wa_pofa WHERE vgabe = 1 &quot;Rule 1
+                                          OR loekz &lt;&gt; &apos;L&apos; &quot;Rule 2
+                                          OR vgabe = 8. &quot;Rule 3
+            READ TABLE it_sofa INTO wa_sofa WITH KEY vbeln = wa_pofa-vbelv posnn = wa_pofa-posnv.
+            IF sy-subrc = 0.
+              DELETE it_vbfa WHERE vbeln = wa_sofa-vbelv AND posnn = wa_sofa-posnv.
+            ENDIF.
+          ENDLOOP.
+
+          &quot;Rule 4 - Sales Order Part.
+          IF it_sofa IS NOT INITIAL.
+            SELECT * FROM vbfa
+              INTO CORRESPONDING FIELDS OF TABLE it_bdfa
+              FOR ALL ENTRIES IN it_sofa
+              WHERE vbfa~vbelv = it_sofa-vbeln AND
+                    vbfa~posnv = it_sofa-posnn AND
+                    vbfa~vbtyp_n = &apos;M&apos;. &quot;Billing Doc
+            LOOP AT it_bdfa INTO wa_bdfa.
+              DELETE it_vbfa WHERE vbeln = wa_bdfa-vbelv AND posnn = wa_bdfa-posnv.
+            ENDLOOP.
+          ENDIF.
+        ENDIF.
+
+        &quot;Grabbing contracts from left-overs.
+        IF it_vbfa IS NOT INITIAL.
+          SELECT * FROM vbap
+            INNER JOIN jest ON jest~objnr = vbap~objnr
+            INNER JOIN jsto ON jsto~objnr = vbap~objnr
+            INTO CORRESPONDING FIELDS OF TABLE it_cont
+            FOR ALL ENTRIES IN it_vbfa
+              WHERE vbap~vbeln = it_vbfa-vbeln AND
+                    vbap~posnr = it_vbfa-posnn AND
+                    jest~inact = &apos;&apos; AND
+*                    jest~stat &lt;&gt; &apos;E0012&apos; AND
+                    jest~stat LIKE &apos;E%&apos;.
+        ENDIF.
+        &quot;Rule 4 - Contract Part.
+        IF it_cont IS NOT INITIAL.
+          SELECT * FROM vbfa
+             INTO CORRESPONDING FIELDS OF TABLE it_bdfa
+             FOR ALL ENTRIES IN it_cont
+             WHERE vbfa~vbelv = it_cont-vbeln AND
+                   vbfa~posnv = it_cont-posnr AND
+                   vbfa~vbtyp_n = &apos;M&apos;. &quot;Billing Doc
+          LOOP AT it_bdfa INTO wa_bdfa.
+            DELETE it_cont WHERE vbeln = wa_bdfa-vbelv AND posnr = wa_bdfa-posnv.
+          ENDLOOP.
+        ENDIF.
+        &quot;If we have any entries left, process them.
+        LOOP AT it_cont INTO wa_cont.
+          &quot;Rule 5
+          lv_process = &apos;X&apos;. &quot;Innocent until proven guilty.
+
+          IF wa_cont-stat &lt;&gt; &apos;E0001&apos;.
+            SELECT SINGLE stat FROM jest
+              INNER JOIN vbak ON vbak~objnr = jest~objnr
+              INTO lv_heads
+              WHERE vbak~vbeln = wa_cont-vbeln AND
+                    jest~inact = &apos;&apos; AND
+                    jest~stat  = &apos;E0001&apos;. &quot;If line sstat &lt;&gt; NDEP, header stat must be to continue.
+
+            IF sy-subrc &lt;&gt; 0.
+              lv_process = &apos;&apos;.
+            ENDIF.
+          ENDIF.
+
+          IF lv_process = &apos;X&apos;.
+            &quot;1. Set Rejection Reason on Contract Line.
+            ls_headx-updateflag = &apos;U&apos;.
+
+            ls_item-itm_number = wa_cont-posnr.
+            ls_item-reason_rej = &apos;ZB&apos;.
+            APPEND ls_item TO lt_item.
+
+            ls_itemx-itm_number = wa_cont-posnr.
+            ls_itemx-updateflag = &apos;U&apos;.
+            ls_itemx-reason_rej = &apos;X&apos;.
+            APPEND ls_itemx TO lt_itemx.
+
+            CALL FUNCTION &apos;BAPI_CUSTOMERCONTRACT_CHANGE&apos; DESTINATION &apos;NONE&apos;
+              EXPORTING
+                salesdocument       = wa_cont-vbeln
+                contract_header_in  = ls_head
+                contract_header_inx = ls_headx
+              TABLES
+                contract_item_in    = lt_item
+                contract_item_inx   = lt_itemx
+                return              = lt_return.
+
+            CALL FUNCTION &apos;BAPI_TRANSACTION_COMMIT&apos; DESTINATION &apos;NONE&apos;.
+
+            &quot;2. Set Line Status to Cancelled
+            CALL FUNCTION &apos;I_CHANGE_STATUS&apos;
+              EXPORTING
+                objnr          = wa_cont-objnr
+                estat_inactive = wa_cont-stat &quot;Current status
+                estat_active   = &apos;E0012&apos; &quot;CANC
+                stsma          = wa_cont-stsma
+              EXCEPTIONS
+                cannot_update  = 1
+                OTHERS         = 2.
+          ELSE.
+            MESSAGE &apos;Subsequent documents exist, contract has not been cancelled.&apos; TYPE &apos;W&apos;.
+          ENDIF. &quot;Rule 5?
+        ENDLOOP.
+        IF it_cont IS INITIAL.
+          MESSAGE &apos;Subsequent documents exist, contract has not been cancelled.&apos; TYPE &apos;W&apos;.
+        ENDIF. &quot;Were all contract lines removed by rules?
+      ENDIF. &quot;Did we get any related contracts?
+    ENDIF. &quot;Do we have order line with a rejection reason?
+  ENDIF.
+
+ENDMETHOD.</source>
+  </interfaceMethod>
+ </CLAS>
+ <CLAS CLSNAME="ZCL_SALV_TABLE" VERSION="1" LANGU="E" DESCRIPT="Findata Report" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSCCINCL="X" FIXPT="X" UNICODE="X" RSTAT="K" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <friends CLSNAME="ZCL_SALV_TABLE" REFCLSNAME="CL_SALV_TABLE" FRIENDTYPE="0" VERSION="1" STATE="1"/>
+  <events CLSNAME="ZCL_SALV_TABLE" CMPNAME="USER_COMMAND_RECEIVED" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " EVTDECLTYP="0" BCEVTCAT="00">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="USER_COMMAND_RECEIVED" SCONAME="ED_USER_COMMAND" VERSION="1" LANGU="E" DESCRIPT="ALV Function" CMPTYPE="2" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="SALV_DE_FUNCTION" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="USER_COMMAND_RECEIVED" SCONAME="ED_ROW" VERSION="1" LANGU="E" DESCRIPT="Line" CMPTYPE="2" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="SALV_DE_ROW" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="USER_COMMAND_RECEIVED" SCONAME="ED_COLUMN" VERSION="1" LANGU="E" DESCRIPT="Column" CMPTYPE="2" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="0" TYPTYPE="1" TYPE="SALV_DE_COLUMN" PAROPTIONL="X"/>
+  </events>
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <typeUsage CLSNAME="ZCL_SALV_TABLE" TYPEGROUP="ABAP" VERSION="1" TPUTYPE="0" IMPLICIT="X"/>
+  <forwardDeclaration>ABAP</forwardDeclaration>
+  <typeClasDef CLSNAME="ZCL_SALV_TABLE" TYPEGROUP="CL_SALV_TABLE" VERSION="1" TPUTYPE="1" EXPLICIT="X"/>
+  <typeIntfDef CLSNAME="ZCL_SALV_TABLE" TYPEGROUP="IF_SALV_C_BOOL_SAP" VERSION="1" TPUTYPE="2" IMPLICIT="X"/>
+  <typeIntfDef CLSNAME="ZCL_SALV_TABLE" TYPEGROUP="IF_SALV_C_SORT" VERSION="1" TPUTYPE="2" IMPLICIT="X"/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="DY_CREATED" VERSION="1" LANGU="E" DESCRIPT="Check DynTab created" EXPOSURE="0" STATE="1" EDITORDER="18 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="CHAR01" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="DY_TABLE" VERSION="1" LANGU="E" DESCRIPT="Dynamic Table" EXPOSURE="0" STATE="1" EDITORDER="17 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="DATA" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="GR_CONTENT_MANAGER" VERSION="1" LANGU="E" DESCRIPT="Manages Content" EXPOSURE="0" STATE="1" EDITORDER="14 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="IF_SALV_CSQT_CONTENT_MANAGER" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MD_REPORT_NAME" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="10 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="SY-REPID" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MD_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" EXPOSURE="0" STATE="1" EDITORDER="11 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="DISVARIANT-VARIANT" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_AGGREGATIONS" VERSION="1" LANGU="E" DESCRIPT="All Aggregation Objects" EXPOSURE="0" STATE="1" EDITORDER="9 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_AGGREGATIONS" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_ALV_GRID" VERSION="1" LANGU="E" DESCRIPT="Basis Class for Simple Tables" EXPOSURE="2" STATE="1" EDITORDER="1 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_TABLE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_COLUMN" VERSION="1" LANGU="E" DESCRIPT="Column Description of Simple, Two-Dimensional Tables" EXPOSURE="0" STATE="1" EDITORDER="1 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_COLUMN_TABLE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_COLUMNS" VERSION="1" LANGU="E" DESCRIPT="Columns in Simple, Two-Dimensional Tables" EXPOSURE="0" STATE="1" EDITORDER="2 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_COLUMNS_TABLE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Abstract Container for GUI Controls" EXPOSURE="0" STATE="1" EDITORDER="12 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_GUI_CONTAINER" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_EVENTS" VERSION="1" LANGU="E" DESCRIPT="Columns in Simple, Two-Dimensional Tables" EXPOSURE="0" STATE="1" EDITORDER="3 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_EVENTS_TABLE" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_FUNCTIONS" VERSION="1" LANGU="E" DESCRIPT="Events in Simple, Two-Dimensional Tables" EXPOSURE="0" STATE="1" EDITORDER="4 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_FUNCTIONS_LIST" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_LAYOUT" VERSION="1" LANGU="E" DESCRIPT="Generic and User-Defined Functions in List-Type Tables" EXPOSURE="0" STATE="1" EDITORDER="5 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_LAYOUT" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_SELECTIONS" VERSION="1" LANGU="E" DESCRIPT="Settings for Layout" EXPOSURE="0" STATE="1" EDITORDER="6 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_SELECTIONS" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_SETTINGS" VERSION="1" LANGU="E" DESCRIPT="Appearance" EXPOSURE="0" STATE="1" EDITORDER="8 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_DISPLAY_SETTINGS" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MO_SORTS" VERSION="1" LANGU="E" DESCRIPT="Selections in List-Type Output Tables" EXPOSURE="0" STATE="1" EDITORDER="7 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="CL_SALV_SORTS" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MS_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout (External Use)" EXPOSURE="0" STATE="1" EDITORDER="15 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="DISVARIANT" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MT_DATA_TABLE" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="16 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="3" TYPE="DATA" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_SALV_TABLE" CMPNAME="MT_USER_COMMANDS" VERSION="1" LANGU="E" DESCRIPT="Toolbar Buttons" EXPOSURE="0" STATE="1" EDITORDER="13 " ATTDECLTYP="0" ATTEXPVIRT="0" TYPTYPE="1" TYPE="TTB_BUTTON" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="17 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="ID_COLUMNNAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="ID_POSITION" VERSION="1" LANGU="E" DESCRIPT="Priority" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="I" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="IF_DESCENDING" VERSION="1" LANGU="E" DESCRIPT="Boolean Variable (X=True, Space=False)" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="IF_SUBTOTAL" VERSION="1" LANGU="E" DESCRIPT="Boolean Variable (X=True, Space=False)" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SAP_BOOL" PARVALUE="IF_SALV_C_BOOL_SAP=&gt;FALSE"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="ID_GROUP" VERSION="1" LANGU="E" DESCRIPT="Control Break" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SALV_DE_SORT_GROUP" PARVALUE="IF_SALV_C_SORT=&gt;GROUP_NONE"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="ADD_SORT_CRITERIA" SCONAME="IF_OBLIGATORY" VERSION="1" LANGU="E" DESCRIPT="Boolean Variable (X=True, Space=False)" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SAP_BOOL" PARVALUE="IF_SALV_C_BOOL_SAP=&gt;FALSE"/>
+   <source>METHOD ADD_SORT_CRITERIA.
+    DATA: ld_sequence TYPE salv_de_sort_sequence.
+    IF if_descending = abap_true.
+      ld_sequence = if_salv_c_sort=&gt;sort_down.
+    ELSE.
+      ld_sequence = if_salv_c_sort=&gt;sort_up.
+    ENDIF.
+    TRY.
+        mo_sorts = mo_alv_grid-&gt;get_sorts( ).
+        mo_sorts-&gt;add_sort( columnname = id_columnname
+        position = id_position
+        sequence = ld_sequence
+        subtotal = if_subtotal
+        group    = id_group
+        obligatory = if_obligatory ).
+      CATCH cx_salv_data_error
+            cx_salv_existing
+            cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="APPLICATION_SPECIFIC_CHANGES" VERSION="1" LANGU="E" DESCRIPT="Application Specific Changes" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD APPLICATION_SPECIFIC_CHANGES.
+    DATA: lo_error TYPE REF TO cx_salv_msg,
+    lo_not_found TYPE REF TO cx_salv_not_found,
+    lo_data_error TYPE REF TO cx_salv_data_error,
+    ls_message TYPE bal_s_msg.
+    TRY.
+        optimise_column_width( ).
+      CATCH cx_salv_not_found INTO lo_not_found.
+        ls_message = lo_not_found-&gt;get_message( ).
+        IF ls_message-msgid IS INITIAL.
+          MESSAGE w000(zfi). &quot;Report in Trouble
+        ELSE.
+          MESSAGE ID
+          ls_message-msgid TYPE &apos;I&apos; NUMBER ls_message-msgno
+          WITH ls_message-msgv1 ls_message-msgv2
+          ls_message-msgv3 ls_message-msgv4.
+        ENDIF.
+      CATCH cx_salv_data_error INTO lo_data_error.
+        ls_message = lo_data_error-&gt;get_message( ).
+        IF ls_message-msgid IS INITIAL.
+          MESSAGE w000(zfi). &quot;Report in Trouble
+        ELSE.
+          MESSAGE ID
+          ls_message-msgid TYPE &apos;I&apos; NUMBER ls_message-msgno
+          WITH ls_message-msgv1 ls_message-msgv2
+          ls_message-msgv3 ls_message-msgv4.
+        ENDIF.
+      CATCH cx_salv_msg INTO lo_error.
+        IF lo_error-&gt;msgid IS INITIAL.
+          MESSAGE w000(zfi). &quot;Report in Trouble
+        ELSE.
+          MESSAGE ID
+          lo_error-&gt;msgid TYPE &apos;I&apos; NUMBER lo_error-&gt;msgno
+          WITH lo_error-&gt;msgv1 lo_error-&gt;msgv2
+          lo_error-&gt;msgv3 lo_error-&gt;msgv4.
+        ENDIF.
+        RETURN.
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="5 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="ID_REPORT_NAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-REPID"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="ID_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DISVARIANT-VARIANT"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="IO_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Abstract Container for GUI Controls" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_GUI_CONTAINER"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="IT_USER_COMMANDS" VERSION="1" LANGU="E" DESCRIPT="Toolbar Buttons" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TTB_BUTTON"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="ID_TITLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="STRING"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="CREATE_CONTAINER_PREP_DISPLAY" SCONAME="CT_DATA_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY TABLE"/>
+   <source>METHOD CREATE_CONTAINER_PREP_DISPLAY.
+    md_report_name = id_report_name.
+    ms_variant-report = id_report_name.
+    ms_variant-variant = id_variant.
+    mt_user_commands[] = it_user_commands[].
+
+    CREATE DATA mt_data_table LIKE ct_data_table.
+    GET REFERENCE OF ct_data_table INTO mt_data_table.
+    CALL FUNCTION &apos;ZSALV_CSQT_CREATE_CONTAINER&apos;
+      EXPORTING
+        r_content_manager = me
+        title             = id_title.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="DISPLAY" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD display.
+  DATA: lr_functions TYPE REF TO cl_salv_functions_list,
+        l_text       TYPE string,
+        l_icon       TYPE string.
+
+*    call method mo_alv_grid-&gt;set_screen_status
+*       exporting
+*         report = &apos;ZFINDATA_REPORT2&apos;
+*         pfstatus = &apos;CUSTOM&apos;
+*         set_functions = mo_alv_grid-&gt;c_functions_all.
+
+  mo_alv_grid-&gt;display( ).
+ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="DISPLAY_BASIC_TOOLBAR" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="11 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD DISPLAY_BASIC_TOOLBAR.
+    mo_functions = mo_alv_grid-&gt;get_functions( ).
+    mo_functions-&gt;set_all( if_salv_c_bool_sap=&gt;true ).
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="EXPORT" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="7 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="EXPORT" SCONAME="CT_DATA_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY TABLE"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="EXPORT" SCONAME="CV_FILENAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="IBIPPARMS-PATH"/>
+   <source>METHOD export.
+  DATA: ls_layout TYPE salv_s_layout,
+        rt_fcat TYPE lvc_t_fcat,
+        rw_fcat LIKE LINE OF rt_fcat,
+        is_layout TYPE lvc_s_layo,
+        ls_variant TYPE disvariant,
+        wa_table TYPE REF TO data,
+        lv_string TYPE string,
+        lv_value TYPE string,
+        lv_lines TYPE num03.
+
+  FIELD-SYMBOLS: &lt;data&gt; TYPE any,
+                 &lt;dynt&gt; TYPE table,
+                 &lt;dynw&gt; TYPE any,
+                 &lt;value&gt; TYPE any.
+
+  &quot;Get the current variant name.
+  ls_layout = mo_layout-&gt;get_current_layout( ).
+  rt_fcat =  cl_salv_controller_metadata=&gt;get_lvc_fieldcatalog(
+      r_columns             = mo_columns
+      r_aggregations        = mo_aggregations ).
+
+  &quot;Create our table.
+  IF dy_created IS INITIAL.
+    CALL METHOD cl_alv_table_create=&gt;create_dynamic_table
+      EXPORTING
+        it_fieldcatalog = rt_fcat
+      IMPORTING
+        ep_table        = dy_table.
+    dy_created = &apos;X&apos;.
+  ENDIF.
+  &quot;After our dynamic table has been created, create the work area.
+  ASSIGN dy_table-&gt;* TO &lt;dynt&gt;.
+  CREATE DATA wa_table LIKE LINE OF &lt;dynt&gt;.
+  ASSIGN wa_table-&gt;* TO &lt;dynw&gt;.
+  &quot;Move our data into our new dynamic table.
+  LOOP AT ct_data_table ASSIGNING &lt;data&gt;.
+    MOVE-CORRESPONDING &lt;data&gt; TO &lt;dynw&gt;.
+    APPEND &lt;dynw&gt; TO &lt;dynt&gt;.
+  ENDLOOP.
+
+  DATA: f_filename TYPE authb-filename.
+  f_filename = cv_filename.
+
+  CALL FUNCTION &apos;AUTHORITY_CHECK_DATASET&apos;
+    EXPORTING
+      program          = sy-repid
+      activity         = &apos;WRITE&apos;
+      filename         = f_filename
+    EXCEPTIONS
+      no_authority     = 1
+      activity_unknown = 2
+      OTHERS           = 3.
+  IF sy-subrc &lt;&gt; 0.
+    DATA: lv_msg TYPE string.
+    CASE sy-subrc.
+      WHEN 1.
+        lv_msg = &apos;Authorization failure. Cannot open dataset.&apos;.
+      WHEN 2.
+        lv_msg = &apos;Activity WRITE is unknown.&apos;.
+      WHEN 3.
+        lv_msg = &apos;Authority check failed. Unknown error.&apos;.
+    ENDCASE.
+
+    MESSAGE lv_msg TYPE &apos;E&apos;.
+
+  ELSE.
+    OPEN DATASET cv_filename FOR OUTPUT IN TEXT MODE ENCODING DEFAULT.
+    &quot;Header Line
+    LOOP AT rt_fcat INTO rw_fcat WHERE no_out = &apos;&apos;.
+      CASE sy-tabix.
+        WHEN 1.
+          lv_string = rw_fcat-reptext.
+        WHEN OTHERS.
+          CONCATENATE lv_string &apos;|&apos; rw_fcat-reptext INTO lv_string.
+      ENDCASE.
+    ENDLOOP.
+    TRANSFER lv_string TO cv_filename.
+
+    &quot;Line Items
+    LOOP AT &lt;dynt&gt; INTO &lt;dynw&gt;.
+      LOOP AT rt_fcat INTO rw_fcat WHERE no_out = &apos;&apos;.
+        ASSIGN COMPONENT rw_fcat-fieldname OF STRUCTURE &lt;dynw&gt; TO &lt;value&gt;.
+        lv_value = &lt;value&gt;.
+        CASE sy-tabix.
+          WHEN 1.
+            lv_string = lv_value.
+          WHEN OTHERS.
+            CONCATENATE lv_string &apos;|&apos; lv_value INTO lv_string.
+        ENDCASE.
+      ENDLOOP.
+      TRANSFER lv_string TO cv_filename.
+      CLEAR lv_string.
+    ENDLOOP.
+    REFRESH &lt;dynt&gt;.
+    CLOSE DATASET  cv_filename.
+  ENDIF.
+ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="FILL_CONTAINER_CONTENT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="18 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="FILL_CONTAINER_CONTENT" SCONAME="R_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Container for Custom Controls in Screen Area" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_GUI_CUSTOM_CONTAINER"/>
+   <source>METHOD FILL_CONTAINER_CONTENT.
+    FIELD-SYMBOLS: &lt;lt_data_table&gt; TYPE ANY TABLE.
+
+    ASSIGN mt_data_table-&gt;* TO &lt;lt_data_table&gt;.
+
+    prepare_display_data(
+      EXPORTING
+          id_report_name = md_report_name &quot; Calling program
+          id_variant = ms_variant-variant
+          io_container = r_container
+          it_user_commands = mt_user_commands
+      CHANGING
+          ct_data_table = &lt;lt_data_table&gt; ). &quot; Data Table
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="GET_FCAT" VERSION="1" LANGU="E" DESCRIPT="New export using temp table" EXPOSURE="2" STATE="1" EDITORDER="6 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="GET_FCAT" SCONAME="RT_FCAT" VERSION="1" LANGU="E" DESCRIPT="Field Catalog for List Viewer Control" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_T_FCAT"/>
+   <source>METHOD GET_FCAT.
+    DATA: ls_layout TYPE salv_s_layout,
+          rw_fcat LIKE LINE OF rt_fcat,
+          is_layout TYPE lvc_s_layo,
+          ls_variant TYPE disvariant,
+          wa_table TYPE REF TO data,
+          lv_string TYPE string,
+          lv_value TYPE string,
+          lv_lines TYPE num03.
+
+    FIELD-SYMBOLS: &lt;data&gt; TYPE any,
+                   &lt;dynt&gt; TYPE table,
+                   &lt;dynw&gt; TYPE any,
+                   &lt;value&gt; TYPE any.
+
+    &quot;Get the current variant name.
+    ls_layout = mo_layout-&gt;get_current_layout( ).
+    rt_fcat =  cl_salv_controller_metadata=&gt;get_lvc_fieldcatalog(
+        r_columns             = mo_columns
+        r_aggregations        = mo_aggregations ).
+
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="HANDLE_LINK_CLICK" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="14 " DISPID="0 " MTDTYPE="1" MTDDECLTYP="0" REFCLSNAME="CL_SALV_EVENTS_TABLE" REFCMPNAME="LINK_CLICK" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="HANDLE_LINK_CLICK" SCONAME="ROW" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="1" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="0"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="HANDLE_LINK_CLICK" SCONAME="COLUMN" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="1" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="0"/>
+   <source>METHOD HANDLE_LINK_CLICK.
+    RAISE EVENT user_command_received
+    EXPORTING ed_user_command = &apos;&amp;IC1&apos;
+              ed_row = row
+              ed_column = column.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="HANDLE_USER_COMMAND" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="15 " DISPID="0 " MTDTYPE="1" MTDDECLTYP="0" REFCLSNAME="CL_SALV_EVENTS" REFCMPNAME="ADDED_FUNCTION" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="HANDLE_USER_COMMAND" SCONAME="E_SALV_FUNCTION" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="1" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="0" TYPTYPE="0"/>
+   <source>METHOD HANDLE_USER_COMMAND.
+    DATA: ld_command TYPE sy-ucomm.
+* Convert view specific data type to generic data type
+    ld_command = e_salv_function.
+    RAISE EVENT user_command_received
+    EXPORTING ed_user_command = e_salv_function.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="INITIALIZE" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="13 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="ID_REPORT_NAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-REPID"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="ID_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DISVARIANT-VARIANT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="IO_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Abstract Container for GUI Controls" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_GUI_CONTAINER" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="IT_USER_COMMANDS" VERSION="1" LANGU="E" DESCRIPT="Toolbar Buttons" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TTB_BUTTON" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="INITIALIZE" SCONAME="CT_DATA_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY TABLE" PAROPTIONL="X"/>
+   <source>METHOD INITIALIZE.
+    TRY.
+        cl_salv_table=&gt;factory(
+          IMPORTING
+             r_salv_table = mo_alv_grid
+         	 CHANGING
+             t_table = ct_data_table[] ).
+
+        display_basic_toolbar( ).
+        mo_columns = mo_alv_grid-&gt;get_columns( ).
+        set_layout( id_variant ).
+        set_handlers( ).
+      CATCH cx_salv_msg.
+        &quot;Raise fatal error – there is a serious bug in the program
+        RETURN.
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="OPTIMISE_COLUMN_WIDTH" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD OPTIMISE_COLUMN_WIDTH.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" VERSION="1" LANGU="E" DESCRIPT="Prepare Display" EXPOSURE="2" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="ID_REPORT_NAME" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-REPID" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="ID_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DISVARIANT-VARIANT" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="IO_CONTAINER" VERSION="1" LANGU="E" DESCRIPT="Abstract Container for GUI Controls" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="3" TYPE="CL_GUI_CONTAINER" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="IT_USER_COMMANDS" VERSION="1" LANGU="E" DESCRIPT="Toolbar Buttons" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TTB_BUTTON" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="PREPARE_DISPLAY_DATA" SCONAME="CT_DATA_TABLE" VERSION="1" LANGU="E" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="ANY TABLE" PAROPTIONL="X"/>
+   <source>METHOD PREPARE_DISPLAY_DATA.
+    initialize(
+      EXPORTING
+        id_report_name = id_report_name &quot; Calling program
+        id_variant = id_variant &quot; Layout
+        io_container = io_container
+        it_user_commands = it_user_commands &quot; Toolbar Buttons
+      CHANGING
+        ct_data_table = ct_data_table ).
+* Step Two - Application Specific
+    application_specific_changes( ).
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_CHECKBOX" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_CHECKBOX" SCONAME="ID_COLUMN_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD SET_CHECKBOX.
+* Local Variables
+    DATA: lo_not_found TYPE REF TO cx_salv_not_found,
+    lf_error_occurred TYPE abap_bool.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_column_name ).
+        CALL METHOD mo_column-&gt;set_cell_type
+          EXPORTING
+            value = if_salv_c_cell_type=&gt;checkbox_hotspot.
+      CATCH cx_salv_not_found INTO lo_not_found.
+        lf_error_occurred = abap_true.
+        &quot;Object = Column
+        &quot;Key = Field Name e.g. VBELN
+*      zcl_dbc=&gt;require( id_that =
+*      |{ lo_not_found-&gt;object } { lo_not_found-&gt;key } must exist|
+*      if_true = boolc( lf_error_occurred = abap_false ) ).
+    ENDTRY.
+  ENDMETHOD.&quot;set checkbox</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_AS_BUTTON" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_AS_BUTTON" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD SET_COLUMN_AS_BUTTON.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_icon( if_salv_c_bool_sap=&gt;true ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="8 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_TABLE_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Reference table name for internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_S_FCAT-REF_TABLE" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_A_CHECKBOX" VERSION="1" LANGU="E" DESCRIPT="Is the field a checkbox?" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_HOTSPOT" VERSION="1" LANGU="E" DESCRIPT="Can you drill down?" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_VISIBLE" VERSION="1" LANGU="E" DESCRIPT="Is the field hidden?" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_TECHNICAL" VERSION="1" LANGU="E" DESCRIPT="Is the field for internal use only?" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_A_BUTTON" VERSION="1" LANGU="E" DESCRIPT="Is the field a push button?" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="IF_IS_SUBTOTAL" VERSION="1" LANGU="E" DESCRIPT="Do you want a subtotal?" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_LONG_TEXT" VERSION="1" LANGU="E" DESCRIPT="Long Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_L" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_MEDIUM_TEXT" VERSION="1" LANGU="E" DESCRIPT="Medium Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_M" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_SHORT_TEXT" VERSION="1" LANGU="E" DESCRIPT="Short Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_S" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_COLUMN_ATTRIBUTES" SCONAME="ID_TOOLTIP" VERSION="1" LANGU="E" DESCRIPT="ALV control: Tool tip for column header" CMPTYPE="1" MTDTYPE="0" EDITORDER="12 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_TIP" PAROPTIONL="X"/>
+   <source>METHOD SET_COLUMN_ATTRIBUTES.
+* Preconditions
+    CHECK id_field_name IS NOT INITIAL.
+    IF if_is_a_checkbox = abap_true.
+      set_checkbox( id_field_name ).
+    ENDIF.
+    IF if_is_hotspot = abap_true.
+      set_hotspot( id_field_name ).
+    ENDIF.
+    IF if_is_visible IS SUPPLIED.
+      set_visible( id_field_name = id_field_name
+      if_is_visible = if_is_visible ).
+    ENDIF.
+    IF if_is_technical = abap_true.
+      set_technical( id_field_name ).
+    ENDIF.
+    IF if_is_a_button = abap_true.
+      set_column_as_button( id_field_name ).
+    ENDIF.
+    IF if_is_subtotal = abap_true.
+      set_subtotal( id_field_name ).
+    ENDIF.
+    IF id_long_text IS NOT INITIAL.
+      set_long_text( id_field_name = id_field_name
+                     id_long_text = id_long_text ).
+    ENDIF.
+    IF id_medium_text IS NOT INITIAL.
+      set_medium_text( id_field_name = id_field_name
+                       id_medium_text = id_medium_text ).
+    ENDIF.
+    IF id_short_text IS NOT INITIAL.
+      set_short_text( id_field_name = id_field_name
+                      id_short_text = id_short_text ).
+    ENDIF.
+    IF id_tooltip IS NOT INITIAL.
+      set_tooltip( id_field_name = id_field_name
+                   id_tooltip = id_tooltip ).
+    ENDIF.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_HANDLERS" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="16 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD SET_HANDLERS.
+    mo_events = mo_alv_grid-&gt;get_event( ).
+    SET HANDLER handle_link_click FOR mo_events.
+    SET HANDLER handle_user_command FOR mo_events.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_HOTSPOT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_HOTSPOT" SCONAME="ID_COLUMN_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD SET_HOTSPOT.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_column_name ).
+        CALL METHOD mo_column-&gt;set_cell_type
+          EXPORTING
+            value = if_salv_c_cell_type=&gt;hotspot.
+      CATCH cx_salv_not_found.
+        &quot;Raise fatal exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_LAYOUT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="12 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_LAYOUT" SCONAME="ID_VARIANT" VERSION="1" LANGU="E" DESCRIPT="Layout" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="DISVARIANT-VARIANT" PAROPTIONL="X"/>
+   <source>METHOD SET_LAYOUT.
+* Local Variables
+    DATA: ls_key TYPE salv_s_layout_key.
+    mo_layout = mo_alv_grid-&gt;get_layout( ).
+* Set the Layout Key
+    ls_key-report = sy-cprog.
+    mo_layout-&gt;set_key( ls_key ).
+* set usage of default Layouts
+    mo_layout-&gt;set_default( &apos;X&apos; ).
+* set initial Layout
+    IF id_variant IS NOT INITIAL.
+      mo_layout-&gt;set_initial_layout( id_variant ).
+    ENDIF.
+* Set save restriction
+* Check authority to change display variants.
+    AUTHORITY-CHECK OBJECT &apos;S_ALV_LAYO&apos; ID &apos;ACTVT&apos; FIELD &apos;*&apos;.
+    IF sy-subrc = 0. &quot; does he ride a white horse?
+      mo_layout-&gt;set_save_restriction( if_salv_c_layout=&gt;restrict_none ).
+      &quot; yes, allow user and global display variants
+    ELSE.
+      mo_layout-&gt;set_save_restriction( if_salv_c_layout=&gt;restrict_user_dependant ).
+    ENDIF.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_LONG_TEXT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_LONG_TEXT" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_LONG_TEXT" SCONAME="ID_LONG_TEXT" VERSION="1" LANGU="E" DESCRIPT="Long Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_L"/>
+   <source>METHOD SET_LONG_TEXT.
+    DATA: ld_medium_text TYPE scrtext_m,
+          ld_short_text TYPE scrtext_s.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_long_text( id_long_text ).
+        IF strlen( id_long_text ) LE 20.
+          ld_medium_text = id_long_text.
+          mo_column-&gt;set_medium_text( ld_medium_text ).
+        ENDIF.
+        IF strlen( id_long_text ) LE 10.
+          ld_short_text = id_long_text.
+          mo_column-&gt;set_short_text( ld_short_text ).
+        ENDIF.
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_MEDIUM_TEXT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="5 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_MEDIUM_TEXT" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_MEDIUM_TEXT" SCONAME="ID_MEDIUM_TEXT" VERSION="1" LANGU="E" DESCRIPT="Medium Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_M"/>
+   <source>METHOD SET_MEDIUM_TEXT.
+    DATA: ld_short_text TYPE scrtext_s.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_medium_text( id_medium_text ).
+        IF strlen( id_medium_text ) LE 10.
+          ld_short_text = id_medium_text.
+          mo_column-&gt;set_short_text( ld_short_text ).
+        ENDIF.
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_SHORT_TEXT" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="6 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_SHORT_TEXT" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_SHORT_TEXT" SCONAME="ID_SHORT_TEXT" VERSION="1" LANGU="E" DESCRIPT="Short Field Label" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SCRTEXT_S"/>
+   <source>METHOD SET_SHORT_TEXT.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_short_text( id_short_text ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_SUBTOTAL" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="7 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_SUBTOTAL" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD SET_SUBTOTAL.
+    mo_aggregations = mo_alv_grid-&gt;get_aggregations( ).
+    TRY.
+        mo_aggregations-&gt;add_aggregation( columnname = id_field_name ).
+      CATCH cx_salv_not_found
+      cx_salv_data_error
+      cx_salv_existing.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_TECHNICAL" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="8 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_TECHNICAL" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <source>METHOD SET_TECHNICAL.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_technical( abap_true ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_TOOLTIP" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="9 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_TOOLTIP" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_TOOLTIP" SCONAME="ID_TOOLTIP" VERSION="1" LANGU="E" DESCRIPT="ALV control: Tool tip for column header" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_TIP"/>
+   <source>METHOD SET_TOOLTIP.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_tooltip( id_tooltip ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+  <method CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_VISIBLE" VERSION="1" LANGU="E" EXPOSURE="0" STATE="1" EDITORDER="10 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_VISIBLE" SCONAME="ID_FIELD_NAME" VERSION="1" LANGU="E" DESCRIPT="ALV control: Field name of internal table field" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="LVC_FNAME"/>
+   <parameter CLSNAME="ZCL_SALV_TABLE" CMPNAME="SET_VISIBLE" SCONAME="IF_IS_VISIBLE" VERSION="1" LANGU="E" DESCRIPT="Is the field visible?" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ABAP_BOOL"/>
+   <source>METHOD SET_VISIBLE.
+    TRY.
+        mo_column ?= mo_columns-&gt;get_column( id_field_name ).
+        mo_column-&gt;set_visible( if_is_visible ).
+      CATCH cx_salv_not_found.
+        &quot;Raise Fatal Exception
+    ENDTRY.
+  ENDMETHOD.</source>
+  </method>
+ </CLAS>
+ <DTEL ROLLNAME="ZAPPR" DDLANGUAGE="E" ROUTPUTLEN="000000" HEADLEN="15" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DDTEXT="Approval Status" REPTEXT="Approval Status" SCRTEXT_S="Appr Stat" SCRTEXT_M="Approval Status" SCRTEXT_L="Approval Status" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000001" DECIMALS="000000" OUTPUTLEN="000001" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZAPPR" DDLANGUAGE="E" ROUTPUTLEN="000000" HEADLEN="15" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DDTEXT="Approval Status" REPTEXT="Approval Status" SCRTEXT_S="Appr Stat" SCRTEXT_M="Approval Status" SCRTEXT_L="Approval Status" AUTHCLASS="00" DTELMASTER="E" DATATYPE="CHAR" LENG="000001" DECIMALS="000000" OUTPUTLEN="000001"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <DTEL ROLLNAME="ZRULEKEY" DDLANGUAGE="E" ROUTPUTLEN="000000" HEADLEN="08" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DDTEXT="Rule Key" REPTEXT="Rule Key" SCRTEXT_S="Rule Key" SCRTEXT_M="Rule Key" SCRTEXT_L="Rule Key" AUTHCLASS="00" DTELMASTER="E" DATATYPE="NUMC" LENG="000003" DECIMALS="000000" OUTPUTLEN="000003" MultiLanguageSupport="X">
+  <tpara/>
+  <DDLANGUAGE LANGU="E">
+   <DD04V ROLLNAME="ZRULEKEY" DDLANGUAGE="E" ROUTPUTLEN="000000" HEADLEN="08" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DDTEXT="Rule Key" REPTEXT="Rule Key" SCRTEXT_S="Rule Key" SCRTEXT_M="Rule Key" SCRTEXT_L="Rule Key" AUTHCLASS="00" DTELMASTER="E" DATATYPE="NUMC" LENG="000003" DECIMALS="000000" OUTPUTLEN="000003"/>
+  </DDLANGUAGE>
+ </DTEL>
+ <ENHO enhancement_id="ZSD_CONTRACT_STATUS" shorttext="Automation of Contract Statuses" tooltype_id="BADI_IMPL" spot_name="ZSD_ENH_SLS">
+  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+   <asx:values>
+    <IMPLS>
+     <ENH_BADI_IMPL_DATA>
+      <SPOT_NAME>ZSD_ENH_SLS</SPOT_NAME>
+      <BADI_NAME>ZSD_ENH_SLS_MV45AFZZ</BADI_NAME>
+      <IMPL_NAME>ZSD_CONTRACT_STATUS</IMPL_NAME>
+      <IMPL_CLASS>ZCL_SD_CONTRACT_STATUS</IMPL_CLASS>
+      <ACTIVE>X</ACTIVE>
+      <IS_DEFAULT/>
+      <FILTER_ROOT/>
+      <FILTER_TREE/>
+      <FILTER_VALUES/>
+      <FILTERS/>
+      <FCODE_EXTENSIONS/>
+      <SCREEN_EXTENSIONS/>
+      <IMPL_SHORTTEXT>Automation of Contract Statuses</IMPL_SHORTTEXT>
+      <IMPL_SHORTTEXT_ID>005056963D6D1ED6A1A7A2E5FBDA20ED</IMPL_SHORTTEXT_ID>
+      <IMPL_LONGTEXT_ID/>
+      <MIG_BADI_IMPL/>
+      <SORTER_DATA/>
+      <IS_EXAMPLE_IMPLEMENTATION/>
+      <LOCKED_IN_CUSTOMIZING/>
+     </ENH_BADI_IMPL_DATA>
+    </IMPLS>
+   </asx:values>
+  </asx:abap>
+ </ENHO>
+ <FUGR AREA="ZSD_EG" SPRAS="E" AREAT="Contract Status Automation">
+  <functionGroupDocumentation/>
+  <mainprogram NAME="SAPLZSD_EG" SQLX="X" VARCL="X" DBAPL="S" DBNA="D$" SUBC="F" APPL="S" RMAND="300" RLOAD="E" FIXPT="X" LDBNAME="D$S" UCCHECK="X">
+   <textPool/>
+   <dynpros>
+    <dynpro PROG="SAPLZSD_EG" DNUM="0100" FNUM="0100" BZMX="61 " BZBR="255 " MILI="192 " MICO="37 " MALI="0 " MACO="0 " NOLI="200 " NOCO="255 " VALP="0 " CUAN="G" SPRA="E" DTEXT="View maint: Overview screen ZSD_STATUS_RULES">
+     <dynprofield FNAM="TCTRL_ZSD_STATUS_RULES" DIDX="003B" FLG1="F8" FLG2="FC" FLG3="00" FILL="T" FMB1="00" FMB2="00" LENG="FF" LINE="01" COLN="02" LTYP="E" LANF="65" LBLK="01" LREP="01" AUTH="101" AGLT="00" ADEZ="00"/>
+     <dynprofield FNAM="VIM_FRAME_FIELD" DIDX="003C" FLG1="80" FLG2="02" FLG3="88" FMB1="30" FMB2="40" LENG="3C" LINE="01" COLN="00" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="____________________________________________________________"/>
+     <dynprofield FNAM="*ZSD_STATUS_RULES-RULENUMBER" DIDX="0008" FLG1="30" FLG2="00" FLG3="00" FMB1="30" FMB2="A0" LENG="28" LINE="01" COLN="01" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="4" AGLT="00" ADEZ="00" STXT="Rule Key" RES1="                                       00"/>
+     <dynprofield FNAM="*ZSD_STATUS_RULES-OLD_STAT" DIDX="0005" FLG1="30" FLG2="00" FLG3="00" FMB1="30" FMB2="A0" LENG="28" LINE="01" COLN="02" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="4" AGLT="00" ADEZ="00" STXT="UsrSt" RES1="X                                      00"/>
+     <dynprofield FNAM="*ZSD_STATUS_RULES-NEW_STAT" DIDX="0005" FLG1="30" FLG2="00" FLG3="00" FMB1="30" FMB2="A0" LENG="28" LINE="01" COLN="03" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="4" AGLT="00" ADEZ="00" STXT="UsrSt" RES1="X                                      00"/>
+     <dynprofield FNAM="*ZSD_STATUS_RULES-OLD_TXT04" DIDX="0004" FLG1="30" FLG2="00" FLG3="00" FMB1="30" FMB2="80" LENG="28" LINE="01" COLN="04" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="4" AGLT="00" ADEZ="00" STXT="Stat" RES1="                                       00"/>
+     <dynprofield FNAM="*ZSD_STATUS_RULES-NEW_TXT04" DIDX="0004" FLG1="30" FLG2="00" FLG3="00" FMB1="30" FMB2="80" LENG="28" LINE="01" COLN="05" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="4" AGLT="00" ADEZ="00" STXT="Stat" RES1="                                       00"/>
+     <dynprofield FNAM="VIM_MARKED" DIDX="0001" FLG1="80" FLG2="00" FLG3="88" FILL="C" FMB1="00" FMB2="20" LENG="01" LINE="01" COLN="00" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AUTH="102" AGLT="00" ADEZ="00" STXT="_"/>
+     <dynprofield FNAM="ZSD_STATUS_RULES-RULENUMBER" DIDX="0008" FLG1="B0" FLG2="00" FLG3="80" FMB1="30" FMB2="20" LENG="03" LINE="01" COLN="01" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="NUMC" GRP1="KEY" ITYP="N" AGLT="06" ADEZ="00" STXT="___" RES1="                                       00"/>
+     <dynprofield FNAM="ZSD_STATUS_RULES-OLD_STAT" DIDX="0005" FLG1="B0" FLG2="00" FLG3="80" FMB1="30" FMB2="28" LENG="05" LINE="01" COLN="02" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" GRP1="KEY" ITYP="C" AGLT="0A" ADEZ="00" STXT="_____" RES1="X                                      00"/>
+     <dynprofield FNAM="ZSD_STATUS_RULES-NEW_STAT" DIDX="0005" FLG1="B0" FLG2="00" FLG3="80" FMB1="30" FMB2="28" LENG="05" LINE="01" COLN="03" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" GRP1="KEY" ITYP="C" AGLT="0A" ADEZ="00" STXT="_____" RES1="X                                      00"/>
+     <dynprofield FNAM="ZSD_STATUS_RULES-OLD_TXT04" DIDX="0004" FLG1="B0" FLG2="02" FLG3="80" FMB1="31" FMB2="00" LENG="04" LINE="01" COLN="04" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="C" AGLT="08" ADEZ="00" STXT="____" RES1="                                       00"/>
+     <dynprofield FNAM="ZSD_STATUS_RULES-NEW_TXT04" DIDX="0004" FLG1="B0" FLG2="02" FLG3="80" FMB1="31" FMB2="00" LENG="04" LINE="01" COLN="05" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="C" AGLT="08" ADEZ="00" STXT="____" RES1="                                       00"/>
+     <dynprofield FNAM="VIM_POSI_PUSH" DIDX="0014" FLG1="80" FLG2="00" FLG3="88" FILL="P" FMB1="30" FMB2="00" LENG="14" LINE="3D" COLN="14" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AUTH="103" AGLT="00" ADEZ="00" STXT="____________________" RES1="                                                                                                                                                                        POSI"/>
+     <dynprofield FNAM="VIM_POSITION_INFO" DIDX="001E" FLG1="80" FLG2="02" FLG3="88" FMB1="33" FMB2="00" LENG="1E" LINE="3D" COLN="29" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="______________________________"/>
+     <dynprofield FNAM="OK_CODE" DIDX="0014" FLG1="80" FLG2="10" FLG3="08" FMB1="00" FMB2="00" LENG="14" LINE="FF" COLN="01" LTYP="O" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="____________________"/>
+     <dynproflowsource>PROCESS BEFORE OUTPUT.
+ MODULE LISTE_INITIALISIEREN.
+ LOOP AT EXTRACT WITH CONTROL
+  TCTRL_ZSD_STATUS_RULES CURSOR NEXTLINE.
+   MODULE LISTE_SHOW_LISTE.
+ ENDLOOP.
+*
+PROCESS AFTER INPUT.
+ MODULE LISTE_EXIT_COMMAND AT EXIT-COMMAND.
+ MODULE LISTE_BEFORE_LOOP.
+ LOOP AT EXTRACT.
+   MODULE LISTE_INIT_WORKAREA.
+   CHAIN.
+    FIELD ZSD_STATUS_RULES-RULENUMBER .
+    FIELD ZSD_STATUS_RULES-OLD_STAT .
+    FIELD ZSD_STATUS_RULES-NEW_STAT .
+    FIELD ZSD_STATUS_RULES-OLD_TXT04 .
+    FIELD ZSD_STATUS_RULES-NEW_TXT04 .
+    MODULE SET_UPDATE_FLAG ON CHAIN-REQUEST.
+   ENDCHAIN.
+   FIELD VIM_MARKED MODULE LISTE_MARK_CHECKBOX.
+   CHAIN.
+    FIELD ZSD_STATUS_RULES-RULENUMBER .
+    FIELD ZSD_STATUS_RULES-OLD_STAT .
+    FIELD ZSD_STATUS_RULES-NEW_STAT .
+    MODULE LISTE_UPDATE_LISTE.
+   ENDCHAIN.
+ ENDLOOP.
+ MODULE LISTE_AFTER_LOOP.</dynproflowsource>
+    </dynpro>
+    <dynpro PROG="SAPLZSD_EG" DNUM="0900" FNUM="0900" BZMX="61 " BZBR="72 " MILI="192 " MICO="37 " MALI="0 " MACO="0 " NOLI="61 " NOCO="83 " VALP="0 " CUAN="G" SPRA="E" DTEXT="View maint: Overview screen ZLANG">
+     <dynprofield FNAM="TCTRL_ZLANG" DIDX="003B" FLG1="F8" FLG2="FC" FLG3="00" FILL="T" FMB1="00" FMB2="00" LENG="48" LINE="01" COLN="02" LTYP="E" LANF="65" LBLK="01" LREP="01" AUTH="101" AGLT="00" ADEZ="00"/>
+     <dynprofield FNAM="VIM_FRAME_FIELD" DIDX="003C" FLG1="80" FLG2="02" FLG3="88" FMB1="30" FMB2="40" LENG="3C" LINE="01" COLN="00" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="____________________________________________________________"/>
+     <dynprofield FNAM="*ZLANG-NATION" DIDX="000F" FLG1="30" FLG2="00" FLG3="00" FMB1="30" FMB2="A0" LENG="28" LINE="01" COLN="01" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="2" AGLT="00" ADEZ="00" STXT="Address Version" RES1="                                       00"/>
+     <dynprofield FNAM="*ZLANG-NATION_TEX" DIDX="0010" FLG1="20" FLG2="00" FLG3="00" FMB1="30" FMB2="80" LENG="28" LINE="01" COLN="02" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="3" AGLT="00" ADEZ="00" STXT="Version text" RES1="                                       00"/>
+     <dynprofield FNAM="*ZLANG-LANG" DIDX="000F" FLG1="30" FLG2="00" FLG3="00" FMB1="30" FMB2="88" LENG="28" LINE="01" COLN="03" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="2" AGLT="00" ADEZ="00" STXT="Language" RES1="X                                      00"/>
+     <dynprofield FNAM="*ZLANG-SPTXT" DIDX="0010" FLG1="20" FLG2="00" FLG3="00" FMB1="30" FMB2="80" LENG="28" LINE="01" COLN="04" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="3" AGLT="00" ADEZ="00" STXT="Name" RES1="                                       00"/>
+     <dynprofield FNAM="VIM_MARKED" DIDX="0001" FLG1="80" FLG2="00" FLG3="88" FILL="C" FMB1="00" FMB2="20" LENG="01" LINE="01" COLN="00" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AUTH="102" AGLT="00" ADEZ="00" STXT="_"/>
+     <dynprofield FNAM="ZLANG-NATION" DIDX="000F" FLG1="B0" FLG2="00" FLG3="80" FMB1="30" FMB2="20" LENG="01" LINE="01" COLN="01" LTYP="T" LANF="65" LBLK="01" LREP="01" PAID="ADDRESS_NATION" TYPE="CHAR" GRP1="KEY" ITYP="C" AGLT="02" ADEZ="00" STXT="_" RES1="                                       00"/>
+     <dynprofield FNAM="ZLANG-NATION_TEX" DIDX="0010" FLG1="B0" FLG2="02" FLG3="80" FMB1="00" FMB2="00" LENG="10" LINE="01" COLN="02" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="C" AGLT="20" ADEZ="00" STXT="________________" RES1="                                       00"/>
+     <dynprofield FNAM="ZLANG-LANG" DIDX="000F" FLG1="B0" FLG2="02" FLG3="80" FMB1="00" FMB2="08" LENG="02" LINE="01" COLN="03" LTYP="T" LANF="65" LBLK="01" LREP="01" PAID="SPR" UCNV="ISOLA" TYPE="LANG" ITYP="C" AGLT="02" ADEZ="00" STXT="__" RES1="X                                      00"/>
+     <dynprofield FNAM="ZLANG-SPTXT" DIDX="0010" FLG1="B0" FLG2="02" FLG3="80" FMB1="00" FMB2="00" LENG="10" LINE="01" COLN="04" LTYP="T" LANF="65" LBLK="01" LREP="01" PAID="DSB" TYPE="CHAR" ITYP="C" AGLT="20" ADEZ="00" STXT="________________" RES1="                                       00"/>
+     <dynprofield FNAM="VIM_POSI_PUSH" DIDX="0014" FLG1="80" FLG2="00" FLG3="88" FILL="P" FMB1="30" FMB2="00" LENG="14" LINE="3D" COLN="14" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AUTH="103" AGLT="00" ADEZ="00" STXT="____________________" RES1="                                                                                                                                                                        POSI"/>
+     <dynprofield FNAM="VIM_POSITION_INFO" DIDX="001E" FLG1="80" FLG2="02" FLG3="88" FMB1="33" FMB2="00" LENG="1E" LINE="3D" COLN="29" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="______________________________"/>
+     <dynprofield FNAM="OK_CODE" DIDX="0014" FLG1="80" FLG2="10" FLG3="08" FMB1="00" FMB2="00" LENG="14" LINE="FF" COLN="01" LTYP="O" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="____________________"/>
+     <dynproflowsource>PROCESS BEFORE OUTPUT.
+ MODULE LISTE_INITIALISIEREN.
+ LOOP AT EXTRACT WITH CONTROL
+  TCTRL_ZLANG CURSOR NEXTLINE.
+   MODULE LISTE_SHOW_LISTE.
+ ENDLOOP.
+*
+PROCESS AFTER INPUT.
+ MODULE LISTE_EXIT_COMMAND AT EXIT-COMMAND.
+ MODULE LISTE_BEFORE_LOOP.
+ LOOP AT EXTRACT.
+   MODULE LISTE_INIT_WORKAREA.
+   CHAIN.
+    FIELD ZLANG-NATION .
+    FIELD ZLANG-NATION_TEX .
+    FIELD ZLANG-LANG .
+    FIELD ZLANG-SPTXT .
+    MODULE SET_UPDATE_FLAG ON CHAIN-REQUEST.
+   ENDCHAIN.
+   FIELD VIM_MARKED MODULE LISTE_MARK_CHECKBOX.
+   CHAIN.
+    FIELD ZLANG-NATION .
+    MODULE LISTE_UPDATE_LISTE.
+   ENDCHAIN.
+ ENDLOOP.
+ MODULE LISTE_AFTER_LOOP.</dynproflowsource>
+    </dynpro>
+   </dynpros>
+   <source>* regenerated at 14.10.2016 07:49:33 by  BENNETVDGRYP
+*******************************************************************
+*   System-defined Include-files.                                 *
+*******************************************************************
+  INCLUDE LZSD_EGTOP.                        &quot; Global Data
+  INCLUDE LZSD_EGUXX.                        &quot; Function Modules
+
+*******************************************************************
+*   User-defined Include-files (if necessary).                    *
+*******************************************************************
+* INCLUDE LZSD_EGF...                        &quot; Subroutines
+* INCLUDE LZSD_EGO...                        &quot; PBO-Modules
+* INCLUDE LZSD_EGI...                        &quot; PAI-Modules
+* INCLUDE LZSD_EGE...                        &quot; Events
+* INCLUDE LZSD_EGP...                        &quot; Local class implement.
+* INCLUDE LZSD_EGT99.                        &quot; ABAP Unit tests
+  INCLUDE LZSD_EGF00                              . &quot; subprograms
+  INCLUDE LZSD_EGI00                              . &quot; PAI modules
+  INCLUDE LSVIMFXX                                . &quot; subprograms
+  INCLUDE LSVIMOXX                                . &quot; PBO modules
+  INCLUDE LSVIMIXX                                . &quot; PAI modules</source>
+  </mainprogram>
+  <includeprograms>
+   <include NAME="LZSD_EGF00" SQLX="X" EDTX="X" SUBC="I" LEVL="731" RLOAD="E">
+    <include_source>*---------------------------------------------------------------------*
+*    view related FORM routines
+*   generation date: 14.10.2016 at 07:54:58 by user BENNETVDGRYP
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+
+* base table related FORM-routines.............
+INCLUDE LSVIMFTX .</include_source>
+   </include>
+   <include NAME="LZSD_EGI00" SQLX="X" EDTX="X" SUBC="I" LEVL="731" RLOAD="E">
+    <include_source>*---------------------------------------------------------------------*
+*    view related PAI modules
+*   generation date: 14.10.2016 at 07:54:58 by user BENNETVDGRYP
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+
+INCLUDE LSVIMITX . &quot;base table related PAI modules</include_source>
+   </include>
+   <include NAME="LZSD_EGTOP" DBAPL="S" DBNA="D$" SUBC="I" APPL="S" RMAND="300" FIXPT="X" LDBNAME="D$S" UCCHECK="X">
+    <include_source>* regenerated at 14.10.2016 07:49:33 by  BENNETVDGRYP
+FUNCTION-POOL ZSD_EG                     MESSAGE-ID SV.
+
+* INCLUDE LZSD_EGD...                        &quot; Local class definition
+  INCLUDE LSVIMDAT                                . &quot;general data decl.
+  INCLUDE LZSD_EGT00                              . &quot;view rel. data dcl.</include_source>
+   </include>
+  </includeprograms>
+  <functionmodules>
+   <functionmodule NAME="TABLEFRAME_ZSD_EG" STEXT="Extended Table Maintenance: Upper Level">
+    <importing PARAMETER="VIEW_ACTION" DEFAULT="&apos;S&apos;"/>
+    <importing PARAMETER="VIEW_NAME" DBFIELD="DD02V-TABNAME"/>
+    <importing PARAMETER="CORR_NUMBER" DBFIELD="E070-TRKORR" DEFAULT="&apos; &apos;"/>
+    <tables PARAMETER="DBA_SELLIST" DBSTRUCT="VIMSELLIST"/>
+    <tables PARAMETER="DPL_SELLIST" DBSTRUCT="VIMSELLIST"/>
+    <tables PARAMETER="EXCL_CUA_FUNCT" DBSTRUCT="VIMEXCLFUN"/>
+    <tables PARAMETER="X_HEADER" DBSTRUCT="VIMDESC"/>
+    <tables PARAMETER="X_NAMTAB" DBSTRUCT="VIMNAMTAB"/>
+    <exceptions EXCEPTION="MISSING_CORR_NUMBER"/>
+    <documentation PARAMETER="VIEW_ACTION" KIND="P" STEXT="Aktion mit Tabelle: anz./änd./transp. (S/U/T)" INDEX=" 001"/>
+    <documentation PARAMETER="VIEW_NAME" KIND="P" STEXT="Name der Tabelle" INDEX=" 002"/>
+    <documentation PARAMETER="CORR_NUMBER" KIND="P" STEXT="Korrekturnummer für durchgeführte Änderungen" INDEX=" 003"/>
+    <documentation PARAMETER="DBA_SELLIST" KIND="P" STEXT="Selektionsbedingungen für den DB-Zugriff" INDEX=" 004"/>
+    <documentation PARAMETER="DPL_SELLIST" KIND="P" STEXT="Selektionsbedingungen für die Anzeige" INDEX=" 005"/>
+    <documentation PARAMETER="EXCL_CUA_FUNCT" KIND="P" STEXT="Tabelle mit dynam. zu deaktivierenden CUA-Funkt." INDEX=" 006"/>
+    <documentation PARAMETER="X_HEADER" KIND="P" STEXT="Kontrollblocktabelle für die Tabelle" INDEX=" 007"/>
+    <documentation PARAMETER="X_NAMTAB" KIND="P" STEXT="Kontrollblocktabelle für die Tabellen-Felder" INDEX=" 008"/>
+    <documentation PARAMETER="MISSING_CORR_NUMBER" KIND="X" STEXT="Korrekturnummer fehlt" INDEX=" 009"/>
+    <fm_source>*---------------------------------------------------------------------*
+*    program for:   TABLEFRAME_ZSD_EG
+*   generation date: 14.10.2016 at 07:54:57 by user BENNETVDGRYP
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+
+  PERFORM TABLEFRAME TABLES X_HEADER X_NAMTAB DBA_SELLIST DPL_SELLIST
+                            EXCL_CUA_FUNCT
+                     USING  CORR_NUMBER VIEW_ACTION VIEW_NAME.</fm_source>
+    <functionModuleDocumentation/>
+   </functionmodule>
+   <functionmodule NAME="TABLEPROC_ZSD_EG" GLOBAL="X" STEXT="Lower-level extended table maintenance">
+    <importing PARAMETER="FCODE" DEFAULT="&apos;RDED&apos;"/>
+    <importing PARAMETER="VIEW_ACTION" DEFAULT="&apos;S&apos;"/>
+    <importing PARAMETER="VIEW_NAME" DBFIELD="DD02V-TABNAME"/>
+    <importing PARAMETER="CORR_NUMBER" DBFIELD="E070-TRKORR" DEFAULT="&apos; &apos;"/>
+    <exporting PARAMETER="LAST_ACT_ENTRY"/>
+    <exporting PARAMETER="UCOMM"/>
+    <exporting PARAMETER="UPDATE_REQUIRED"/>
+    <tables PARAMETER="CORR_KEYTAB" DBSTRUCT="E071K"/>
+    <tables PARAMETER="DBA_SELLIST" DBSTRUCT="VIMSELLIST"/>
+    <tables PARAMETER="DPL_SELLIST" DBSTRUCT="VIMSELLIST"/>
+    <tables PARAMETER="EXCL_CUA_FUNCT" DBSTRUCT="VIMEXCLFUN"/>
+    <tables PARAMETER="EXTRACT"/>
+    <tables PARAMETER="TOTAL"/>
+    <tables PARAMETER="X_HEADER" DBSTRUCT="VIMDESC"/>
+    <tables PARAMETER="X_NAMTAB" DBSTRUCT="VIMNAMTAB"/>
+    <exceptions EXCEPTION="MISSING_CORR_NUMBER"/>
+    <exceptions EXCEPTION="SAVING_CORRECTION_FAILED"/>
+    <documentation PARAMETER="FCODE" KIND="P" STEXT="gewünschte Funktion des Bausteins" INDEX=" 001"/>
+    <documentation PARAMETER="VIEW_ACTION" KIND="P" STEXT="Aktion mit Tabelle: anz./änd./transp. (S/U/T)" INDEX=" 002"/>
+    <documentation PARAMETER="VIEW_NAME" KIND="P" STEXT="Name der Tabelle" INDEX=" 003"/>
+    <documentation PARAMETER="CORR_NUMBER" KIND="P" STEXT="Korrekturnummer für durchgeführte Änderungen" INDEX=" 004"/>
+    <documentation PARAMETER="LAST_ACT_ENTRY" KIND="P" STEXT="Index der Cursorposition in der Anzeigetabelle" INDEX=" 005"/>
+    <documentation PARAMETER="UCOMM" KIND="P" STEXT="letztes User-command innerhalb der Viewpflege" INDEX=" 006"/>
+    <documentation PARAMETER="UPDATE_REQUIRED" KIND="P" STEXT="Flag: Einträge verändert, Sichern erforderlich" INDEX=" 007"/>
+    <documentation PARAMETER="CORR_KEYTAB" KIND="P" STEXT="Tabelle mit den Keys der zu transport. Einträge" INDEX=" 008"/>
+    <documentation PARAMETER="DBA_SELLIST" KIND="P" STEXT="Selektionsbedingungen für den DB-Zugriff" INDEX=" 009"/>
+    <documentation PARAMETER="DPL_SELLIST" KIND="P" STEXT="Selektionsbedingungen für die Anzeige" INDEX=" 010"/>
+    <documentation PARAMETER="EXCL_CUA_FUNCT" KIND="P" STEXT="Tab. der nicht zu aktivierenden CUA-Funktionen" INDEX=" 011"/>
+    <documentation PARAMETER="EXTRACT" KIND="P" STEXT="Tab. der gerade sichtbaren Daten (Anzeigetabelle" INDEX=" 012"/>
+    <documentation PARAMETER="TOTAL" KIND="P" STEXT="Tabelle, mit allen von der DB gelesenen Daten" INDEX=" 013"/>
+    <documentation PARAMETER="X_HEADER" KIND="P" STEXT="Kontrollblocktabelle für die Tabelle" INDEX=" 014"/>
+    <documentation PARAMETER="X_NAMTAB" KIND="P" STEXT="Kontrollblocktabelle für die Tabellen-Felder" INDEX=" 015"/>
+    <documentation PARAMETER="MISSING_CORR_NUMBER" KIND="X" STEXT="Korrekturnummer fehlt" INDEX=" 016"/>
+    <documentation PARAMETER="SAVING_CORRECTION_FAILED" KIND="X" STEXT="Fehler beim Sichern der Korrektureinträge" INDEX=" 017"/>
+    <fm_source>*---------------------------------------------------------------------*
+*    program for:   TABLEPROC_ZSD_EG
+*   generation date: 14.10.2016 at 07:54:57 by user BENNETVDGRYP
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+
+  PERFORM TABLEPROC.</fm_source>
+    <functionModuleDocumentation/>
+   </functionmodule>
+  </functionmodules>
+ </FUGR>
+ <PROG NAME="ZSD_CONTRACT_STATUS_REPORT" VARCL="X" SUBC="1" RSTAT="K" RMAND="300" RLOAD="E" FIXPT="X" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Report of changes in Contract Statuses" LENGTH="38 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Report  ZSD_CONTRACT_STATUS_REPORT
+*&amp;
+*&amp;---------------------------------------------------------------------*
+*&amp;
+*&amp;
+*&amp;---------------------------------------------------------------------*
+
+REPORT ZSD_CONTRACT_STATUS_REPORT.
+
+
+*Contract status needs to visible in the ZCS_OCP t ransact ion in al l the
+*ext racts (on screen and the consol idated tab of the flat fi le).
+
+*Use the status also as a select ion opt ion in exist ing reports as:
+*a) SDV1
+*b) VA45
+*c) ZCS_IW75
+*d) ZCS_OCP
+
+*Report that shows the changes that have taken place on the cont ract
+*statuses
+*It needs to show (on top of general fields as cont ract number and l ine i tem
+*etc. ):
+*a) Old status
+*b) New status
+*c) on which date and
+*d) by which user</source>
+ </PROG>
+ <PROG NAME="ZSD_REVIEW_CONTR_STATUS" VARCL="X" SUBC="1" RSTAT="K" RMAND="300" RLOAD="E" FIXPT="X" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Check contract statuses and adjust" LENGTH="34 "/>
+    <textElement ID="S" KEY="S_BDAT" ENTRY="        Contract Start Date" LENGTH="27 "/>
+    <textElement ID="S" KEY="S_EDAT" ENTRY="        Contract End Date" LENGTH="25 "/>
+    <textElement ID="S" KEY="S_VBELN" ENTRY="        Contract Number" LENGTH="23 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Report  ZSD_REVIEW_CONTR_STATUS
+*&amp;
+*&amp;---------------------------------------------------------------------*
+*&amp;
+*&amp;
+*&amp;---------------------------------------------------------------------*
+
+REPORT zsd_review_contr_status.
+INCLUDE zsd_review_contr_top.
+INCLUDE zsd_review_contr_f01.
+
+START-OF-SELECTION.
+PERFORM get_data.
+PERFORM apply_rules.</source>
+ </PROG>
+ <PROG NAME="ZSD_CONSTAT" VARCL="X" SUBC="1" RSTAT="K" RMAND="300" RLOAD="E" FIXPT="X" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Contract Status Changes" LENGTH="23 "/>
+    <textElement ID="S" KEY="P_CHNGD" ENTRY="        Changed On" LENGTH="18 "/>
+    <textElement ID="S" KEY="P_HSTAT" ENTRY="        Header Status" LENGTH="21 "/>
+    <textElement ID="S" KEY="P_ISTAT" ENTRY="        Item Status" LENGTH="19 "/>
+    <textElement ID="S" KEY="P_POSNR" ENTRY="        Contract Item" LENGTH="21 "/>
+    <textElement ID="S" KEY="P_TCODE" ENTRY="        Transaction" LENGTH="19 "/>
+    <textElement ID="S" KEY="P_VBELN" ENTRY="        Contract Number" LENGTH="23 "/>
+    <textElement ID="S" KEY="P_VKORG" ENTRY="        Sales Organization" LENGTH="26 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Report  ZSD_CONSTAT
+*&amp;
+*&amp;---------------------------------------------------------------------*
+*&amp;
+*&amp;
+*&amp;---------------------------------------------------------------------*
+
+REPORT zsd_constat.
+
+TABLES: vbak, vbap, jcds.
+
+SELECT-OPTIONS: p_vbeln FOR vbak-vbeln,
+                p_posnr FOR vbap-posnr,
+                p_vkorg FOR vbak-vkorg MEMORY ID vkorg,
+                p_chngd FOR jcds-udate MEMORY ID chngd,
+                p_tcode FOR jcds-cdtcode MEMORY ID tcode.
+PARAMETERS:     p_hstat AS CHECKBOX DEFAULT &apos;&apos;,
+                p_istat AS CHECKBOX DEFAULT &apos;X&apos;.
+
+CLASS lcl_view DEFINITION INHERITING FROM zcl_salv_table.
+  PUBLIC SECTION.
+    METHODS application_specific_changes REDEFINITION.
+ENDCLASS.
+
+CLASS lcl_view IMPLEMENTATION.
+  METHOD application_specific_changes.
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;STAT&apos;
+      id_short_text = &apos;Old&apos;
+      id_medium_text = &apos;Old Status&apos;
+      id_long_text = &apos;Old Status&apos; ).
+
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;TXT04&apos;
+      id_short_text = &apos;Old&apos;
+      id_medium_text = &apos;Old Status&apos;
+      id_long_text = &apos;Old Status&apos; ).
+
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;NSTAT&apos;
+      id_short_text = &apos;New&apos;
+      id_medium_text = &apos;New Status&apos;
+      id_long_text = &apos;New Status&apos; ).
+
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;NTXT4&apos;
+      id_short_text = &apos;New&apos;
+      id_medium_text = &apos;New Status&apos;
+      id_long_text = &apos;New Status&apos; ).
+
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;UDATE&apos;
+      id_short_text = &apos;Change Dat&apos;
+      id_medium_text = &apos;Changed Date&apos;
+      id_long_text = &apos;Changed Date&apos; ).
+
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;UTIME&apos;
+      id_short_text = &apos;Change Tim&apos;
+      id_medium_text = &apos;Changed Time&apos;
+      id_long_text = &apos;Changed Time&apos; ).
+
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;OBJNR&apos;
+      id_short_text = &apos;Obj Nr&apos;
+      id_medium_text = &apos;Object Number&apos;
+      id_long_text = &apos;Object Number&apos; ).
+
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;KUNNR&apos;
+      id_short_text = &apos;Cust Nr&apos;
+      id_medium_text = &apos;Customer Number&apos;
+      id_long_text = &apos;Customer Number&apos; ).
+
+    me-&gt;set_column_attributes(
+      id_field_name = &apos;NAME1&apos;
+      id_short_text = &apos;Cust Nm&apos;
+      id_medium_text = &apos;Customer Name&apos;
+      id_long_text = &apos;Customer Name&apos; ).
+  ENDMETHOD.
+ENDCLASS.
+
+START-OF-SELECTION.
+
+  TYPES: BEGIN OF t_output,
+          vbeln LIKE veda-vbeln, &quot;Contract Number
+          posnr LIKE vbap-posnr, &quot;Contract Item
+          ktext LIKE vbak-ktext, &quot;Contract Description
+          kunnr LIKE vbpa-kunnr, &quot;Sold-to Party
+          name1 LIKE kna1-name1, &quot;Sold-to Party Name
+          vkorg LIKE vbak-vkorg, &quot;Sales Organisation
+          objnr LIKE vbak-objnr,
+          stat LIKE jcds-stat,  &quot;Old Status
+          txt04 LIKE tj30t-txt04,
+          nstat LIKE jcds-stat,  &quot;New Status
+          ntxt4 LIKE tj30t-txt04,
+          udate LIKE jcds-udate, &quot;Date
+          utime LIKE jcds-utime, &quot;Time
+          usnam LIKE jcds-usnam, &quot;Changed By
+          cdtcode LIKE jcds-cdtcode,
+        END OF t_output.
+
+  DATA: lv_indx TYPE sy-tabix.
+
+  TYPES: BEGIN OF t_jcds,
+          objnr TYPE jest-objnr,
+          stat TYPE jest-stat,
+          txt04 TYPE tj30t-txt04,
+          chgnr TYPE jcds-chgnr,
+          udate TYPE jcds-udate,
+          utime TYPE jcds-utime,
+          usnam TYPE jcds-usnam,
+          cdtcode TYPE jcds-cdtcode,
+         END OF t_jcds.
+
+  DATA: it_new TYPE TABLE OF t_jcds,
+        wa_new LIKE LINE OF it_new,
+        it_old TYPE TABLE OF t_jcds,
+        wa_old LIKE LINE OF it_old.
+
+  DATA: it_data TYPE TABLE OF t_output,
+        wa_data LIKE LINE OF it_data.
+  FIELD-SYMBOLS: &lt;fs_data&gt; TYPE any.
+
+  IF p_hstat = &apos;X&apos;. &quot;Header Record
+    SELECT vbak~vbeln vbak~objnr
+           vbak~ktext vbak~vkorg vbak~kunnr kna1~name1
+           jcds~stat jcds~udate jcds~utime tj30t~txt04
+      FROM jcds
+      INNER JOIN vbak ON jcds~objnr = vbak~objnr
+      INNER JOIN tj30t ON tj30t~estat = jcds~stat
+      LEFT OUTER JOIN kna1 ON kna1~kunnr = vbak~kunnr
+      APPENDING CORRESPONDING FIELDS OF TABLE it_data
+    WHERE vbak~vbeln IN p_vbeln AND
+          vbak~vkorg IN p_vkorg AND
+          vbak~vbtyp = &apos;G&apos;      AND &quot;Make sure it&apos;s contracts
+          vbak~objnr &lt;&gt; &apos;&apos;      AND
+          jcds~stat  LIKE &apos;E%&apos;  AND
+          jcds~udate IN p_chngd AND
+          jcds~inact = &apos;X&apos;      AND &quot;Deactivate
+          jcds~chind = &apos;U&apos;      AND &quot;Update
+          jcds~cdtcode IN p_tcode AND
+          tj30t~spras = &apos;EN&apos;    AND
+          tj30t~stsma = &apos;YMS00001&apos;.
+  ENDIF.
+
+  IF p_istat = &apos;X&apos;. &quot;Item Record
+    SELECT vbap~vbeln vbap~posnr vbap~objnr
+           vbak~ktext vbak~vkorg vbak~kunnr kna1~name1
+           jcds~stat jcds~udate jcds~utime tj30t~txt04
+      FROM jcds
+      INNER JOIN vbap ON jcds~objnr = vbap~objnr
+      INNER JOIN tj30t ON tj30t~estat = jcds~stat
+      INNER JOIN vbak ON vbak~vbeln = vbap~vbeln
+      LEFT OUTER JOIN kna1 ON kna1~kunnr = vbak~kunnr
+      APPENDING CORRESPONDING FIELDS OF TABLE it_data
+    WHERE vbak~vbeln IN p_vbeln AND
+          vbak~vkorg IN p_vkorg AND
+          vbak~vbtyp = &apos;G&apos;      AND &quot;Make sure it&apos;s contracts
+          vbap~posnr IN p_posnr AND
+          vbap~objnr &lt;&gt; &apos;&apos;      AND
+          jcds~stat  LIKE &apos;E%&apos;  AND
+          jcds~udate IN p_chngd AND
+          jcds~inact = &apos;X&apos;      AND &quot;Deactivate
+          jcds~chind = &apos;U&apos;      AND &quot;Update
+          jcds~cdtcode IN p_tcode AND
+          tj30t~spras = &apos;EN&apos;    AND
+          tj30t~stsma = &apos;YMS00001&apos;.
+
+*    SELECT vbak~vbeln vbak~ktext vbap~posnr vbap~objnr
+*           vbak~kunnr kna1~name1 vbak~vkorg FROM jcds
+*    INNER JOIN vbap ON vbap~objnr = jcds-objnr
+*    INNER JOIN vbak ON vbak~vbeln = vbap~vbeln
+*    INNER JOIN kna1 ON vbak~kunnr = kna1~kunnr
+*    APPENDING CORRESPONDING FIELDS OF TABLE it_data
+
+  ENDIF.
+  IF it_data IS NOT INITIAL.
+    SORT it_data ASCENDING BY vbeln posnr udate utime.
+    DELETE ADJACENT DUPLICATES FROM it_data COMPARING vbeln posnr udate utime.
+    SELECT * FROM jcds
+      INNER JOIN tj30t ON tj30t~estat = jcds~stat
+      INTO CORRESPONDING FIELDS OF TABLE it_new
+      FOR ALL ENTRIES IN it_data
+      WHERE jcds~objnr = it_data-objnr AND
+            jcds~inact = &apos;&apos; AND
+*            jcds~chind = &apos;I&apos; AND
+            jcds~udate = it_data-udate AND
+            jcds~utime = it_data-utime AND
+            tj30t~stsma = &apos;YMS00001&apos; AND
+            tj30t~spras = &apos;EN&apos;.
+
+    SORT it_new DESCENDING BY objnr udate utime chgnr.
+    DELETE ADJACENT DUPLICATES FROM it_new COMPARING objnr stat udate utime.
+
+    LOOP AT it_data INTO wa_data.
+      lv_indx = sy-tabix.
+      &quot;New
+      READ TABLE it_new INTO wa_new WITH KEY objnr = wa_data-objnr
+                                             udate = wa_data-udate
+                                             utime = wa_data-utime.
+      IF sy-subrc = 0.
+        wa_data-nstat = wa_new-stat.
+        wa_data-ntxt4 = wa_new-txt04.
+        wa_data-usnam = wa_new-usnam.
+        wa_data-udate = wa_new-udate.
+        wa_data-utime = wa_new-utime.
+        wa_data-cdtcode = wa_new-cdtcode.
+      ENDIF.
+
+      MODIFY it_data FROM wa_data INDEX lv_indx.
+
+    ENDLOOP.
+  ENDIF.
+  SORT it_data BY vbeln posnr.
+  DELETE it_data WHERE nstat = &apos;&apos;.
+
+  DATA: lo_view TYPE REF TO lcl_view,
+        ld_repid TYPE sy-repid.
+
+  CREATE OBJECT lo_view.
+  lo_view-&gt;prepare_display_data(
+      EXPORTING
+        id_report_name = ld_repid
+*      id_variant     = p_vari
+      CHANGING
+        ct_data_table  = it_data ).
+
+  lo_view-&gt;display( ).</source>
+ </PROG>
+ <PROG NAME="ZSD_REVIEW_CONTR_TOP" VARCL="X" SUBC="I" RSTAT="K" RMAND="300" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSD_REVIEW_CONTR_TOP" LENGTH="28 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp;  Include           ZSD_REVIEW_CONTR_TOP
+*&amp;---------------------------------------------------------------------*
+TABLES: vbak, veda.
+SELECT-OPTIONS: s_vbeln FOR vbak-vbeln,
+                s_bdat  FOR veda-vbegdat,
+                s_edat  FOR veda-venddat.
+
+CONSTANTS: lv_renew TYPE num03 VALUE &apos;090&apos;. &quot;90 days until expiration of contract (Rule 2).
+
+TYPES: BEGIN OF t_data,
+        vbeln LIKE vbak-vbeln,
+        zzauto_renewed LIKE vbak-zzauto_renewed,
+        posnr LIKE vbap-posnr,
+        objnr LIKE vbap-objnr,
+        status LIKE jest-stat,
+        stsma LIKE jsto-stsma,
+        bdat LIKE veda-vbegdat,
+        edat LIKE veda-venddat,
+        vkuesch LIKE veda-vkuesch,
+        days TYPE psen_caldd,
+       END OF t_data.
+
+TYPES BEGIN OF t_contrefs.
+  INCLUDE TYPE zsd_vb_contrefs.
+  TYPES  zzauto_renewed TYPE vbak-zzauto_renewed.
+TYPES END OF t_contrefs.
+
+DATA: lv_diff TYPE psen_duration_dec.
+DATA: it_data TYPE TABLE OF t_data,
+      wa_data LIKE LINE OF it_data.
+DATA: it_rule TYPE TABLE OF zsd_status_rules,
+      wa_rule LIKE LINE OF it_rule.
+DATA: it_exist TYPE TABLE OF t_contrefs,
+      wa_exist LIKE LINE OF it_exist.
+DATA: gv_check TYPE char01. &quot;Process check to ensure only one rule is executed per line.
+FIELD-SYMBOLS: &lt;fs_data&gt; TYPE any, &quot;Structure
+               &lt;fs_days&gt; TYPE any, &quot;Number of days until end-date of contract
+               &lt;fs_edat&gt; TYPE any. &quot;End date of Contract</source>
+ </PROG>
+ <PROG NAME="ZSD_REVIEW_CONTR_F01" VARCL="X" SUBC="I" RSTAT="P" RMAND="300" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSD_REVIEW_CONTR_F01" LENGTH="28 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp;  Include           ZSD_REVIEW_CONTR_F01
+*&amp;---------------------------------------------------------------------*
+*&amp;      Form  GET_DATA
+*&amp;---------------------------------------------------------------------*
+FORM get_data.
+  &quot;Get Rules
+  SELECT * FROM zsd_status_rules INTO TABLE it_rule.
+
+  &quot;Get contracts
+  SELECT vbak~vbeln vbak~zzauto_renewed vbap~posnr vbap~objnr
+         jest~stat jsto~stsma veda~vbegdat veda~venddat veda~vkuesch
+    FROM vbak &quot;Header
+    INNER JOIN vbap ON vbak~vbeln = vbap~vbeln &quot;Lines
+    INNER JOIN veda ON vbak~vbeln = veda~vbeln &quot;AND
+*                       vbap~posnr = veda~vposn &quot;Contract Data
+    INNER JOIN jest ON vbap~objnr = jest~objnr &quot;Status Table
+    INNER JOIN jsto ON vbap~objnr = jsto~objnr
+    INTO TABLE it_data
+     FOR ALL ENTRIES IN it_rule
+     WHERE vbak~vbtyp = zsd_cont_indx=&gt;ac_vbtyp_contract AND
+           vbap~abgru = &apos;&apos; AND
+           jest~inact = abap_false AND
+           jest~stat  = it_rule-old_stat AND &quot;Only get contracts that our rules apply to.
+           vbak~vbeln IN s_vbeln AND &quot;For testing purposes.
+           veda~vbegdat IN s_bdat AND &quot;For testing purposes.
+           veda~venddat IN s_edat AND &quot;For testing purposes.
+           veda~vposn = &apos;&apos;.
+
+  &quot;Process days before contract end.
+  LOOP AT it_data ASSIGNING &lt;fs_data&gt;.
+    ASSIGN COMPONENT &apos;DAYS&apos; OF STRUCTURE &lt;fs_data&gt; TO &lt;fs_days&gt;.
+    ASSIGN COMPONENT &apos;EDAT&apos; OF STRUCTURE &lt;fs_data&gt; TO &lt;fs_edat&gt;.
+
+    CALL FUNCTION &apos;HR_SEN_CALE_DAYS_DURATION&apos;
+      EXPORTING
+        id_begda    = sy-datum
+        id_endda    = &lt;fs_edat&gt;
+      IMPORTING
+        es_duration = lv_diff.
+
+    &lt;fs_days&gt; = lv_diff-caldd.
+
+  ENDLOOP.
+
+  &quot;Get References
+  SELECT contref~mandt contref~vbeln contref~posnr contref~seqno
+         contref~ref_vbeln contref~ref_posnr vbak~zzauto_renewed FROM zsd_vb_contrefs AS contref
+    INNER JOIN vbak ON contref~vbeln = vbak~vbeln
+    INTO TABLE it_exist
+    FOR ALL ENTRIES IN it_data
+    WHERE ( contref~ref_vbeln = it_data-vbeln AND
+            contref~ref_posnr = it_data-posnr ) OR
+          ( contref~vbeln = it_data-vbeln AND
+            contref~posnr = it_data-posnr ).
+
+ENDFORM.                    &quot; GET_DATA
+*&amp;---------------------------------------------------------------------*
+*&amp;      Form  APPLY_RULES
+*&amp;---------------------------------------------------------------------*
+FORM apply_rules .
+
+  LOOP AT it_data INTO wa_data.
+    gv_check = &apos;&apos;.
+
+    &quot;Rule 5 - Contract Cancelled - Processed first because of VKUESCH check.
+    READ TABLE it_rule INTO wa_rule WITH KEY rulenumber = 5 old_stat = wa_data-status.
+    IF sy-subrc = 0 AND wa_data-vkuesch IS NOT INITIAL AND gv_check = &apos;&apos;.
+      PERFORM change_stat USING wa_data-objnr
+                                wa_data-stsma
+                                wa_data-status
+                                wa_rule-new_stat.
+    ENDIF.
+
+
+    &quot;Rule 1 - NDEP/TRNS Contract Reaches Start Date
+    READ TABLE it_rule INTO wa_rule WITH KEY rulenumber = 1 old_stat = wa_data-status.
+    IF sy-subrc = 0.
+      READ TABLE it_exist INTO wa_exist WITH KEY  vbeln = wa_data-vbeln
+                                                  posnr = wa_data-posnr.
+      IF sy-subrc = 0 AND wa_data-bdat &lt;= sy-datum AND gv_check = &apos;&apos;.
+        PERFORM change_stat USING wa_data-objnr
+                                  wa_data-stsma
+                                  wa_data-status
+                                  wa_rule-new_stat.
+      ENDIF.
+    ENDIF.
+
+    &quot;Rule 2 - 90 days until expiration of contract
+    READ TABLE it_rule INTO wa_rule WITH KEY rulenumber = 2 old_stat = wa_data-status.
+    IF sy-subrc = 0 AND wa_data-days &lt;= lv_renew AND gv_check = &apos;&apos;.
+      PERFORM change_stat USING wa_data-objnr
+                                wa_data-stsma
+                                wa_data-status
+                                wa_rule-new_stat.
+    ENDIF.
+
+    &quot;Rule 4 - Original contract that was renewed
+    &quot;Order of rules changed because of ACRN -&gt; XRNN &amp; ACRN -&gt; ACRE.
+    READ TABLE it_exist INTO wa_exist WITH KEY  ref_vbeln = wa_data-vbeln
+                                                ref_posnr = wa_data-posnr.
+    IF sy-subrc = 0 AND gv_check = &apos;&apos;.
+      READ TABLE it_rule INTO wa_rule WITH KEY rulenumber = 4 old_stat = wa_data-status.
+      IF sy-subrc = 0.
+        PERFORM change_stat USING wa_data-objnr
+                                  wa_data-stsma
+                                  wa_data-status
+                                  wa_rule-new_stat.
+      ENDIF.
+    ENDIF.
+
+    &quot;Rule 3 - Contract Expiration Date Reached
+    READ TABLE it_rule INTO wa_rule WITH KEY rulenumber = 3 old_stat = wa_data-status.
+    IF sy-subrc = 0 AND wa_data-days = 0 AND gv_check = &apos;&apos;.
+      PERFORM change_stat USING wa_data-objnr
+                                wa_data-stsma
+                                wa_data-status
+                                wa_rule-new_stat.
+    ENDIF.
+
+  ENDLOOP.
+ENDFORM.                    &quot; APPLY_RULES
+*&amp;---------------------------------------------------------------------*
+*&amp;      Form  CHANGE_STAT
+*&amp;---------------------------------------------------------------------*
+FORM change_stat USING objnr LIKE vbap-objnr
+                       stsma LIKE jsto-stsma
+                       fstat LIKE jest-stat
+                       tstat LIKE jest-stat.
+
+    CALL FUNCTION &apos;I_CHANGE_STATUS&apos;
+      EXPORTING
+        objnr          = objnr
+        estat_inactive = fstat
+        estat_active   = tstat
+        stsma          = stsma
+      EXCEPTIONS
+        cannot_update  = 1
+        OTHERS         = 2.
+
+    gv_check = &apos;X&apos;.
+
+ENDFORM.                    &quot; CHANGE_STAT</source>
+ </PROG>
+ <TABL TABNAME="ZSD_STATUS_RULES" DDLANGUAGE="E" TABCLASS="TRANSP" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" CLIDEP="X" DDTEXT="Contract Status Automation Rules" AUTHCLASS="00" MAINFLAG="X" CONTFLAG="A" PROZPUFF="000" EXCLASS="1">
+  <dd09l TABNAME="ZSD_STATUS_RULES" AS4LOCAL="A" AS4VERS="0000" TABKAT="0" TABART="APPL1" SCHFELDANZ="000" BUFALLOW="N"/>
+  <dd03p TABNAME="ZSD_STATUS_RULES" FIELDNAME="MANDT" DDLANGUAGE="E" POSITION="0001" KEYFLAG="X" ROLLNAME="MANDT" ADMINFIELD="0" INTTYPE="C" INTLEN="000006" NOTNULL="X" DOMNAME="MANDT" ROUTPUTLEN="000000" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CLNT" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" ENTITYTAB="T000" MASK="  CLNTE" MASKLEN="0000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" DOMNAME3L="MANDT" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_STATUS_RULES" FIELDNAME="RULENUMBER" DDLANGUAGE="E" POSITION="0002" KEYFLAG="X" ROLLNAME="ZRULEKEY" ADMINFIELD="0" INTTYPE="N" INTLEN="000006" NOTNULL="X" ROUTPUTLEN="000000" HEADLEN="08" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="E" DATATYPE="NUMC" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Rule Key" REPTEXT="Rule Key" SCRTEXT_S="Rule Key" SCRTEXT_M="Rule Key" SCRTEXT_L="Rule Key" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_STATUS_RULES" FIELDNAME="OLD_STAT" DDLANGUAGE="E" POSITION="0003" KEYFLAG="X" ROLLNAME="J_ESTAT" ADMINFIELD="0" INTTYPE="C" INTLEN="000010" NOTNULL="X" DOMNAME="J_ESTAT" ROUTPUTLEN="000000" HEADLEN="05" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000005" OUTPUTLEN="000005" DECIMALS="000000" ENTITYTAB="TJ30" MASK="  CHARE" MASKLEN="0000" DDTEXT="User Status" REPTEXT="UsrSt" SCRTEXT_S="UserStatus" SCRTEXT_M="User status" SCRTEXT_L="User Status" DOMNAME3L="J_ESTAT" SHLPORIGIN="X" DEPTH="00" COMPTYPE="E" DEFFDNAME="USR_STATUS" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_STATUS_RULES" FIELDNAME="NEW_STAT" DDLANGUAGE="E" POSITION="0004" ROLLNAME="J_ESTAT" ADMINFIELD="0" INTTYPE="C" INTLEN="000010" DOMNAME="J_ESTAT" ROUTPUTLEN="000000" HEADLEN="05" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000005" OUTPUTLEN="000005" DECIMALS="000000" ENTITYTAB="TJ30" MASK="  CHARE" MASKLEN="0000" DDTEXT="User Status" REPTEXT="UsrSt" SCRTEXT_S="UserStatus" SCRTEXT_M="User status" SCRTEXT_L="User Status" DOMNAME3L="J_ESTAT" SHLPORIGIN="X" DEPTH="00" COMPTYPE="E" DEFFDNAME="USR_STATUS" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_STATUS_RULES" FIELDNAME="OLD_TXT04" DDLANGUAGE="E" POSITION="0005" ROLLNAME="J_TXT04" ADMINFIELD="0" INTTYPE="C" INTLEN="000008" DOMNAME="TEXT4" ROUTPUTLEN="000000" HEADLEN="04" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Individual status of an object (short form)" REPTEXT="Stat" SCRTEXT_S="Status" SCRTEXT_M="Status" SCRTEXT_L="Status" DOMNAME3L="TEXT4" DEPTH="00" COMPTYPE="E" DEFFDNAME="SY_ST_TEXT" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_STATUS_RULES" FIELDNAME="NEW_TXT04" DDLANGUAGE="E" POSITION="0006" ROLLNAME="J_TXT04" ADMINFIELD="0" INTTYPE="C" INTLEN="000008" DOMNAME="TEXT4" ROUTPUTLEN="000000" HEADLEN="04" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000004" OUTPUTLEN="000004" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Individual status of an object (short form)" REPTEXT="Stat" SCRTEXT_S="Status" SCRTEXT_M="Status" SCRTEXT_L="Status" DOMNAME3L="TEXT4" DEPTH="00" COMPTYPE="E" DEFFDNAME="SY_ST_TEXT" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd35v TABNAME="ZSD_STATUS_RULES" FIELDNAME="NEW_STAT" SHLPNAME="ZSD_USER_STAT"/>
+  <dd35v TABNAME="ZSD_STATUS_RULES" FIELDNAME="OLD_STAT" SHLPNAME="ZSD_USER_STAT"/>
+  <dd36m TABNAME="ZSD_STATUS_RULES" FIELDNAME="NEW_STAT" SHLPNAME="ZSD_USER_STAT" SHLPFIELD="ESTAT" FLPOSITION="0002" SHTABLE="ZSD_STATUS_RULES" SHFIELD="NEW_STAT" SHLPOUTPUT="X" ROLLNAME="J_ESTAT" DOMNAME="J_ESTAT" DATATYPE="CHAR" LENG="000005" DECIMALS="000000"/>
+  <dd36m TABNAME="ZSD_STATUS_RULES" FIELDNAME="NEW_STAT" SHLPNAME="ZSD_USER_STAT" SHLPFIELD="STSMA" FLPOSITION="0001" SHTYPE="C" SHTABLE="&apos;YMS00001&apos;" SHLPINPUT="X" ROLLNAME="J_STSMA" DOMNAME="J_STSMA" DATATYPE="CHAR" LENG="000008" DECIMALS="000000" DEFAULTVAL="&apos;YMS00001&apos;" DEFAULTTYP="L"/>
+  <dd36m TABNAME="ZSD_STATUS_RULES" FIELDNAME="NEW_STAT" SHLPNAME="ZSD_USER_STAT" SHLPFIELD="TXT04" FLPOSITION="0003" SHTABLE="ZSD_STATUS_RULES" SHFIELD="NEW_TXT04" SHLPOUTPUT="X" ROLLNAME="J_TXT04" DOMNAME="TEXT4" DATATYPE="CHAR" LENG="000004" DECIMALS="000000"/>
+  <dd36m TABNAME="ZSD_STATUS_RULES" FIELDNAME="NEW_STAT" SHLPNAME="ZSD_USER_STAT" SHLPFIELD="TXT30" FLPOSITION="0004" SHTYPE="G" SHLPOUTPUT="X" ROLLNAME="J_TXT30" DOMNAME="TEXT30" DATATYPE="CHAR" LENG="000030" DECIMALS="000000"/>
+  <dd36m TABNAME="ZSD_STATUS_RULES" FIELDNAME="OLD_STAT" SHLPNAME="ZSD_USER_STAT" SHLPFIELD="ESTAT" FLPOSITION="0002" SHTABLE="ZSD_STATUS_RULES" SHFIELD="OLD_STAT" SHLPOUTPUT="X" ROLLNAME="J_ESTAT" DOMNAME="J_ESTAT" DATATYPE="CHAR" LENG="000005" DECIMALS="000000"/>
+  <dd36m TABNAME="ZSD_STATUS_RULES" FIELDNAME="OLD_STAT" SHLPNAME="ZSD_USER_STAT" SHLPFIELD="STSMA" FLPOSITION="0001" SHTYPE="C" SHTABLE="&apos;YMS00001&apos;" SHLPINPUT="X" ROLLNAME="J_STSMA" DOMNAME="J_STSMA" DATATYPE="CHAR" LENG="000008" DECIMALS="000000" DEFAULTVAL="&apos;YMS00001&apos;" DEFAULTTYP="L"/>
+  <dd36m TABNAME="ZSD_STATUS_RULES" FIELDNAME="OLD_STAT" SHLPNAME="ZSD_USER_STAT" SHLPFIELD="TXT04" FLPOSITION="0003" SHTABLE="ZSD_STATUS_RULES" SHFIELD="OLD_TXT04" SHLPOUTPUT="X" ROLLNAME="J_TXT04" DOMNAME="TEXT4" DATATYPE="CHAR" LENG="000004" DECIMALS="000000"/>
+  <dd36m TABNAME="ZSD_STATUS_RULES" FIELDNAME="OLD_STAT" SHLPNAME="ZSD_USER_STAT" SHLPFIELD="TXT30" FLPOSITION="0004" SHTYPE="G" SHLPOUTPUT="X" ROLLNAME="J_TXT30" DOMNAME="TEXT30" DATATYPE="CHAR" LENG="000030" DECIMALS="000000"/>
+ </TABL>
+ <TRAN TCODE="ZSD_CONSTAT" PGMNA="ZSD_CONSTAT" DYPNO="1000" CINFO="80">
+  <tstct SPRSL="E" TCODE="ZSD_CONSTAT" TTEXT="Contract Status Changes"/>
+  <tstcc TCODE="ZSD_CONSTAT" S_WEBGUI="1" S_WIN32="X" S_PLATIN="X"/>
+  <tstcp/>
+  <rsstcd ST_PROG="X" DEVCLASS="$TMP"/>
+ </TRAN>
+ <TRAN TCODE="ZSD_REVIEW_STAT" PGMNA="ZSD_REVIEW_CONTR_STATUS" DYPNO="1000" CINFO="80">
+  <tstct SPRSL="E" TCODE="ZSD_REVIEW_STAT" TTEXT="Reprocess contract line statuses"/>
+  <tstcc TCODE="ZSD_REVIEW_STAT" S_WEBGUI="1" S_WIN32="X" S_PLATIN="X"/>
+  <tstcp/>
+  <rsstcd ST_PROG="X" DEVCLASS="$TMP"/>
+ </TRAN>
+ <CLAS CLSNAME="ZCL_SD_ORDER_CONFIRMATION" VERSION="1" LANGU="E" DESCRIPT="Class for BAdI Impl.: ZSD_ORDER_CONFIRMATION" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <implementing CLSNAME="ZCL_SD_ORDER_CONFIRMATION" REFCLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" VERSION="1" EXPOSURE="2" STATE="1" RELTYPE="1" EDITORDER="0 "/>
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <interfaceMethod CLSNAME="ZCL_SD_ORDER_CONFIRMATION" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~DELETE_DOCUMENT">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~DELETE_DOCUMENT.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_ORDER_CONFIRMATION" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~SAVE_DOCUMENT">
+   <source>METHOD zif_sd_enh_sls_mv45afzz~save_document.
+  IF fvbak-vbtyp = &apos;B&apos;.
+    break bennetvdgryp.
+  ENDIF.
+ENDMETHOD.</source>
+  </interfaceMethod>
+ </CLAS>
+ <ENHO enhancement_id="ZSD_ORDER_CONFIRMATION" shorttext="Order Confirmation - Cancel Lines" tooltype_id="BADI_IMPL" spot_name="ZSD_ENH_SLS">
+  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+   <asx:values>
+    <IMPLS>
+     <ENH_BADI_IMPL_DATA>
+      <SPOT_NAME>ZSD_ENH_SLS</SPOT_NAME>
+      <BADI_NAME>ZSD_ENH_SLS_MV45AFZZ</BADI_NAME>
+      <IMPL_NAME>ZSD_ORDER_CONFIRMATION</IMPL_NAME>
+      <IMPL_CLASS>ZCL_SD_ORDER_CONFIRMATION</IMPL_CLASS>
+      <ACTIVE>X</ACTIVE>
+      <IS_DEFAULT/>
+      <FILTER_ROOT/>
+      <FILTER_TREE/>
+      <FILTER_VALUES/>
+      <FILTERS/>
+      <FCODE_EXTENSIONS/>
+      <SCREEN_EXTENSIONS/>
+      <IMPL_SHORTTEXT>Cancellation of Order Confimation to cancel Sales Order and/or Contract</IMPL_SHORTTEXT>
+      <IMPL_SHORTTEXT_ID>005056963D6D1ED69EFC48D0BBCFA0ED</IMPL_SHORTTEXT_ID>
+      <IMPL_LONGTEXT_ID/>
+      <MIG_BADI_IMPL/>
+      <SORTER_DATA/>
+      <IS_EXAMPLE_IMPLEMENTATION/>
+      <LOCKED_IN_CUSTOMIZING/>
+     </ENH_BADI_IMPL_DATA>
+    </IMPLS>
+   </asx:values>
+  </asx:abap>
+ </ENHO>
+ <CLAS CLSNAME="ZCL_CA_STATUS" VERSION="1" LANGU="E" DESCRIPT="Status Management Utility" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" WITH_UNIT_TESTS="X" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <localTestClasses>&quot;* use this source file for your ABAP unit test classes</localTestClasses>
+  <attribute CLSNAME="ZCL_CA_STATUS" CMPNAME="C_DELETE" VERSION="1" LANGU="E" DESCRIPT="Single-Character Indicator" EXPOSURE="0" STATE="1" EDITORDER="2 " ATTDECLTYP="2" ATTVALUE="&apos;-&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="CHAR1" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_CA_STATUS" CMPNAME="C_INSERT" VERSION="1" LANGU="E" DESCRIPT="Single-Character Indicator" EXPOSURE="0" STATE="1" EDITORDER="1 " ATTDECLTYP="2" ATTVALUE="&apos;+&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="CHAR1" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <attribute CLSNAME="ZCL_CA_STATUS" CMPNAME="C_STATUS_PREFIX_USER" VERSION="1" LANGU="E" DESCRIPT="Single-Character Indicator" EXPOSURE="0" STATE="1" EDITORDER="3 " ATTDECLTYP="2" ATTVALUE="&apos;E&apos;" ATTEXPVIRT="0" TYPTYPE="1" TYPE="CHAR1" SRCROW1="0 " SRCCOLUMN1="0 " SRCROW2="0 " SRCCOLUMN2="0 " TYPESRC_LENG="0 "/>
+  <method CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_CHANGED" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_CHANGED" SCONAME="IT_STAT" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_CHANGED" SCONAME="RV_SUBRC" VERSION="1" LANGU="E" DESCRIPT="Return Value of ABAP Statements" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="3" PARPASSTYP="0" TYPTYPE="1" TYPE="SYSUBRC"/>
+   <source>method status_changed.
+
+*   check for added / removed status
+    loop at it_stat[] transporting no fields
+      where inact = c_insert
+         or inact = c_delete.
+      exit.
+    endloop.
+    rv_subrc = sy-subrc.
+
+  endmethod.                    &quot;status _changed</source>
+  </method>
+  <method CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET" SCONAME="IV_OBJNR" VERSION="1" LANGU="E" DESCRIPT="Object number" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="J_OBJNR"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET" SCONAME="ET_STATU" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET" SCONAME="ET_STATS" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET" SCONAME="ET_STAT" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <source>method status_get.
+
+    data lv_stsma type jsto-stsma.
+    data lt_statu_x type zps_wbs_status_t.
+    data lt_statu_y type zps_wbs_status_t.
+    data lt_stats_x type zps_wbs_status_t.
+    data lt_stats_y type zps_wbs_status_t.
+
+    clear:
+      et_stat[],
+      et_statu[],
+      et_stats[].
+
+*   fetch the unsaved status
+    status_get_local(
+     exporting
+       iv_objnr = iv_objnr
+     importing
+       et_stats = lt_stats_y[]
+       et_statu = lt_statu_y[]
+       ev_stsma = lv_stsma
+   ).
+
+*   get the committed status
+    status_get_saved(
+     exporting
+       iv_objnr = iv_objnr
+       iv_stsma = lv_stsma
+     importing
+       et_stats = lt_stats_x[]
+       et_statu = lt_statu_x[]
+   ).
+
+*   merge the saved and unsaved user status
+    et_statu[] =  status_merge(
+        it_statx = lt_statu_x[]
+        it_staty = lt_statu_y[]
+    ).
+
+*   merge the saved and unsaved system status
+    et_stats[] =  status_merge(
+        it_statx = lt_stats_x[]
+        it_staty = lt_stats_y[]
+    ).
+
+    append lines of et_statu[] to et_stat[].
+    append lines of et_stats[] to et_stat[].
+
+  endmethod.                    &quot; status_get</source>
+  </method>
+  <method CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_LOCAL" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_LOCAL" SCONAME="IV_OBJNR" VERSION="1" LANGU="E" DESCRIPT="Object number" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="J_OBJNR"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_LOCAL" SCONAME="ET_STATS" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_LOCAL" SCONAME="ET_STATU" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_LOCAL" SCONAME="EV_STSMA" VERSION="1" LANGU="E" DESCRIPT="Status Profile" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="J_STSMA"/>
+   <source>method status_get_local.
+
+    data lt_jstat type tt_jstat.
+    data ls_jstat type ref to jstat.
+    data lv_stsma type jsto-stsma.
+    data ls_status type ref to zps_wbs_status_s.
+
+    clear:
+      et_stats[],
+      et_statu[],
+      ev_stsma.
+
+*   get local status
+    call function &apos;STATUS_READ&apos;
+      exporting
+        objnr            = iv_objnr
+        only_active      = abap_false
+      importing
+        stsma            = ev_stsma
+      tables
+        status           = lt_jstat[]
+      exceptions
+        object_not_found = 1
+        others           = 2.
+    if sy-subrc is not initial.
+      return.
+    endif.
+
+    loop at lt_jstat[] reference into ls_jstat.
+
+      if ls_jstat-&gt;stat(1) = c_status_prefix_user.
+        append initial line to et_statu[] reference into ls_status.
+        ls_status-&gt;stsma = ev_stsma.
+      else.
+        append initial line to et_stats[] reference into ls_status.
+      endif.
+
+      ls_status-&gt;objnr = iv_objnr.
+      ls_status-&gt;stat  = ls_jstat-&gt;stat.
+      ls_status-&gt;inact = ls_jstat-&gt;inact.
+
+*     status in logon language
+      call function &apos;STATUS_NUMBER_CONVERSION&apos;
+        exporting
+          language           = sy-langu
+          status_number      = ls_jstat-&gt;stat
+          stsma              = ls_status-&gt;stsma
+        importing
+          txt04              = ls_status-&gt;txt04
+        exceptions
+          insufficient_input = 1
+          object_not_found   = 2
+          status_not_found   = 3
+          stsma_not_found    = 4
+          others             = 5.
+
+    endloop.
+
+  endmethod.                    &quot;status_read</source>
+  </method>
+  <method CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_SAVED" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_SAVED" SCONAME="IV_OBJNR" VERSION="1" LANGU="E" DESCRIPT="Object number" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="J_OBJNR"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_SAVED" SCONAME="IV_STSMA" VERSION="1" LANGU="E" DESCRIPT="Status Profile" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="J_STSMA"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_SAVED" SCONAME="ET_STATS" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_GET_SAVED" SCONAME="ET_STATU" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="1" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <source>method status_get_saved.
+
+    data lt_jest type standard table of jest.
+    data ls_jest type ref to jest.
+    data ls_status type ref to zps_wbs_status_s.
+
+    clear:
+      et_stats,
+      et_statu[].
+
+*   get saved status
+    select * from jest into table lt_jest[]
+      where objnr = iv_objnr.
+    if sy-subrc is not initial.
+      return.
+    endif.
+
+    loop at lt_jest[] reference into ls_jest.
+
+      if ls_jest-&gt;stat(1) = c_status_prefix_user.
+        append initial line to et_statu[] reference into ls_status.
+        ls_status-&gt;stsma = iv_stsma.
+      else.
+        append initial line to et_stats[] reference into ls_status.
+      endif.
+
+      ls_status-&gt;objnr = iv_objnr.
+      ls_status-&gt;stat  = ls_jest-&gt;stat.
+      ls_status-&gt;inact = ls_jest-&gt;inact.
+
+*     status in logon language
+      call function &apos;STATUS_NUMBER_CONVERSION&apos;
+        exporting
+          language           = sy-langu
+          status_number      = ls_jest-&gt;stat
+          stsma              = ls_status-&gt;stsma
+        importing
+          txt04              = ls_status-&gt;txt04
+        exceptions
+          insufficient_input = 1
+          object_not_found   = 2
+          status_not_found   = 3
+          stsma_not_found    = 4
+          others             = 5.
+
+    endloop.
+
+  endmethod.                    &quot;status_read</source>
+  </method>
+  <method CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_MERGE" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="5 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="1" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_MERGE" SCONAME="IT_STATX" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_MERGE" SCONAME="IT_STATY" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <parameter CLSNAME="ZCL_CA_STATUS" CMPNAME="STATUS_MERGE" SCONAME="RT_STAT" VERSION="1" LANGU="E" DESCRIPT="PS: WBS Element Status" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="3" PARPASSTYP="0" TYPTYPE="1" TYPE="ZPS_WBS_STATUS_T"/>
+   <source>method status_merge.
+
+    data ls_stat type ref to zps_wbs_status_s.
+    data ls_statx type ref to zps_wbs_status_s.
+    data ls_staty type ref to zps_wbs_status_s.
+
+    loop at it_staty[] reference into ls_staty.
+
+      append initial line to rt_stat[] reference into ls_stat.
+      move-corresponding ls_staty-&gt;* to ls_stat-&gt;*.
+
+      read table it_statx[] reference into ls_statx with key
+        objnr = ls_stat-&gt;objnr
+        stat  = ls_stat-&gt;stat.
+      if sy-subrc is not initial.
+        ls_stat-&gt;inact = c_insert.
+        continue.
+      endif.
+
+      check ls_statx-&gt;inact &lt;&gt; ls_stat-&gt;inact.
+
+      case ls_stat-&gt;inact.
+        when abap_true.
+          ls_stat-&gt;inact = c_delete.
+        when others.
+          ls_stat-&gt;inact = c_insert.
+      endcase.
+
+    endloop.
+
+  endmethod.                    &quot; STATUS_MERGE</source>
+  </method>
+ </CLAS>
+ <CLAS CLSNAME="ZCL_SD_LINK_DELINK" VERSION="1" LANGU="E" DESCRIPT="Class for BAdI Impl.: ZSD_LINK_DELINK" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
+  <implementing CLSNAME="ZCL_SD_LINK_DELINK" REFCLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" VERSION="1" EXPOSURE="2" STATE="1" RELTYPE="1" EDITORDER="0 "/>
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~DELETE_DOCUMENT">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~DELETE_DOCUMENT.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBAK">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBAK.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBAP">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBAP.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBEP">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBEP.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBKD">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~MOVE_FIELD_TO_VBKD.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~NUMBER_RANGE">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~NUMBER_RANGE.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~PRICING_PREPARE_TKOMK">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~PRICING_PREPARE_TKOMK.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~PRICING_PREPARE_TKOMP">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~PRICING_PREPARE_TKOMP.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~READ_DOCUMENT">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~READ_DOCUMENT.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~SAVE_DOCUMENT">
+   <source>method ZIF_SD_ENH_SLS_MV45AFZZ~SAVE_DOCUMENT.
+       CALL FUNCTION &apos;Z_SD_LINK_DELINK&apos;
+         EXPORTING
+           fvbak         = fvbak
+           fxvbap        = fxvbap.
+endmethod.</source>
+  </interfaceMethod>
+  <interfaceMethod CLSNAME="ZCL_SD_LINK_DELINK" CPDNAME="ZIF_SD_ENH_SLS_MV45AFZZ~SAVE_DOCUMENT_PREPARE">
+   <source>METHOD zif_sd_enh_sls_mv45afzz~save_document_prepare.
+
+ENDMETHOD.</source>
+  </interfaceMethod>
+ </CLAS>
+ <ENHO enhancement_id="ZSD_LINK_DELINK" shorttext="Link and Delinking of Equipment to Uncovered Base Contracts" tooltype_id="BADI_IMPL" spot_name="ZSD_ENH_SLS">
+  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+   <asx:values>
+    <IMPLS>
+     <ENH_BADI_IMPL_DATA>
+      <SPOT_NAME>ZSD_ENH_SLS</SPOT_NAME>
+      <BADI_NAME>ZSD_ENH_SLS_MV45AFZZ</BADI_NAME>
+      <IMPL_NAME>ZSD_LINK_DELINK</IMPL_NAME>
+      <IMPL_CLASS>ZCL_SD_LINK_DELINK</IMPL_CLASS>
+      <ACTIVE>X</ACTIVE>
+      <IS_DEFAULT/>
+      <FILTER_ROOT/>
+      <FILTER_TREE/>
+      <FILTER_VALUES/>
+      <FILTERS/>
+      <FCODE_EXTENSIONS/>
+      <SCREEN_EXTENSIONS/>
+      <IMPL_SHORTTEXT>Link and Delinking of Equipment to Uncovered Base Contracts</IMPL_SHORTTEXT>
+      <IMPL_SHORTTEXT_ID>0050568B57A51ED68DD52E86B09A0081</IMPL_SHORTTEXT_ID>
+      <IMPL_LONGTEXT_ID/>
+      <MIG_BADI_IMPL/>
+      <SORTER_DATA/>
+      <IS_EXAMPLE_IMPLEMENTATION/>
+      <LOCKED_IN_CUSTOMIZING/>
+     </ENH_BADI_IMPL_DATA>
+    </IMPLS>
+   </asx:values>
+  </asx:abap>
+ </ENHO>
+ <FUGR AREA="ZSD_CONTR" SPRAS="E" AREAT="Contract Changes">
+  <functionGroupDocumentation/>
+  <mainprogram NAME="SAPLZSD_CONTR" SQLX="X" VARCL="X" DBAPL="S" DBNA="D$" SUBC="F" APPL="S" RMAND="300" RLOAD="E" FIXPT="X" LDBNAME="D$S" UCCHECK="X">
+   <textPool/>
+   <dynpros>
+    <dynpro PROG="SAPLZSD_CONTR" DNUM="0100" FNUM="0100" BZMX="61 " BZBR="83 " MILI="192 " MICO="37 " MALI="0 " MACO="0 " NOLI="61 " NOCO="83 " VALP="0 " CUAN="G" SPRA="E" DTEXT="View maint: Overview screen ZSD_UNCV_DISTR">
+     <dynprofield FNAM="TCTRL_ZSD_UNCV_DISTR" DIDX="003B" FLG1="F8" FLG2="FC" FLG3="00" FILL="T" FMB1="00" FMB2="00" LENG="53" LINE="01" COLN="02" LTYP="E" LANF="65" LBLK="01" LREP="01" AUTH="101" AGLT="00" ADEZ="00"/>
+     <dynprofield FNAM="VIM_FRAME_FIELD" DIDX="003C" FLG1="80" FLG2="02" FLG3="88" FMB1="30" FMB2="40" LENG="3C" LINE="01" COLN="00" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="____________________________________________________________"/>
+     <dynprofield FNAM="*ZSD_UNCV_DISTR-SMTP_ADDR" DIDX="00F1" FLG1="20" FLG2="00" FLG3="00" FMB1="30" FMB2="A0" LENG="28" LINE="01" COLN="01" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="3" AGLT="00" ADEZ="00" STXT="E-Mail Address" RES1="                                       00"/>
+     <dynprofield FNAM="*ZSD_UNCV_DISTR-NAME_FIRST" DIDX="0028" FLG1="20" FLG2="00" FLG3="00" FMB1="30" FMB2="80" LENG="28" LINE="01" COLN="02" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="3" AGLT="00" ADEZ="00" STXT="Name" RES1="                                       00"/>
+     <dynprofield FNAM="*ZSD_UNCV_DISTR-NAME_LAST" DIDX="0028" FLG1="20" FLG2="00" FLG3="00" FMB1="30" FMB2="80" LENG="28" LINE="01" COLN="03" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="3" AGLT="00" ADEZ="00" STXT="Name 2" RES1="                                       00"/>
+     <dynprofield FNAM="VIM_MARKED" DIDX="0001" FLG1="80" FLG2="00" FLG3="88" FILL="C" FMB1="00" FMB2="20" LENG="01" LINE="01" COLN="00" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AUTH="102" AGLT="00" ADEZ="00" STXT="_"/>
+     <dynprofield FNAM="ZSD_UNCV_DISTR-SMTP_ADDR" DIDX="001E" FLG1="B1" FLG2="02" FLG3="80" FMB1="30" FMB2="20" LENG="F1" LINE="01" COLN="01" LTYP="T" LANF="65" LBLK="01" LREP="01" UCNV="SXIDN" TYPE="CHAR" GRP1="KEY" ITYP="C" AGLT="FF" ADEZ="00" STXT="____________________________________________________________________________________________________________________________________" RES1="                                       00"/>
+     <dynprofield FNAM="ZSD_UNCV_DISTR-NAME_FIRST" DIDX="0028" FLG1="A0" FLG2="02" FLG3="80" FMB1="00" FMB2="00" LENG="28" LINE="01" COLN="02" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="C" AGLT="50" ADEZ="00" STXT="________________________________________" RES1="                                       00"/>
+     <dynprofield FNAM="ZSD_UNCV_DISTR-NAME_LAST" DIDX="0028" FLG1="A0" FLG2="02" FLG3="80" FMB1="00" FMB2="00" LENG="28" LINE="01" COLN="03" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" ITYP="C" AGLT="50" ADEZ="00" STXT="________________________________________" RES1="                                       00"/>
+     <dynprofield FNAM="VIM_POSI_PUSH" DIDX="0014" FLG1="80" FLG2="00" FLG3="88" FILL="P" FMB1="30" FMB2="00" LENG="14" LINE="3D" COLN="14" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AUTH="103" AGLT="00" ADEZ="00" STXT="____________________" RES1="                                                                                                                                                                        POSI"/>
+     <dynprofield FNAM="VIM_POSITION_INFO" DIDX="001E" FLG1="80" FLG2="02" FLG3="88" FMB1="33" FMB2="00" LENG="1E" LINE="3D" COLN="29" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="______________________________"/>
+     <dynprofield FNAM="OK_CODE" DIDX="0014" FLG1="80" FLG2="10" FLG3="08" FMB1="00" FMB2="00" LENG="14" LINE="FF" COLN="01" LTYP="O" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="____________________"/>
+     <dynproflowsource>PROCESS BEFORE OUTPUT.
+ MODULE LISTE_INITIALISIEREN.
+ LOOP AT EXTRACT WITH CONTROL
+  TCTRL_ZSD_UNCV_DISTR CURSOR NEXTLINE.
+   MODULE LISTE_SHOW_LISTE.
+ ENDLOOP.
+*
+PROCESS AFTER INPUT.
+ MODULE LISTE_EXIT_COMMAND AT EXIT-COMMAND.
+ MODULE LISTE_BEFORE_LOOP.
+ LOOP AT EXTRACT.
+   MODULE LISTE_INIT_WORKAREA.
+   CHAIN.
+    FIELD ZSD_UNCV_DISTR-SMTP_ADDR .
+    FIELD ZSD_UNCV_DISTR-NAME_FIRST .
+    FIELD ZSD_UNCV_DISTR-NAME_LAST .
+    MODULE SET_UPDATE_FLAG ON CHAIN-REQUEST.
+   ENDCHAIN.
+   FIELD VIM_MARKED MODULE LISTE_MARK_CHECKBOX.
+   CHAIN.
+    FIELD ZSD_UNCV_DISTR-SMTP_ADDR .
+    MODULE LISTE_UPDATE_LISTE.
+   ENDCHAIN.
+ ENDLOOP.
+ MODULE LISTE_AFTER_LOOP.</dynproflowsource>
+    </dynpro>
+   </dynpros>
+   <source>* regenerated at 22.06.2016 09:59:17 by  BENNETVDGRYP
+*******************************************************************
+*   System-defined Include-files.                                 *
+*******************************************************************
+  INCLUDE LZSD_CONTRTOP.                     &quot; Global Data
+  INCLUDE LZSD_CONTRUXX.                     &quot; Function Modules
+
+*******************************************************************
+*   User-defined Include-files (if necessary).                    *
+*******************************************************************
+* INCLUDE LZSD_CONTRF...                     &quot; Subroutines
+* INCLUDE LZSD_CONTRO...                     &quot; PBO-Modules
+* INCLUDE LZSD_CONTRI...                     &quot; PAI-Modules
+* INCLUDE LZSD_CONTRE...                     &quot; Events
+* INCLUDE LZSD_CONTRP...                     &quot; Local class implement.
+* INCLUDE LZSD_CONTRT99.                     &quot; ABAP Unit tests
+  INCLUDE LZSD_CONTRF00                           . &quot; subprograms
+  INCLUDE LZSD_CONTRI00                           . &quot; PAI modules
+  INCLUDE LSVIMFXX                                . &quot; subprograms
+  INCLUDE LSVIMOXX                                . &quot; PBO modules
+  INCLUDE LSVIMIXX                                . &quot; PAI modules</source>
+  </mainprogram>
+  <includeprograms>
+   <include NAME="LZSD_CONTRF00" SQLX="X" EDTX="X" SUBC="I" LEVL="731" RLOAD="E">
+    <include_source>*---------------------------------------------------------------------*
+*    view related FORM routines
+*   generation date: 22.06.2016 at 09:59:17 by user BENNETVDGRYP
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+
+* base table related FORM-routines.............
+INCLUDE LSVIMFTX .</include_source>
+   </include>
+   <include NAME="LZSD_CONTRI00" SQLX="X" EDTX="X" SUBC="I" LEVL="731" RLOAD="E">
+    <include_source>*---------------------------------------------------------------------*
+*    view related PAI modules
+*   generation date: 22.06.2016 at 09:59:17 by user BENNETVDGRYP
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+
+INCLUDE LSVIMITX . &quot;base table related PAI modules</include_source>
+   </include>
+   <include NAME="LZSD_CONTRTOP" DBAPL="S" DBNA="D$" SUBC="I" APPL="S" RMAND="300" FIXPT="X" LDBNAME="D$S" UCCHECK="X">
+    <include_source>* regenerated at 22.06.2016 09:59:17 by  BENNETVDGRYP
+FUNCTION-POOL ZSD_CONTR                  MESSAGE-ID SV.
+
+* INCLUDE LZSD_CONTRD...                     &quot; Local class definition
+  INCLUDE LSVIMDAT                                . &quot;general data decl.
+  INCLUDE LZSD_CONTRT00                           . &quot;view rel. data dcl.</include_source>
+   </include>
+   <include NAME="ZSD_LINK_DELINK_F01" VARCL="X" SUBC="I" APPL="S" RMAND="300" RLOAD="E" UCCHECK="X">
+    <include_source>*&amp;---------------------------------------------------------------------*
+*&amp;  Include           ZSD_LINK_DELINK_F01
+*&amp;---------------------------------------------------------------------*
+
+FORM populate_itabs.
+  REFRESH it_actv.
+  REFRESH it_vbap.
+
+  LOOP AT it_fxvbap INTO wa_fxvbap.
+    &quot;Get status from memory and compare to status on Database to find out if the cancelled
+    &quot;status was added.
+    CALL METHOD zcl_ca_status=&gt;status_get(
+      EXPORTING
+        iv_objnr = wa_fxvbap-objnr
+      IMPORTING
+        et_statu = it_stat ).
+
+    READ TABLE it_stat WITH KEY txt04 = &apos;CANC&apos; inact = &apos;+&apos; &quot;If line item is cancelled.
+      INTO  wa_stat.
+
+    IF sy-subrc = 0.
+      MOVE-CORRESPONDING wa_fxvbap TO wa_vbap.
+      APPEND wa_vbap TO it_vbap. &quot;Cancelled items.
+    ELSE.
+      LOOP AT it_stat INTO wa_stat WHERE inact = &apos;+&apos; AND txt04 &lt;&gt; &apos;CANC&apos;. &quot;Check if other statuses were changed.
+        EXIT.
+      ENDLOOP.
+      IF sy-subrc = 0.
+        MOVE-CORRESPONDING wa_fxvbap TO wa_actv.
+        APPEND wa_actv TO it_actv. &quot;Active Items.
+      ENDIF.
+    ENDIF.
+
+    REFRESH it_stat.
+  ENDLOOP.
+ENDFORM.
+
+FORM exclude_equipment.
+  &quot;Grab equipment and status from our view.
+  IF it_vbap IS NOT INITIAL.
+    SELECT * FROM zviser02
+      INTO TABLE it_zvis
+      FOR ALL ENTRIES IN it_vbap
+      WHERE vbeln = it_vbap-vbeln AND
+            posnr = it_vbap-posnr.
+  ENDIF.
+
+  &quot;&lt;BG-001&gt;
+  &quot;Include all modified entries in list (Including deletes).
+  IMPORT briwol = lt_briwol FROM MEMORY ID &apos;ZSD_TECH_OBJ&apos;.
+  IF lt_briwol IS NOT INITIAL.
+    LOOP AT lt_briwol INTO wa_briwol.
+      wa_zvis-vbeln = wa_briwol-objnr+2(10).
+      wa_zvis-posnr = wa_briwol-objnr+12(6).
+      wa_zvis-objnr = wa_briwol-objnr.
+      wa_zvis-obknr = wa_briwol-obknr.
+      wa_zvis-equnr = wa_briwol-equnr.
+      APPEND wa_zvis TO it_zvis.
+    ENDLOOP.
+
+    SORT it_zvis.
+    DELETE ADJACENT DUPLICATES FROM it_zvis COMPARING vbeln posnr objnr obknr equnr.
+  ENDIF.
+  &quot;&lt;/BG-001&gt;
+
+  &quot;Find all other contracts that also contain our equipment.
+  &quot;This one is likely going to be the problematic selection and will require a new index.
+  IF it_zvis IS NOT INITIAL.
+    SELECT * FROM zviser02
+      INTO TABLE it_zoth
+      FOR ALL ENTRIES IN it_zvis
+      WHERE vbeln &lt;&gt; it_zvis-vbeln AND
+            posnr &lt;&gt; it_zvis-posnr AND
+            equnr = it_zvis-equnr AND
+            vbtyp &lt;&gt; &apos;YDUC&apos;.
+  ENDIF.
+  LOOP AT it_zvis INTO wa_zvis.
+    LOOP AT it_zoth INTO wa_zoth
+      WHERE equnr = wa_zvis-equnr AND
+            txt04 &lt;&gt; &apos;CANC&apos;.
+      EXIT.
+    ENDLOOP.
+    &quot;If other active status were found for line items containing our equipment
+    &quot;don&apos;t move to Uncovered Base contract.
+    IF sy-subrc = 0.
+      DELETE it_zvis WHERE vbeln = wa_zvis-vbeln AND posnr = wa_zvis-posnr AND equnr = wa_zvis-equnr.
+    ENDIF.
+  ENDLOOP.
+
+
+
+ENDFORM.
+
+FORM create_new.
+  DESCRIBE TABLE it_uncv_line LINES lv_lines.
+  READ TABLE it_uncv_line INTO wa_uncv_line INDEX lv_lines.
+*          ls_header-
+  ls_headerx-updateflag = &apos;U&apos;.
+
+  &quot;Next item number.
+  SELECT MAX( posnr ) FROM vbap
+    INTO wa_uncv_line-posnr
+    WHERE vbeln = wa_uncv_line-vbeln.
+
+  wa_uncv_line-posnr = wa_uncv_line-posnr + 10.
+
+  wa_item-itm_number = wa_uncv_line-posnr.
+  wa_item-material = &apos;ZZNC-UNCOVBAS-0001&apos;.
+  wa_item-target_qty = &apos;1&apos;.
+  wa_item-prc_group4 = &apos;IGR&apos;.
+  wa_item-bill_date = sy-datum.
+  APPEND wa_item TO lt_item.
+
+  wa_itemx-itm_number = wa_uncv_line-posnr.
+  wa_itemx-updateflag = &apos;I&apos;.
+  wa_itemx-target_qty = &apos;X&apos;.
+  wa_itemx-prc_group4 = &apos;X&apos;.
+  wa_itemx-bill_date = &apos;X&apos;.
+  wa_itemx-material = &apos;X&apos;.
+  APPEND wa_itemx TO lt_itemx.
+
+  REFRESH lt_return.
+
+  CALL FUNCTION &apos;BAPI_CUSTOMERCONTRACT_CHANGE&apos; DESTINATION &apos;NONE&apos;
+    EXPORTING
+      contract_header_in  = ls_header
+      contract_header_inx = ls_headerx
+      salesdocument       = wa_uncv_line-vbeln
+    TABLES
+      return              = lt_return
+      contract_item_in    = lt_item
+      contract_item_inx   = lt_itemx.
+
+  CALL FUNCTION &apos;BAPI_TRANSACTION_COMMIT&apos; DESTINATION &apos;NONE&apos;.
+ENDFORM.
+
+&quot;Merge these two with importing and exporting parameters.
+FORM get_c_domain.
+  LOOP AT it_vbap INTO wa_vbap.
+    ls_sdom_entry-sdaufnr = wa_vbap-vbeln.
+    ls_sdom_entry-posnr   = wa_vbap-posnr.
+    INSERT ls_sdom_entry INTO TABLE lt_sdom_list.
+  ENDLOOP.
+
+  co_util_itsm-&gt;zif_xx_itsm_utilities~get_contract_line_sdomain( CHANGING c_cline_list = lt_sdom_list ).
+
+  LOOP AT lt_sdom_list INTO ls_sdom_entry.
+    READ TABLE it_vbap ASSIGNING &lt;fs_vbap&gt; WITH KEY vbeln = ls_sdom_entry-sdaufnr posnr = ls_sdom_entry-posnr.
+    ASSIGN COMPONENT &apos;TPLMA&apos; OF STRUCTURE &lt;fs_vbap&gt; TO &lt;fs_tplma&gt;.
+    &lt;fs_tplma&gt; = ls_sdom_entry-tplma.
+  ENDLOOP.
+
+  REFRESH lt_sdom_list.
+ENDFORM.
+
+FORM get_u_domain.
+  LOOP AT it_uncv_line INTO wa_uncv_line.
+    ls_sdom_entry-sdaufnr = wa_uncv_line-vbeln.
+    ls_sdom_entry-posnr   = wa_uncv_line-posnr.
+    INSERT ls_sdom_entry INTO TABLE lt_sdom_list.
+  ENDLOOP.
+
+  co_util_itsm-&gt;zif_xx_itsm_utilities~get_contract_line_sdomain( CHANGING c_cline_list = lt_sdom_list ).
+
+  LOOP AT lt_sdom_list INTO ls_sdom_entry.
+    READ TABLE it_uncv_line ASSIGNING &lt;fs_vbap&gt; WITH KEY vbeln = ls_sdom_entry-sdaufnr posnr = ls_sdom_entry-posnr.
+    ASSIGN COMPONENT &apos;TPLMA&apos; OF STRUCTURE &lt;fs_vbap&gt; TO &lt;fs_tplma&gt;.
+    &lt;fs_tplma&gt; = ls_sdom_entry-tplma.
+  ENDLOOP.
+ENDFORM.
+
+FORM add_equipment.
+  REFRESH lt_tech_objects.
+
+  LOOP AT it_zvis INTO wa_zvis
+    WHERE vbeln = wa_vbap-vbeln AND
+          posnr = wa_vbap-posnr.
+
+    ls_tech_objects-item = wa_uncv_line-posnr.
+    ls_tech_objects-equnr = wa_zvis-equnr.
+    APPEND ls_tech_objects TO lt_tech_objects.
+  ENDLOOP.
+
+
+  TRY.
+      CALL METHOD zcl_cs_ag_tech_obj_serv=&gt;contract_add_equipments
+        EXPORTING
+          i_contract                 = wa_uncv_line-vbeln
+*         i_commit                   = abap_true
+          i_commit                   = abap_false
+          iv_lock_contract           = abap_false
+          iv_unlock_contract         = abap_false
+          iv_update_contract_in_itsm = abap_true
+          it_objects                 = lt_tech_objects.
+      &quot;This needs to be rectified. Locked items will go into a temp table to be retried by a background job.
+    CATCH zcx_cs_to_locked.
+      wa_link_lock-vbeln = wa_uncv_line-vbeln.
+      wa_link_lock-posnr = ls_tech_objects-item.
+
+      LOOP AT lt_tech_objects INTO ls_tech_objects.
+        wa_link_lock-equnr = ls_tech_objects-equnr.
+        wa_link_lock-indc = &apos;L&apos;.
+        APPEND wa_link_lock TO lt_link_lock.
+      ENDLOOP.
+
+      UPDATE zsd_link_lock FROM TABLE lt_link_lock.
+    CATCH cx_cdv_initial_parameter.
+      RETURN.
+  ENDTRY.
+ENDFORM.
+
+FORM get_equipment_list.
+  SELECT * FROM zviser02 &quot;Get equipment list
+    INTO TABLE it_zequ
+    FOR ALL ENTRIES IN it_actv
+    WHERE vbeln = it_actv-vbeln AND
+          posnr = it_actv-posnr.
+
+  IF it_zequ IS NOT INITIAL.
+    SELECT * FROM zviser02
+        INTO TABLE it_zvis &quot;List of Uncovered Base Contracts with our equipment
+        FOR ALL ENTRIES IN it_zequ
+        WHERE equnr = it_zequ-equnr AND
+              auart = &apos;YDUC&apos;.
+  ENDIF.
+ENDFORM.
+
+FORM remove_equipment.
+  &quot;Build header table.
+  REFRESH it_actv.
+  LOOP AT it_zvis INTO wa_zvis.
+    wa_actv-vbeln = wa_zvis-vbeln.
+    wa_actv-posnr = wa_zvis-posnr.
+    APPEND wa_actv TO it_actv.
+  ENDLOOP.
+  SORT it_actv.
+  DELETE ADJACENT DUPLICATES FROM it_actv.
+
+  LOOP AT it_actv INTO wa_actv.
+    &quot;Remove equipment to Uncovered Base Contract
+    REFRESH lt_tech_objects.
+    LOOP AT it_zvis INTO wa_zvis
+      WHERE vbeln = wa_actv-vbeln AND
+            posnr = wa_actv-posnr.
+
+      ls_tech_objects-item = wa_uncv_line-posnr.
+      ls_tech_objects-equnr = wa_zvis-equnr.
+      APPEND ls_tech_objects TO lt_tech_objects.
+    ENDLOOP.
+
+    TRY.
+        CALL METHOD zcl_cs_ag_tech_obj_serv=&gt;contract_remove_equipments
+          EXPORTING
+            i_contract                 = wa_actv-vbeln
+            i_commit                   = abap_false
+            iv_lock_contract           = abap_true
+            iv_unlock_contract         = abap_true
+            iv_update_contract_in_itsm = abap_false
+            it_objects                 = lt_tech_objects.
+      CATCH zcx_cs_to_locked .
+        wa_link_lock-vbeln = wa_actv-vbeln.
+        wa_link_lock-posnr = wa_actv-posnr.
+        wa_link_lock-indc = &apos;U&apos;.
+
+        LOOP AT lt_tech_objects INTO ls_tech_objects.
+          wa_link_lock-equnr = ls_tech_objects-equnr.
+          APPEND wa_link_lock TO lt_link_lock.
+        ENDLOOP.
+
+        UPDATE zsd_link_lock FROM TABLE lt_link_lock.
+      CATCH cx_cdv_initial_parameter.
+        RETURN.
+    ENDTRY.
+  ENDLOOP.
+ENDFORM.</include_source>
+   </include>
+   <include NAME="ZSD_LINK_DELINK_TOP" VARCL="X" SUBC="I" APPL="S" RMAND="300" RLOAD="E" UCCHECK="X">
+    <include_source>*&amp;---------------------------------------------------------------------*
+*&amp;  Include           ZSD_LINK_DELINK_TOP
+*&amp;---------------------------------------------------------------------*
+  DATA: it_fxvbap TYPE TABLE OF vbap.
+
+  TYPES: BEGIN OF t_vbap,
+          vbeln TYPE vbap-vbeln,
+          posnr TYPE vbap-posnr,
+          objnr TYPE vbap-objnr,
+          tplma TYPE iflot-tplma,
+         END OF t_vbap.
+
+  DATA: wa_fxvbap LIKE LINE OF it_fxvbap.
+  DATA: it_vbap TYPE TABLE OF t_vbap,
+        wa_vbap LIKE LINE OF it_vbap.
+  DATA: it_actv TYPE TABLE OF t_vbap,
+        wa_actv LIKE LINE OF it_vbap.
+  DATA: it_stat TYPE zps_wbs_status_t,
+        wa_stat LIKE LINE OF it_stat.
+  &quot;Uncovered Base Contract
+  DATA: it_uncv_line TYPE TABLE OF t_vbap,
+        wa_uncv_line LIKE LINE OF it_uncv_line.
+  &quot;Technical Objects (Equipment) on SO line
+  DATA: ls_tech_objects TYPE zcs_tech_obj_serv,
+        lt_tech_objects TYPE zcs_gt_tech_obj_serv,
+        l_error         TYPE c,
+        l_message TYPE string.
+  &quot;Database view of technical objects (For status check)
+  DATA: it_zvis TYPE TABLE OF zviser02,
+        wa_zvis LIKE LINE OF it_zvis,
+        it_zequ TYPE TABLE OF zviser02,
+        wa_zequ LIKE LINE OF it_zvis,
+        it_zoth TYPE TABLE OF zviser02,
+        wa_zoth LIKE LINE OF it_zoth.
+  &quot;Domain Check
+  DATA: ls_sdom_entry TYPE  zif_xx_itsm_utilities=&gt;ts_clsdom_entry,
+        lt_sdom_list  TYPE  zif_xx_itsm_utilities=&gt;tt_clsdom_list.
+  DATA: co_util_itsm  TYPE REF TO zcl_xx_itsm_utilities.
+  DATA: lv_lines TYPE sy-index.
+  &quot;BAPI Call to add a line item
+  DATA: lt_return TYPE STANDARD TABLE OF bapiret2.
+  DATA: ls_header TYPE bapisdh1,
+        ls_headerx TYPE bapisdh1x,
+        lt_item TYPE TABLE OF bapisditm,
+        wa_item LIKE LINE OF lt_item.
+  DATA: lt_itemx  TYPE TABLE OF bapisditmx,
+        wa_itemx LIKE LINE OF lt_itemx.
+  FIELD-SYMBOLS: &lt;fs_vbap&gt; TYPE any,
+                 &lt;fs_tplma&gt; TYPE any.
+  DATA: lt_link_lock TYPE TABLE OF zsd_link_lock,
+        wa_link_lock LIKE LINE OF lt_link_lock.
+  DATA: lt_briwol TYPE TABLE OF riwol,
+        wa_briwol LIKE LINE OF lt_briwol.</include_source>
+   </include>
+  </includeprograms>
+  <functionmodules>
+   <functionmodule NAME="Z_SD_LINK_DELINK" UTASK="1" STEXT="Contract - Link Delink">
+    <importing PARAMETER="FVBAK" TYP="VBAK"/>
+    <importing PARAMETER="FXVBAP" TYP="VA_VBAPVB_T"/>
+    <documentation PARAMETER="FVBAK" KIND="P" STEXT="Sales Document: Header Data" INDEX=" 001"/>
+    <documentation PARAMETER="FXVBAP" KIND="P" STEXT="Table for structure VBAPVB" INDEX=" 002"/>
+    <fm_source_new>INCLUDE zsd_link_delink_top.
+INCLUDE zsd_link_delink_f01.
+
+  it_fxvbap[] = fxvbap[].
+
+
+  IF fvbak-vbtyp = &apos;G&apos; AND fvbak-auart &lt;&gt; &apos;YDUC&apos;. &quot;Contracts &amp; Uncovered Base
+
+    PERFORM populate_itabs.
+
+    IF it_vbap IS NOT INITIAL. &quot;Contract Line Cancelled.
+      &quot;############################################################################
+      &quot; Section 1
+      &quot; Equipment can be assigned to more than one Contract, so the user exit must
+      &quot; check that the Equipment is not linked on another active Contract i.e. item
+      &quot; status of other Contract(s) are CANC, before assigning the Equipment to the
+      &quot; Uncovered Base Contract. If the Equipment is assigned to another Contract,
+      &quot; and the item status on that contract is not CANC, then the Equipment must
+      &quot; not be assigned to an Uncovered Base Contract.
+      &quot;############################################################################
+
+      PERFORM exclude_equipment. &quot;Exclude equipment on Active Contracts
+
+      &quot;############################################################################
+      &quot; Section 2
+      &quot; 1.  Find the 1st Uncovered Base Contract for relevant Sold-to for respective
+      &quot;     Sales Organisation
+      &quot; 2.  Check Domain of 1st Line item to see whether same before moving the
+      &quot;     Equipment
+      &quot; 3.  If Domain is not found, the rest of the Line items on the Contract is
+      &quot;     to be checked until matching Domain is found
+      &quot; 4.  If still no matching Domain is found, then a new Line item is to be
+      &quot;     created on the last Contract that was checked using Material
+      &quot;     ZZNC-UNCOVBAS-0001 to do so
+      &quot;############################################################################
+
+      CREATE OBJECT co_util_itsm.
+
+      &quot;Get domains for current line items.
+      PERFORM get_c_domain.
+
+      &quot;Get uncovered base contracts.
+      SELECT vbap~vbeln vbap~posnr vbak~auart vbap~objnr FROM vbak
+        INNER JOIN vbap ON vbap~vbeln = vbak~vbeln
+        INTO CORRESPONDING FIELDS OF TABLE it_uncv_line
+        WHERE vbak~auart = &apos;YDUC&apos; AND &quot;Uncovered Base
+              vbak~vbtyp = &apos;G&apos; AND &quot;Contract
+              vbak~kunnr = fvbak-kunnr AND
+              vbak~vkorg = fvbak-vkorg.
+
+      &quot;Get the domains for each line.
+      PERFORM get_u_domain.
+
+      LOOP AT it_vbap INTO wa_vbap.
+        &quot;Get first matching domain entry.
+        LOOP AT it_uncv_line INTO wa_uncv_line WHERE tplma = wa_vbap-tplma.
+          EXIT.
+        ENDLOOP.
+
+        &quot;If we couldn&apos;t find a matching domain, create a new line with material ZZNC-UNCOVBAS-0001 on the last contract
+        IF sy-subrc = 4.
+          PERFORM create_new.
+        ENDIF.
+
+        PERFORM add_equipment.  &quot;Add equipment to Uncovered Base Contract
+      ENDLOOP.
+    ENDIF.
+    IF it_actv IS NOT INITIAL. &quot;Contract Line Changed
+
+      PERFORM get_equipment_list.
+
+      IF it_zvis IS NOT INITIAL.
+        PERFORM remove_equipment. &quot;Remove equipment from Uncovered Base
+      ENDIF.
+    ENDIF.
+  ENDIF.</fm_source_new>
+    <functionModuleDocumentation/>
+   </functionmodule>
+   <functionmodule NAME="TABLEFRAME_ZSD_CONTR" STEXT="Extended Table Maintenance: Upper Level">
+    <importing PARAMETER="VIEW_ACTION" DEFAULT="&apos;S&apos;"/>
+    <importing PARAMETER="VIEW_NAME" DBFIELD="DD02V-TABNAME"/>
+    <importing PARAMETER="CORR_NUMBER" DBFIELD="E070-TRKORR" DEFAULT="&apos; &apos;"/>
+    <tables PARAMETER="DBA_SELLIST" DBSTRUCT="VIMSELLIST"/>
+    <tables PARAMETER="DPL_SELLIST" DBSTRUCT="VIMSELLIST"/>
+    <tables PARAMETER="EXCL_CUA_FUNCT" DBSTRUCT="VIMEXCLFUN"/>
+    <tables PARAMETER="X_HEADER" DBSTRUCT="VIMDESC"/>
+    <tables PARAMETER="X_NAMTAB" DBSTRUCT="VIMNAMTAB"/>
+    <exceptions EXCEPTION="MISSING_CORR_NUMBER"/>
+    <documentation PARAMETER="VIEW_ACTION" KIND="P" STEXT="Aktion mit Tabelle: anz./änd./transp. (S/U/T)" INDEX=" 001"/>
+    <documentation PARAMETER="VIEW_NAME" KIND="P" STEXT="Name der Tabelle" INDEX=" 002"/>
+    <documentation PARAMETER="CORR_NUMBER" KIND="P" STEXT="Korrekturnummer für durchgeführte Änderungen" INDEX=" 003"/>
+    <documentation PARAMETER="DBA_SELLIST" KIND="P" STEXT="Selektionsbedingungen für den DB-Zugriff" INDEX=" 004"/>
+    <documentation PARAMETER="DPL_SELLIST" KIND="P" STEXT="Selektionsbedingungen für die Anzeige" INDEX=" 005"/>
+    <documentation PARAMETER="EXCL_CUA_FUNCT" KIND="P" STEXT="Tabelle mit dynam. zu deaktivierenden CUA-Funkt." INDEX=" 006"/>
+    <documentation PARAMETER="X_HEADER" KIND="P" STEXT="Kontrollblocktabelle für die Tabelle" INDEX=" 007"/>
+    <documentation PARAMETER="X_NAMTAB" KIND="P" STEXT="Kontrollblocktabelle für die Tabellen-Felder" INDEX=" 008"/>
+    <documentation PARAMETER="MISSING_CORR_NUMBER" KIND="X" STEXT="Korrekturnummer fehlt" INDEX=" 009"/>
+    <fm_source>*---------------------------------------------------------------------*
+*    program for:   TABLEFRAME_ZSD_CONTR
+*   generation date: 22.06.2016 at 09:59:17 by user BENNETVDGRYP
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+
+  PERFORM TABLEFRAME TABLES X_HEADER X_NAMTAB DBA_SELLIST DPL_SELLIST
+                            EXCL_CUA_FUNCT
+                     USING  CORR_NUMBER VIEW_ACTION VIEW_NAME.</fm_source>
+    <functionModuleDocumentation/>
+   </functionmodule>
+   <functionmodule NAME="TABLEPROC_ZSD_CONTR" GLOBAL="X" STEXT="Lower-level extended table maintenance">
+    <importing PARAMETER="FCODE" DEFAULT="&apos;RDED&apos;"/>
+    <importing PARAMETER="VIEW_ACTION" DEFAULT="&apos;S&apos;"/>
+    <importing PARAMETER="VIEW_NAME" DBFIELD="DD02V-TABNAME"/>
+    <importing PARAMETER="CORR_NUMBER" DBFIELD="E070-TRKORR" DEFAULT="&apos; &apos;"/>
+    <exporting PARAMETER="LAST_ACT_ENTRY"/>
+    <exporting PARAMETER="UCOMM"/>
+    <exporting PARAMETER="UPDATE_REQUIRED"/>
+    <tables PARAMETER="CORR_KEYTAB" DBSTRUCT="E071K"/>
+    <tables PARAMETER="DBA_SELLIST" DBSTRUCT="VIMSELLIST"/>
+    <tables PARAMETER="DPL_SELLIST" DBSTRUCT="VIMSELLIST"/>
+    <tables PARAMETER="EXCL_CUA_FUNCT" DBSTRUCT="VIMEXCLFUN"/>
+    <tables PARAMETER="EXTRACT"/>
+    <tables PARAMETER="TOTAL"/>
+    <tables PARAMETER="X_HEADER" DBSTRUCT="VIMDESC"/>
+    <tables PARAMETER="X_NAMTAB" DBSTRUCT="VIMNAMTAB"/>
+    <exceptions EXCEPTION="MISSING_CORR_NUMBER"/>
+    <exceptions EXCEPTION="SAVING_CORRECTION_FAILED"/>
+    <documentation PARAMETER="FCODE" KIND="P" STEXT="gewünschte Funktion des Bausteins" INDEX=" 001"/>
+    <documentation PARAMETER="VIEW_ACTION" KIND="P" STEXT="Aktion mit Tabelle: anz./änd./transp. (S/U/T)" INDEX=" 002"/>
+    <documentation PARAMETER="VIEW_NAME" KIND="P" STEXT="Name der Tabelle" INDEX=" 003"/>
+    <documentation PARAMETER="CORR_NUMBER" KIND="P" STEXT="Korrekturnummer für durchgeführte Änderungen" INDEX=" 004"/>
+    <documentation PARAMETER="LAST_ACT_ENTRY" KIND="P" STEXT="Index der Cursorposition in der Anzeigetabelle" INDEX=" 005"/>
+    <documentation PARAMETER="UCOMM" KIND="P" STEXT="letztes User-command innerhalb der Viewpflege" INDEX=" 006"/>
+    <documentation PARAMETER="UPDATE_REQUIRED" KIND="P" STEXT="Flag: Einträge verändert, Sichern erforderlich" INDEX=" 007"/>
+    <documentation PARAMETER="CORR_KEYTAB" KIND="P" STEXT="Tabelle mit den Keys der zu transport. Einträge" INDEX=" 008"/>
+    <documentation PARAMETER="DBA_SELLIST" KIND="P" STEXT="Selektionsbedingungen für den DB-Zugriff" INDEX=" 009"/>
+    <documentation PARAMETER="DPL_SELLIST" KIND="P" STEXT="Selektionsbedingungen für die Anzeige" INDEX=" 010"/>
+    <documentation PARAMETER="EXCL_CUA_FUNCT" KIND="P" STEXT="Tab. der nicht zu aktivierenden CUA-Funktionen" INDEX=" 011"/>
+    <documentation PARAMETER="EXTRACT" KIND="P" STEXT="Tab. der gerade sichtbaren Daten (Anzeigetabelle" INDEX=" 012"/>
+    <documentation PARAMETER="TOTAL" KIND="P" STEXT="Tabelle, mit allen von der DB gelesenen Daten" INDEX=" 013"/>
+    <documentation PARAMETER="X_HEADER" KIND="P" STEXT="Kontrollblocktabelle für die Tabelle" INDEX=" 014"/>
+    <documentation PARAMETER="X_NAMTAB" KIND="P" STEXT="Kontrollblocktabelle für die Tabellen-Felder" INDEX=" 015"/>
+    <documentation PARAMETER="MISSING_CORR_NUMBER" KIND="X" STEXT="Korrekturnummer fehlt" INDEX=" 016"/>
+    <documentation PARAMETER="SAVING_CORRECTION_FAILED" KIND="X" STEXT="Fehler beim Sichern der Korrektureinträge" INDEX=" 017"/>
+    <fm_source>*---------------------------------------------------------------------*
+*    program for:   TABLEPROC_ZSD_CONTR
+*   generation date: 22.06.2016 at 09:59:17 by user BENNETVDGRYP
+*   view maintenance generator version: #001407#
+*---------------------------------------------------------------------*
+
+  PERFORM TABLEPROC.</fm_source>
+    <functionModuleDocumentation/>
+   </functionmodule>
+  </functionmodules>
+ </FUGR>
+ <PROG NAME="ZSD_LINK_LOCK" VARCL="X" SUBC="1" RSTAT="K" RMAND="300" RLOAD="E" FIXPT="X" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Reprocess Uncovered Base Equipment" LENGTH="34 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Report  ZSD_LINK_LOCK
+*&amp;
+*&amp;---------------------------------------------------------------------*
+*&amp;
+*&amp;
+*&amp;---------------------------------------------------------------------*
+
+REPORT zsd_link_lock.
+
+INCLUDE zsd_link_lock_top.
+INCLUDE zsd_link_lock_f01.
+
+START-OF-SELECTION.
+
+SELECT * FROM zsd_link_lock
+  INTO TABLE it_lock.
+
+SELECT DISTINCT vbeln posnr FROM zsd_link_lock
+  INTO TABLE it_line.
+
+LOOP AT it_line INTO wa_line.
+  &quot;Linking Section
+  REFRESH lt_tech_objects.
+  LOOP AT it_lock INTO wa_lock
+    WHERE vbeln = wa_line-vbeln AND posnr = wa_line-posnr AND indc = &apos;L&apos;.
+    PERFORM build_tech.
+  ENDLOOP.
+  PERFORM link_delink.
+
+  &quot;Unlinking/Delinking Section
+  REFRESH lt_tech_objects.
+  LOOP AT it_lock INTO wa_lock
+    WHERE vbeln = wa_line-vbeln AND posnr = wa_line-posnr AND indc = &apos;U&apos;.
+    PERFORM build_tech.
+  ENDLOOP.
+  PERFORM link_delink.
+ENDLOOP.
+
+&quot;Send email for items that have been retried 10 or more times.
+PERFORM send_mail.</source>
+ </PROG>
+ <PROG NAME="ZSD_LINK_LOCK_F01" VARCL="X" SUBC="I" RMAND="300" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSD_LINK_LOCK_F01" LENGTH="25 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp;  Include           ZSD_LINK_LOCK_F01
+*&amp;---------------------------------------------------------------------*
+
+FORM build_tech.
+  ls_tech_objects-item = wa_lock-posnr.
+  ls_tech_objects-equnr = wa_lock-equnr.
+  APPEND ls_tech_objects TO lt_tech_objects.
+ENDFORM.
+
+
+FORM link_delink.
+  TRY.
+      IF wa_lock-indc = &apos;L&apos;.
+        CALL METHOD zcl_cs_ag_tech_obj_serv=&gt;contract_add_equipments
+          EXPORTING
+            i_contract                 = wa_line-vbeln
+            i_commit                   = abap_false
+            iv_lock_contract           = abap_false
+            iv_unlock_contract         = abap_false
+            iv_update_contract_in_itsm = abap_false
+            it_objects                 = lt_tech_objects.
+      ELSEIF wa_lock-indc = &apos;U&apos;.
+        CALL METHOD zcl_cs_ag_tech_obj_serv=&gt;contract_remove_equipments
+          EXPORTING
+            i_contract                 = wa_line-vbeln
+            i_commit                   = abap_false
+            iv_lock_contract           = abap_false
+            iv_unlock_contract         = abap_false
+            iv_update_contract_in_itsm = abap_false
+            it_objects                 = lt_tech_objects.
+      ENDIF.
+    CATCH zcx_cs_to_locked .
+      PERFORM update_lock_table USING wa_lock-indc.
+    CATCH cx_cdv_initial_parameter.
+      RETURN.
+  ENDTRY.
+  IF sy-subrc = 0.
+    DELETE FROM zsd_link_lock WHERE vbeln = wa_line-vbeln AND posnr = wa_line-posnr.
+  ENDIF.
+ENDFORM.
+
+FORM update_lock_table USING indc TYPE char01.
+  LOOP AT it_lock INTO wa_lock
+    WHERE vbeln = wa_line-vbeln AND posnr = wa_line-posnr AND indc = indc.
+    MOVE-CORRESPONDING wa_lock TO wa_count.
+    wa_count-counter = wa_count-counter + 1.
+    APPEND wa_count TO it_count.
+  ENDLOOP.
+  IF it_count IS NOT INITIAL.
+    MODIFY zsd_link_lock FROM TABLE it_count.
+  ENDIF.
+  REFRESH it_count.
+ENDFORM.
+
+
+FORM send_mail.
+  TYPES: BEGIN OF ty_lines,
+           line TYPE char255,
+         END OF ty_lines.
+  DATA:  it_lines TYPE STANDARD TABLE OF ty_lines,
+         wa_lines TYPE ty_lines.
+  DATA:  title TYPE string.
+  DATA: it_mail TYPE TABLE OF zsd_uncv_distr,
+        wa_mail LIKE LINE OF it_mail.
+  DATA: it_send TYPE TABLE OF zsd_link_lock,
+        wa_send LIKE LINE OF it_send.
+
+  SELECT * FROM zsd_link_lock
+    INTO TABLE it_send
+    WHERE counter &gt; 10.
+
+  CLEAR wa_lines.
+  APPEND wa_lines TO it_lines.
+  APPEND wa_lines TO it_lines.
+  wa_lines-line = |The following uncovered base contracts have failed to update more than 10 times;|.
+  APPEND wa_lines TO it_lines.
+  CLEAR wa_lines.
+  APPEND wa_lines TO it_lines.
+
+  LOOP AT it_send INTO wa_send.
+    wa_lines-line = |Contract { wa_send-vbeln } line { wa_send-posnr } equipment { wa_send-equnr } |.
+  ENDLOOP.
+
+  wa_lines-line = |Kind regards,|.
+  APPEND wa_lines TO it_lines.
+  wa_lines-line = |SAP Team|.
+  APPEND wa_lines TO it_lines.
+
+  SELECT * FROM zsd_uncv_distr INTO TABLE it_mail.
+    LOOP AT it_mail INTO wa_mail.
+      wa_lines-line = |Dear { wa_mail-name_first } { wa_mail-name_last },|.
+      MODIFY it_lines FROM wa_lines INDEX 1.
+
+      CALL FUNCTION &apos;EFG_GEN_SEND_EMAIL&apos;
+        EXPORTING
+          i_title                = &apos;Locked Uncovered Base Updates&apos;
+          i_sender               = &apos;no_repy@dimensiondata.com&apos;
+          i_recipient            = wa_mail-smtp_addr
+          i_flg_commit           = &apos;X&apos;
+          i_flg_send_immediately = &apos;X&apos;
+        TABLES
+          i_tab_lines            = it_lines
+        EXCEPTIONS
+          not_qualified          = 1
+          failed                 = 2
+          OTHERS                 = 3.
+    ENDLOOP.
+  ENDFORM.</source>
+ </PROG>
+ <PROG NAME="ZSD_LINK_LOCK_TOP" VARCL="X" SUBC="I" RMAND="300" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSD_LINK_LOCK_TOP" LENGTH="25 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp;  Include           ZSD_LINK_LOCK_TOP
+*&amp;---------------------------------------------------------------------*
+
+TYPES: BEGIN OF t_line,
+        vbeln TYPE vbeln,
+        posnr TYPE posnr,
+       END OF t_line.
+
+DATA: it_line TYPE TABLE OF t_line,
+      wa_line LIKE LINE OF it_line.
+DATA: it_mline TYPE TABLE OF t_line,
+      wa_mline LIKE LINE OF it_line.
+DATA: it_lock TYPE TABLE OF zsd_link_lock,
+      wa_lock LIKE LINE OF it_lock.
+DATA: it_count TYPE TABLE OF zsd_link_lock,
+      wa_count LIKE LINE OF it_lock.
+DATA: ls_tech_objects TYPE zcs_tech_obj_serv,
+      lt_tech_objects TYPE zcs_gt_tech_obj_serv.
+DATA: l_error         TYPE c,
+      l_message TYPE string.</source>
+ </PROG>
+ <TABL TABNAME="ZSD_UNCV_DISTR" DDLANGUAGE="E" TABCLASS="TRANSP" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" CLIDEP="X" DDTEXT="Distrubtion List for Failed Linkages on Uncoverd Base" AUTHCLASS="00" MAINFLAG="X" CONTFLAG="A" PROZPUFF="000" EXCLASS="1">
+  <dd09l TABNAME="ZSD_UNCV_DISTR" AS4LOCAL="A" AS4VERS="0000" TABKAT="4" TABART="APPL1" SCHFELDANZ="000" BUFALLOW="N"/>
+  <dd03p TABNAME="ZSD_UNCV_DISTR" FIELDNAME="MANDT" DDLANGUAGE="E" POSITION="0001" KEYFLAG="X" ROLLNAME="MANDT" ADMINFIELD="0" INTTYPE="C" INTLEN="000006" NOTNULL="X" DOMNAME="MANDT" ROUTPUTLEN="000000" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CLNT" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" ENTITYTAB="T000" MASK="  CLNTE" MASKLEN="0000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" DOMNAME3L="MANDT" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_UNCV_DISTR" FIELDNAME="SMTP_ADDR" DDLANGUAGE="E" POSITION="0002" KEYFLAG="X" ROLLNAME="AD_SMTPADR" ADMINFIELD="0" INTTYPE="C" INTLEN="000482" NOTNULL="X" DOMNAME="AD_SMTPADR" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="55" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000241" OUTPUTLEN="000241" DECIMALS="000000" LOWERCASE="X" CONVEXIT="SXIDN" MASK="  CHARE" MASKLEN="0000" DDTEXT="E-Mail Address" REPTEXT="E-Mail Address" SCRTEXT_S="E-Mail" SCRTEXT_M="E-Mail Address" SCRTEXT_L="E-Mail Address" DOMMASTER="D" DOMNAME3L="AD_SMTPADR" DEPTH="00" COMPTYPE="E" DEFFDNAME="E_MAIL" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_UNCV_DISTR" FIELDNAME="NAME_FIRST" DDLANGUAGE="E" POSITION="0003" ROLLNAME="AD_NAME1" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="TEXT40" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="40" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Name 1" REPTEXT="Name" SCRTEXT_S="Name" SCRTEXT_M="Name" SCRTEXT_L="Name" DOMNAME3L="TEXT40" DEPTH="00" COMPTYPE="E" DEFFDNAME="NAME" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_UNCV_DISTR" FIELDNAME="NAME_LAST" DDLANGUAGE="E" POSITION="0004" ROLLNAME="AD_NAME2" ADMINFIELD="0" INTTYPE="C" INTLEN="000080" DOMNAME="TEXT40" ROUTPUTLEN="000000" LOGFLAG="X" HEADLEN="40" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000040" OUTPUTLEN="000040" DECIMALS="000000" LOWERCASE="X" MASK="  CHARE" MASKLEN="0000" DDTEXT="Name 2" REPTEXT="Name 2" SCRTEXT_S="Name 2" SCRTEXT_M="Name 2" SCRTEXT_L="Name 2" DOMNAME3L="TEXT40" DEPTH="00" COMPTYPE="E" DEFFDNAME="NAME_2" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+ </TABL>
+ <TABL TABNAME="ZSD_LINK_LOCK" DDLANGUAGE="E" TABCLASS="TRANSP" DATMIN="0000000000" DATMAX="0000000000" DATAVG="0000000000" CLIDEP="X" DDTEXT="Z_SD_LINK_DELINK - Failed Entries" AUTHCLASS="00" CONTFLAG="A" PROZPUFF="000" EXCLASS="1">
+  <dd09l TABNAME="ZSD_LINK_LOCK" AS4LOCAL="A" AS4VERS="0000" TABKAT="4" TABART="APPL1" SCHFELDANZ="000" BUFALLOW="N"/>
+  <dd03p TABNAME="ZSD_LINK_LOCK" FIELDNAME="MANDT" DDLANGUAGE="E" POSITION="0001" KEYFLAG="X" ROLLNAME="MANDT" ADMINFIELD="0" INTTYPE="C" INTLEN="000006" NOTNULL="X" DOMNAME="MANDT" ROUTPUTLEN="000000" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CLNT" LENG="000003" OUTPUTLEN="000003" DECIMALS="000000" ENTITYTAB="T000" MASK="  CLNTE" MASKLEN="0000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" DOMNAME3L="MANDT" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_LINK_LOCK" FIELDNAME="VBELN" DDLANGUAGE="E" POSITION="0002" KEYFLAG="X" ROLLNAME="VBELN" ADMINFIELD="0" INTTYPE="C" INTLEN="000020" NOTNULL="X" DOMNAME="VBELN" ROUTPUTLEN="000000" MEMORYID="AUN" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" ENTITYTAB="VBUK" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Sales and Distribution Document Number" REPTEXT="Document" SCRTEXT_S="SD Doc." SCRTEXT_M="Sales Document" SCRTEXT_L="Sales Document" DOMNAME3L="VBELN" DEPTH="00" COMPTYPE="E" DEFFDNAME="SD_DOC" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_LINK_LOCK" FIELDNAME="POSNR" DDLANGUAGE="E" POSITION="0003" KEYFLAG="X" ROLLNAME="POSNR" ADMINFIELD="0" INTTYPE="N" INTLEN="000012" NOTNULL="X" DOMNAME="POSNR" ROUTPUTLEN="000000" HEADLEN="06" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="NUMC" LENG="000006" OUTPUTLEN="000006" DECIMALS="000000" ENTITYTAB="VBUP" MASK="  NUMCE" MASKLEN="0000" DDTEXT="Item number of the SD document" REPTEXT="Item" SCRTEXT_S="Item" SCRTEXT_M="Item" SCRTEXT_L="Item (SD)" DOMNAME3L="POSNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="ITM_NUMBER" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_LINK_LOCK" FIELDNAME="EQUNR" DDLANGUAGE="E" POSITION="0004" KEYFLAG="X" ROLLNAME="EQUNR" ADMINFIELD="0" INTTYPE="C" INTLEN="000036" NOTNULL="X" DOMNAME="EQUNR" ROUTPUTLEN="000000" MEMORYID="EQN" LOGFLAG="X" HEADLEN="09" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000018" OUTPUTLEN="000018" DECIMALS="000000" ENTITYTAB="EQUI" CONVEXIT="ALPHA" MASK="  CHARE" MASKLEN="0000" DDTEXT="Equipment Number" REPTEXT="Equipment" SCRTEXT_S="Equipment" SCRTEXT_M="Equipment" SCRTEXT_L="Equipment" DOMNAME3L="EQUNR" SHLPORIGIN="D" SHLPNAME="EQUI" SHLPFIELD="EQUNR" DEPTH="00" COMPTYPE="E" DEFFDNAME="EQUIPMENT" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_LINK_LOCK" FIELDNAME="COUNTER" DDLANGUAGE="E" POSITION="0005" ROLLNAME="CATS_TABIX" ADMINFIELD="0" INTTYPE="X" INTLEN="000004" DOMNAME="CATS_TABIX" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="00" SCRLEN2="00" SCRLEN3="00" DTELMASTER="D" DATATYPE="INT4" LENG="000010" OUTPUTLEN="000010" DECIMALS="000000" MASK="  INT4E" MASKLEN="0000" DDTEXT="Field Defined as in SY-TABIX" DOMNAME3L="CATS_TABIX" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+  <dd03p TABNAME="ZSD_LINK_LOCK" FIELDNAME="INDC" DDLANGUAGE="E" POSITION="0006" ROLLNAME="CHAR01" ADMINFIELD="0" INTTYPE="C" INTLEN="000002" DOMNAME="CHAR1" ROUTPUTLEN="000000" HEADLEN="00" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" DTELMASTER="D" DATATYPE="CHAR" LENG="000001" OUTPUTLEN="000001" DECIMALS="000000" MASK="  CHARE" MASKLEN="0000" DDTEXT="Character Field Length 1" SCRTEXT_S="Char01" SCRTEXT_M="Char01" SCRTEXT_L="Character Length 1" DOMNAME3L="CHAR1" DEPTH="00" COMPTYPE="E" EXCLASS="0" DBPOSITION="0000" OUTPUTSTYLE="00" STRORLOCPOS="00"/>
+ </TABL>
+ <TRAN TCODE="ZSD_UNCV_DISTR" DYPNO="0000" CINFO="02">
+  <tstct SPRSL="E" TCODE="ZSD_UNCV_DISTR" TTEXT="Uncovered Base - Distrubtion List"/>
+  <tstcc TCODE="ZSD_UNCV_DISTR" S_WEBGUI="1" S_WIN32="X" S_PLATIN="X"/>
+  <tstcp TCODE="ZSD_UNCV_DISTR" PARAM="/*SM30 VIEWNAME=ZSD_UNCV_DISTR;UPDATE=X;"/>
+  <rsstcd ST_TCODE="X" ST_SKIP_1="X" CALL_TCODE="SM30" DEVCLASS="$TMP"/>
+  <rsparam FIELD="VIEWNAME" VALUE="ZSD_UNCV_DISTR"/>
+  <rsparam FIELD="UPDATE" VALUE="X"/>
+ </TRAN>
+ <VIEW VIEWNAME="ZVISER02" AS4LOCAL="A" AS4VERS="0000" DDLANGUAGE="E" AGGTYPE="V" AUTHCLASS="00" ROOTTAB="VBAK" DDTEXT="Equipment &amp; Status for Contracts" VIEWCLASS="D" MASTERLANG="D" VIEWGRANT="R">
+  <dd09l AS4VERS="0000" SCHFELDANZ="000"/>
+  <dd26v VIEWNAME="ZVISER02" TABNAME="VBAK" TABPOS="0001" FORTABNAME="VBAK"/>
+  <dd26v VIEWNAME="ZVISER02" TABNAME="TVAK" TABPOS="0002"/>
+  <dd26v VIEWNAME="ZVISER02" TABNAME="VBAP" TABPOS="0003"/>
+  <dd26v VIEWNAME="ZVISER02" TABNAME="JEST" TABPOS="0004" FORTABNAME="OBJK"/>
+  <dd26v VIEWNAME="ZVISER02" TABNAME="TJ30T" TABPOS="0005"/>
+  <dd26v VIEWNAME="ZVISER02" TABNAME="SER02" TABPOS="0006"/>
+  <dd26v VIEWNAME="ZVISER02" TABNAME="OBJK" TABPOS="0007"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0001" DDLANGUAGE="E" VIEWFIELD="MANDT" TABNAME="VBAK" FIELDNAME="MANDT" KEYFLAG="X" ROLLNAME="MANDT" ROLLNAMEVI="MANDT" DOMNAME="MANDT" DATATYPE="CLNT" FLENGTH="000003" CHECKTABLE="T000" SHLPORIGIN="P" ENTITYTAB="T000" INTTYPE="C" INTLEN="000006" HEADLEN="03" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000003" DECIMALS="000000" DDTEXT="Client" REPTEXT="Cl." SCRTEXT_S="Client" SCRTEXT_M="Client" SCRTEXT_L="Client" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0002" DDLANGUAGE="E" VIEWFIELD="VBTYP" TABNAME="VBAK" FIELDNAME="VBTYP" KEYFLAG="X" ROLLNAME="VBTYP" ROLLNAMEVI="VBTYP" DOMNAME="VBTYP" DATATYPE="CHAR" FLENGTH="000001" SHLPORIGIN="F" INTTYPE="C" INTLEN="000002" LOGFLAG="X" HEADLEN="05" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000001" DECIMALS="000000" LOWERCASE="X" VALEXI="X" DDTEXT="SD document category" REPTEXT="DocCa" SCRTEXT_S="Doc.cat." SCRTEXT_M="Document cat." SCRTEXT_L="SD document categ." OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0003" DDLANGUAGE="E" VIEWFIELD="AUART" TABNAME="VBAK" FIELDNAME="AUART" KEYFLAG="X" ROLLNAME="AUART" ROLLNAMEVI="AUART" MEMORYID="AAT" DOMNAME="AUART" DATATYPE="CHAR" FLENGTH="000004" CHECKTABLE="TVAK" SHLPORIGIN="P" ENTITYTAB="TVAK" INTTYPE="C" INTLEN="000008" HEADLEN="04" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000004" DECIMALS="000000" CONVEXIT="AUART" DDTEXT="Sales Document Type" REPTEXT="SaTy" SCRTEXT_S="SalesDocTy" SCRTEXT_M="Sales Doc. Type" SCRTEXT_L="Sales Document Type" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0004" DDLANGUAGE="E" VIEWFIELD="VBELN" TABNAME="VBAK" FIELDNAME="VBELN" KEYFLAG="X" ROLLNAME="VBELN_VA" ROLLNAMEVI="VBELN_VA" MEMORYID="AUN" DOMNAME="VBELN" DATATYPE="CHAR" FLENGTH="000010" CHECKTABLE="VBUK" SHLPORIGIN="P" ENTITYTAB="VBUK" INTTYPE="C" INTLEN="000020" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000010" DECIMALS="000000" CONVEXIT="ALPHA" DDTEXT="Sales Document" REPTEXT="Sales Doc." SCRTEXT_S="Sales Doc." SCRTEXT_M="Sales Document" SCRTEXT_L="Sales Document" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0005" DDLANGUAGE="E" VIEWFIELD="POSNR" TABNAME="VBAP" FIELDNAME="POSNR" KEYFLAG="X" ROLLNAME="POSNR_VA" ROLLNAMEVI="POSNR_VA" MEMORYID="APO" DOMNAME="POSNR" DATATYPE="NUMC" FLENGTH="000006" CHECKTABLE="VBUP" SHLPORIGIN="P" ENTITYTAB="VBUP" INTTYPE="N" INTLEN="000012" HEADLEN="06" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000006" DECIMALS="000000" DDTEXT="Sales Document Item" REPTEXT="Item" SCRTEXT_S="Item" SCRTEXT_M="Item" SCRTEXT_L="Sales Document Item" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0006" DDLANGUAGE="E" VIEWFIELD="OBJNR" TABNAME="VBAP" FIELDNAME="OBJNR" KEYFLAG="X" ROLLNAME="OBJPO" ROLLNAMEVI="OBJPO" DOMNAME="J_OBJNR" DATATYPE="CHAR" FLENGTH="000022" CHECKTABLE="ONR00" SHLPORIGIN="P" ENTITYTAB="ONR00" INTTYPE="C" INTLEN="000044" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000022" DECIMALS="000000" DDTEXT="Object number at item level" REPTEXT="ObjNo Item" SCRTEXT_S="ObjNo Itm" SCRTEXT_M="ObjNo  Item" SCRTEXT_L="Object no.Item" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0007" DDLANGUAGE="E" VIEWFIELD="OBKNR" TABNAME="SER02" FIELDNAME="OBKNR" KEYFLAG="X" ROLLNAME="OBJKNR" ROLLNAMEVI="OBJKNR" DOMNAME="OBJKN" DATATYPE="INT4" FLENGTH="000010" CHECKTABLE="SER00" SHLPORIGIN="P" ENTITYTAB="SER00" INTTYPE="X" INTLEN="000004" HEADLEN="08" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000010" DECIMALS="000000" DDTEXT="Object list number" REPTEXT="ObjList" SCRTEXT_S="ObListNo." SCRTEXT_M="Object list" SCRTEXT_L="Object list" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0008" DDLANGUAGE="E" VIEWFIELD="STSMA" TABNAME="TJ30T" FIELDNAME="STSMA" KEYFLAG="X" ROLLNAME="J_STSMA" ROLLNAMEVI="J_STSMA" DOMNAME="J_STSMA" DATATYPE="CHAR" FLENGTH="000008" CHECKTABLE="TJ20" SHLPORIGIN="X" ENTITYTAB="TJ20" INTTYPE="C" INTLEN="000016" HEADLEN="08" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000008" DECIMALS="000000" DDTEXT="Status Profile" REPTEXT="StatProf" SCRTEXT_S="Stat.Prof." SCRTEXT_M="Status Profile" SCRTEXT_L="Status Profile" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0009" DDLANGUAGE="E" VIEWFIELD="SPRAS" TABNAME="TJ30T" FIELDNAME="SPRAS" KEYFLAG="X" ROLLNAME="SPRAS" ROLLNAMEVI="SPRAS" MEMORYID="SPR" DOMNAME="SPRAS" DATATYPE="LANG" FLENGTH="000001" CHECKTABLE="T002" SHLPORIGIN="P" SHLPNAME="H_T002" SHLPFIELD="SPRAS" ENTITYTAB="T002" INTTYPE="C" INTLEN="000002" LOGFLAG="X" HEADLEN="10" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000002" DECIMALS="000000" LOWERCASE="X" CONVEXIT="ISOLA" DDTEXT="Language Key" REPTEXT="Language" SCRTEXT_S="Language" SCRTEXT_M="Language" SCRTEXT_L="Language Key" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0010" DDLANGUAGE="E" VIEWFIELD="STAT" TABNAME="JEST" FIELDNAME="STAT" KEYFLAG="X" ROLLNAME="J_STATUS" ROLLNAMEVI="J_STATUS" DOMNAME="J_STATUS" DATATYPE="CHAR" FLENGTH="000005" INTTYPE="C" INTLEN="000010" HEADLEN="05" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000005" DECIMALS="000000" DDTEXT="Object status" REPTEXT="Stat." SCRTEXT_S="Status" SCRTEXT_M="Status" SCRTEXT_L="Status" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0011" DDLANGUAGE="E" VIEWFIELD="TXT04" TABNAME="TJ30T" FIELDNAME="TXT04" KEYFLAG="X" ROLLNAME="J_TXT04" ROLLNAMEVI="J_TXT04" DOMNAME="TEXT4" DATATYPE="CHAR" FLENGTH="000004" SHLPORIGIN="X" INTTYPE="C" INTLEN="000008" HEADLEN="04" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000004" DECIMALS="000000" LOWERCASE="X" DDTEXT="Individual status of an object (short form)" REPTEXT="Stat" SCRTEXT_S="Status" SCRTEXT_M="Status" SCRTEXT_L="Status" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0012" DDLANGUAGE="E" VIEWFIELD="TXT30" TABNAME="TJ30T" FIELDNAME="TXT30" KEYFLAG="X" ROLLNAME="J_TXT30" ROLLNAMEVI="J_TXT30" DOMNAME="TEXT30" DATATYPE="CHAR" FLENGTH="000030" INTTYPE="C" INTLEN="000060" HEADLEN="30" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000030" DECIMALS="000000" LOWERCASE="X" DDTEXT="Object status" REPTEXT="Status" SCRTEXT_S="Status" SCRTEXT_M="Status" SCRTEXT_L="Status" OUTPUTSTYLE="00"/>
+  <dd27p VIEWNAME="ZVISER02" OBJPOS="0013" DDLANGUAGE="E" VIEWFIELD="EQUNR" TABNAME="OBJK" FIELDNAME="EQUNR" KEYFLAG="X" ROLLNAME="EQUNR" ROLLNAMEVI="EQUNR" MEMORYID="EQN" DOMNAME="EQUNR" DATATYPE="CHAR" FLENGTH="000018" CHECKTABLE="EQUI" SHLPORIGIN="P" SHLPNAME="EQUI" SHLPFIELD="EQUNR" ENTITYTAB="EQUI" INTTYPE="C" INTLEN="000036" LOGFLAG="X" HEADLEN="09" SCRLEN1="10" SCRLEN2="15" SCRLEN3="20" OUTPUTLEN="000018" DECIMALS="000000" CONVEXIT="ALPHA" DDTEXT="Equipment Number" REPTEXT="Equipment" SCRTEXT_S="Equipment" SCRTEXT_M="Equipment" SCRTEXT_L="Equipment" OUTPUTSTYLE="00"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="VBAK" LFIELD="VBELN" OPERATOR="EQ" RTAB="VBAP" RFIELD="VBELN" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="TVAK" LFIELD="AUART" OPERATOR="EQ" RTAB="VBAK" RFIELD="AUART" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="VBAP" LFIELD="VBELN" OPERATOR="EQ" RTAB="SER02" RFIELD="SDAUFNR" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="VBAP" LFIELD="POSNR" OPERATOR="EQ" RTAB="SER02" RFIELD="POSNR" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="VBAP" LFIELD="OBJNR" OPERATOR="EQ" RTAB="JEST" RFIELD="OBJNR" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="SER02" LFIELD="OBKNR" OPERATOR="EQ" RTAB="OBJK" RFIELD="OBKNR" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="TJ30T" LFIELD="ESTAT" OPERATOR="EQ" RTAB="JEST" RFIELD="STAT" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="TJ30T" LFIELD="STSMA" OPERATOR="EQ" RTAB="TVAK" RFIELD="STSMA" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="VBAK" LFIELD="MANDT" OPERATOR="EQ" RTAB="VBAP" RFIELD="MANDT" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="TVAK" LFIELD="MANDT" OPERATOR="EQ" RTAB="VBAK" RFIELD="MANDT" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="JEST" LFIELD="MANDT" OPERATOR="EQ" RTAB="VBAK" RFIELD="MANDT" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="TJ30T" LFIELD="MANDT" OPERATOR="EQ" RTAB="VBAK" RFIELD="MANDT" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="SER02" LFIELD="MANDT" OPERATOR="EQ" RTAB="VBAK" RFIELD="MANDT" SOURCE="S"/>
+  <dd28j VIEWNAME="ZVISER02" LTAB="OBJK" LFIELD="MANDT" OPERATOR="EQ" RTAB="VBAK" RFIELD="MANDT" SOURCE="S"/>
+  <dd28v CONDNAME="ZVISER02" POSITION="0029" TABNAME="TJ30T" FIELDNAME="SPRAS" OPERATOR="EQ" CONSTANTS="&apos;E&apos;" AND_OR="AND" OFFSET="0000" FLENGTH="0000"/>
+  <dd28v CONDNAME="ZVISER02" POSITION="0030" TABNAME="JEST" FIELDNAME="INACT" OPERATOR="EQ" CONSTANTS="&apos;&apos;" AND_OR="AND" OFFSET="0000" FLENGTH="0000"/>
+  <dd28v CONDNAME="ZVISER02" POSITION="0031" TABNAME="VBAK" FIELDNAME="VBTYP" OPERATOR="EQ" CONSTANTS="&apos;G&apos;" OFFSET="0000" FLENGTH="0000"/>
+ </VIEW>
+</nugget>

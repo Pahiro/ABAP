@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="MAINTENANCE_SCREEN">
+ <PROG NAME="ZFIN_STRUCT_MAINT2" VARCL="X" SUBC="1" RSTAT="K" RMAND="200" RLOAD="E" FIXPT="X" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Financial Structure Maintenance" LENGTH="31 "/>
+   </language>
+  </textPool>
+  <dynpros>
+   <dynpro PROG="ZFIN_STRUCT_MAINT2" DNUM="1000" FNUM="1000" BZMX="21 " BZBR="128 " MILI="192 " MICO="37 " MALI="0 " MACO="0 " NOLI="35 " NOCO="201 " VALP="0 " CUAN="G" SPRA="E" DTEXT="Financial Structure Maintenance">
+    <dynprofield FNAM="BBA" DIDX="0000" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="00" LENG="12" LINE="01" COLN="02" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Business Area" RES1="                                                                                                                                                                                                                                                        X"/>
+    <dynprofield FNAM="PCM_BBA" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="00" FMB2="08" LENG="17" LINE="01" COLN="1B" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" DMAC="ZFI_PCM_BBA" AGLT="00" ADEZ="00" STXT="_______________________"/>
+    <dynprofield FNAM="PCM_BBA_D" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="31" FMB2="00" LENG="39" LINE="01" COLN="36" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________________________________________________________"/>
+    <dynprofield FNAM="BBR" DIDX="0000" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="00" LENG="14" LINE="02" COLN="02" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Business Region" RES1="                                                                                                                                                                                                                                                        X"/>
+    <dynprofield FNAM="PCM_BBR" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="00" FMB2="08" LENG="17" LINE="02" COLN="1B" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" DMAC="ZFI_PCM_BBR" AGLT="00" ADEZ="00" STXT="_______________________"/>
+    <dynprofield FNAM="PCM_BBR_D" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="31" FMB2="00" LENG="39" LINE="02" COLN="36" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________________________________________________________"/>
+    <dynprofield FNAM="BD" DIDX="0000" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="00" LENG="0D" LINE="03" COLN="02" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Division" RES1="                                                                                                                                                                                                                                                        X"/>
+    <dynprofield FNAM="PCM_BD" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="00" FMB2="08" LENG="17" LINE="03" COLN="1B" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" DMAC="ZFI_PCM_BD" AGLT="00" ADEZ="00" STXT="_______________________"/>
+    <dynprofield FNAM="PCM_BD_D" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="31" FMB2="00" LENG="39" LINE="03" COLN="36" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________________________________________________________"/>
+    <dynprofield FNAM="BL" DIDX="0000" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="00" LENG="0C" LINE="04" COLN="02" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Level 3" RES1="                                                                                                                                                                                                                                                        X"/>
+    <dynprofield FNAM="PCM_BL3" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="00" FMB2="08" LENG="17" LINE="04" COLN="1B" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" DMAC="ZFI_PCM_BL3" AGLT="00" ADEZ="00" STXT="_______________________"/>
+    <dynprofield FNAM="PCM_BL3_D" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="31" FMB2="00" LENG="39" LINE="04" COLN="36" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________________________________________________________"/>
+    <dynprofield FNAM="BC" DIDX="0000" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="00" LENG="12" LINE="05" COLN="02" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Consolidation" RES1="                                                                                                                                                                                                                                                        X"/>
+    <dynprofield FNAM="PCM_BCI" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="00" FMB2="08" LENG="17" LINE="05" COLN="1B" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" DMAC="ZFI_PCM_BCI" AGLT="00" ADEZ="00" STXT="_______________________"/>
+    <dynprofield FNAM="PCM_BCI_D" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="31" FMB2="00" LENG="39" LINE="05" COLN="36" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________________________________________________________"/>
+    <dynprofield FNAM="BCL" DIDX="0000" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="00" LENG="0C" LINE="06" COLN="02" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Cluster" RES1="                                                                                                                                                                                                                                                        X"/>
+    <dynprofield FNAM="PCM_BCL" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="00" FMB2="08" LENG="17" LINE="06" COLN="1B" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" DMAC="ZFI_PCM_BCL" AGLT="00" ADEZ="00" STXT="_______________________"/>
+    <dynprofield FNAM="PCM_BCL_D" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="31" FMB2="00" LENG="39" LINE="06" COLN="36" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________________________________________________________"/>
+    <dynprofield FNAM="BG" DIDX="0000" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="00" LENG="0A" LINE="07" COLN="02" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Group" RES1="                                                                                                                                                                                                                                                        X"/>
+    <dynprofield FNAM="PCM_BGI" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="00" FMB2="08" LENG="17" LINE="07" COLN="1B" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" DMAC="ZFI_PCM_BGI" AGLT="00" ADEZ="00" STXT="_______________________"/>
+    <dynprofield FNAM="PCM_BGI_D" DIDX="0000" FLG1="80" FLG2="00" FLG3="88" FMB1="31" FMB2="00" LENG="39" LINE="07" COLN="36" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________________________________________________________"/>
+    <dynprofield FNAM="LV_RECORD" DIDX="0000" FLG1="80" FLG2="00" FLG3="80" FMB1="31" FMB2="00" LENG="14" LINE="09" COLN="02" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" ITYP="C" AGLT="00" ADEZ="00" STXT="____________________"/>
+    <dynprofield FNAM="ZFIN_MAIN" DIDX="000B" FLG1="F8" FLG2="F8" FLG3="00" FILL="T" FMB1="00" FMB2="00" LENG="80" LINE="0B" COLN="02" LTYP="E" LANF="65" LBLK="01" LREP="01" AGLT="05" ADEZ="0F"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BBA" DIDX="0014" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="80" LENG="12" LINE="01" COLN="02" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Business Area"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BBR" DIDX="0015" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="80" LENG="14" LINE="01" COLN="03" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Business Region"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BD" DIDX="000E" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="80" LENG="0D" LINE="01" COLN="04" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Division"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BL3" DIDX="000D" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="80" LENG="0C" LINE="01" COLN="05" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Level 3"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BCI" DIDX="0010" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="80" LENG="0F" LINE="01" COLN="06" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank ConsolidID"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BCL" DIDX="0011" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="80" LENG="0F" LINE="01" COLN="07" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank Cluster ID"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BGI" DIDX="000D" FLG1="00" FLG2="00" FLG3="08" FMB1="30" FMB2="80" LENG="0C" LINE="01" COLN="08" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="Bank GroupID"/>
+    <dynprofield FNAM="WA_MAIN-SELECTED" DIDX="0001" FLG1="80" FLG2="00" FLG3="80" FILL="C" FMB1="30" FMB2="20" LENG="01" LINE="01" COLN="00" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AUTH="102" ITYP="C" AGLT="00" ADEZ="00"/>
+    <dynprofield FNAM="SELECT" DIDX="0002" FLG1="00" FLG2="00" FLG3="00" FILL="P" FMB1="30" FMB2="00" LENG="01" LINE="01" COLN="01" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AUTH="103" AGLT="00" ADEZ="00" STXT="+" RES1="                                                                                                                                                                        SELECT"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BBA" DIDX="0014" FLG1="80" FLG2="00" FLG3="88" FMB1="30" FMB2="00" LENG="09" LINE="01" COLN="02" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BBR" DIDX="0015" FLG1="80" FLG2="00" FLG3="88" FMB1="30" FMB2="00" LENG="09" LINE="01" COLN="03" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BD" DIDX="000E" FLG1="80" FLG2="00" FLG3="88" FMB1="30" FMB2="00" LENG="09" LINE="01" COLN="04" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BL3" DIDX="000D" FLG1="80" FLG2="00" FLG3="88" FMB1="30" FMB2="00" LENG="09" LINE="01" COLN="05" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BCI" DIDX="0010" FLG1="80" FLG2="00" FLG3="88" FMB1="30" FMB2="00" LENG="09" LINE="01" COLN="06" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BCL" DIDX="0011" FLG1="80" FLG2="00" FLG3="88" FMB1="30" FMB2="00" LENG="09" LINE="01" COLN="07" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________"/>
+    <dynprofield FNAM="WA_MAIN-ZPCM_BGI" DIDX="000D" FLG1="80" FLG2="00" FLG3="88" FMB1="30" FMB2="00" LENG="09" LINE="01" COLN="08" LTYP="T" LANF="65" LBLK="01" LREP="01" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="_________"/>
+    <dynprofield DIDX="0000" FLG1="80" FLG2="10" FLG3="08" FMB1="00" FMB2="00" LENG="14" LINE="FF" COLN="01" LTYP="O" LANF="00" LBLK="00" LREP="00" TYPE="CHAR" AGLT="00" ADEZ="00" STXT="____________________"/>
+    <dynproflowsource>PROCESS BEFORE OUTPUT.
+  MODULE ZFIN_MAIN_CHANGE_TC_ATTR.
+  LOOP AT   IT_MAIN
+       INTO WA_MAIN
+       WITH CONTROL ZFIN_MAIN
+       CURSOR ZFIN_MAIN-CURRENT_LINE.
+    MODULE mark.
+  ENDLOOP.
+
+
+  MODULE ZFIN_MAIN_INIT.
+
+MODULE STATUS_1000.
+
+PROCESS AFTER INPUT.
+  LOOP AT IT_MAIN.
+    CHAIN.
+      FIELD WA_MAIN-ZPCM_BBA.
+      FIELD WA_MAIN-ZPCM_BBR.
+      FIELD WA_MAIN-ZPCM_BD.
+      FIELD WA_MAIN-ZPCM_BL3.
+      FIELD WA_MAIN-ZPCM_BCI.
+      FIELD WA_MAIN-ZPCM_BCL.
+      FIELD WA_MAIN-ZPCM_BGI.
+    endchain.
+  ENDLOOP.
+
+ MODULE USER_COMMAND_1000.</dynproflowsource>
+   </dynpro>
+  </dynpros>
+  <pfstatus>
+   <pfstatus_sta CODE="ZMAINT" MODAL="D" ACTCODE="000001" PFKCODE="000001" BUTCODE="0001" INT_NOTE="Maintenance Buttons"/>
+   <pfstatus_fun CODE="BACK" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Back"/>
+   <pfstatus_fun CODE="CANCEL" TEXTNO="001" TEXT_TYPE="S" FUN_TEXT="Exit"/>
+   <pfstatus_fun CODE="DELETE" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_DELETE" ICON_ID="@11@" FUN_TEXT="Delete"/>
+   <pfstatus_fun CODE="EXIT" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_CANCEL" ICON_ID="@0W@" FUN_TEXT="Cancel"/>
+   <pfstatus_fun CODE="LEFT" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_COLUMN_LEFT" ICON_ID="@0D@" FUN_TEXT="Left"/>
+   <pfstatus_fun CODE="NEW" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_CREATE" ICON_ID="@0Y@" FUN_TEXT="New" INFO_TEXT="Create new record"/>
+   <pfstatus_fun CODE="RIGHT" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_COLUMN_RIGHT" ICON_ID="@0E@" FUN_TEXT="Right"/>
+   <pfstatus_fun CODE="SEARCH" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SELECT_DETAIL" ICON_ID="@16@" FUN_TEXT="Search"/>
+   <pfstatus_fun CODE="SKIPL" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_TOTAL_LEFT" ICON_ID="@0B@" FUN_TEXT="Skip Left" INFO_TEXT="Skip to Start"/>
+   <pfstatus_fun CODE="SKIPR" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_TOTAL_RIGHT" ICON_ID="@0C@" FUN_TEXT="Skip Right" INFO_TEXT="Skip to End"/>
+   <pfstatus_fun CODE="SPOS" TEXTNO="001" TEXT_TYPE="S" TEXT_NAME="ICON_SYSTEM_SAVE" ICON_ID="@2L@" FUN_TEXT="Save"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="01" PFNO="02"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="02" PFNO="05"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="03" PFNO="06"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="04" PFNO="07"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="05" PFNO="08"/>
+   <pfstatus_but PFK_CODE="000001" CODE="0001" NO="06" PFNO="13"/>
+   <pfstatus_pfk CODE="000001" PFNO="02" FUNCODE="NEW" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="03" FUNCODE="BACK" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="05" FUNCODE="SKIPL" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="06" FUNCODE="LEFT" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="07" FUNCODE="RIGHT" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="08" FUNCODE="SKIPR" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="09" FUNCODE="SEARCH" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="11" FUNCODE="SPOS" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="12" FUNCODE="EXIT" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="13" FUNCODE="DELETE" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="15" FUNCODE="CANCEL" FUNNO="001"/>
+   <pfstatus_pfk CODE="000001" PFNO="16" FUNCODE="SPOS" FUNNO="001"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="BACK"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="CANCEL"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="DELETE"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="EXIT"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="LEFT"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="NEW"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="RIGHT"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="SAVE"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="SEARCH"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="SKIPL"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="SKIPR"/>
+   <pfstatus_set STATUS="ZMAINT" FUNCTION="SPOS"/>
+   <pfstatus_doc OBJ_TYPE="A" OBJ_CODE="000001" MODAL="D" INT_NOTE="Maintenance Buttons"/>
+   <pfstatus_doc OBJ_TYPE="P" OBJ_CODE="000001" MODAL="D" INT_NOTE="Maintenance Buttons"/>
+   <pfstatus_doc OBJ_TYPE="B" OBJ_CODE="000001" SUB_CODE="0001" MODAL="D" INT_NOTE="Maintenance Buttons"/>
+  </pfstatus>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp; Report  ZFIN_STRUCT_MAINT2
+*&amp;
+*&amp;---------------------------------------------------------------------*
+*&amp;
+*&amp;
+*&amp;---------------------------------------------------------------------*
+
+REPORT zfin_struct_maint2.
+SET PF-STATUS &apos;ZMAINT&apos; OF PROGRAM sy-repid.
+
+TABLES: zfin_struct_attr,zfi_pcm_bba,
+        zfi_pcm_bbr,
+        zfi_pcm_bd,
+        zfi_pcm_bl3,
+        zfi_pcm_bci,
+        zfi_pcm_bcl,
+        zfi_pcm_bgi.
+
+DATA: BEGIN OF it_main OCCURS 0,
+        selected.
+        INCLUDE STRUCTURE zfin_struct_attr.
+DATA: END OF it_main.
+
+*DATA: it_main TYPE TABLE OF zfin_struct_attr,
+DATA: wa_main LIKE LINE OF it_main.
+DATA: wa_store TYPE zfin_struct_attr.
+DATA: indx   TYPE sy-tabix VALUE 1,
+      max    TYPE sy-tabix,
+      lv_new TYPE char01.
+DATA: pcm_bba LIKE  zfin_struct_attr-zpcm_bba.
+DATA: pcm_bbr LIKE  zfin_struct_attr-zpcm_bbr.
+DATA: pcm_bd  LIKE  zfin_struct_attr-zpcm_bd.
+DATA: pcm_bl3 LIKE  zfin_struct_attr-zpcm_bl3.
+DATA: pcm_bci LIKE  zfin_struct_attr-zpcm_bci.
+DATA: pcm_bcl LIKE  zfin_struct_attr-zpcm_bcl.
+DATA: pcm_bgi LIKE  zfin_struct_attr-zpcm_bgi.
+
+DATA: pcm_bba_d LIKE  zfi_pcm_bba-ztext.
+DATA: pcm_bbr_d LIKE  zfi_pcm_bbr-ztext.
+DATA: pcm_bd_d  LIKE  zfi_pcm_bd-ztext.
+DATA: pcm_bl3_d LIKE  zfi_pcm_bl3-ztext.
+DATA: pcm_bci_d LIKE  zfi_pcm_bci-ztext.
+DATA: pcm_bcl_d LIKE  zfi_pcm_bcl-ztext.
+DATA: pcm_bgi_d LIKE  zfi_pcm_bgi-ztext.
+
+DATA: g_zfin_main_copied.
+DATA: lv_record TYPE string.
+
+SELECT * FROM zfin_struct_attr
+  INTO CORRESPONDING FIELDS OF TABLE it_main.
+DESCRIBE TABLE it_main LINES max.
+PERFORM change USING indx.
+
+CALL SCREEN 1000.
+
+CONTROLS: zfin_main TYPE TABLEVIEW USING SCREEN 1000.
+
+MODULE zfin_main_change_tc_attr OUTPUT.
+  DESCRIBE TABLE it_main LINES zfin_main-lines.
+ENDMODULE.
+*&amp;---------------------------------------------------------------------*
+*&amp;      Module  ZFIN_MAIN_INIT  OUTPUT
+*&amp;---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE zfin_main_init OUTPUT.
+  IF g_zfin_main_copied IS INITIAL.
+
+    PERFORM change USING indx.
+
+    g_zfin_main_copied = &apos;X&apos;.
+    REFRESH CONTROL &apos;ZFIN_MAIN&apos; FROM SCREEN &apos;1000&apos;.
+
+    LOOP AT SCREEN.
+      IF screen-name  = &apos;SELECTED&apos;.
+        screen-active = 0.
+        MODIFY SCREEN.
+      ENDIF.
+    ENDLOOP.
+
+  ENDIF.
+ENDMODULE.                 &quot; ZFIN_MAIN_INIT  OUTPUT
+
+
+*&amp;---------------------------------------------------------------------*
+*&amp;      Module  STATUS_1000  OUTPUT
+*&amp;---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE status_1000 OUTPUT.
+  SET PF-STATUS &apos;ZMAINT&apos;.
+ENDMODULE.                 &quot; STATUS_1000  OUTPUT
+*&amp;---------------------------------------------------------------------*
+*&amp;      Module  USER_COMMAND_1000  INPUT
+*&amp;---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE user_command_1000 INPUT.
+  CASE sy-ucomm.
+    WHEN &apos;BACK&apos;.                                                           &quot; Handle the click on button. By default this function code will be
+      LEAVE PROGRAM.
+    WHEN &apos;CANCEL&apos;.
+      lv_new = &apos;&apos;.
+      PERFORM change USING indx.
+    WHEN &apos;EXIT&apos;.
+      lv_new = &apos;&apos;.
+      PERFORM change USING indx.
+    WHEN &apos;NEW&apos;.
+      lv_new = &apos;X&apos;.
+      pcm_bba = &apos;&apos;.
+      pcm_bbr = &apos;&apos;.
+      pcm_bd = &apos;&apos;.
+      pcm_bl3 = &apos;&apos;.
+      pcm_bci = &apos;&apos;.
+      pcm_bcl = &apos;&apos;.
+      pcm_bgi = &apos;&apos;.
+      lv_record = |Record { max + 1  }/{ max + 1 }|.
+    WHEN &apos;SELECT&apos;.
+      GET CURSOR LINE indx.
+      PERFORM change USING indx.
+    WHEN &apos;SKIPL&apos;.
+      lv_new = &apos;&apos;.
+      indx = 1.
+      PERFORM change USING indx.
+    WHEN &apos;SKIPR&apos;.
+      lv_new = &apos;&apos;.
+      indx = max.
+      PERFORM change USING indx.
+    WHEN &apos;LEFT&apos;.
+      lv_new = &apos;&apos;.
+      SUBTRACT 1 FROM indx.
+      PERFORM change USING indx.
+    WHEN &apos;RIGHT&apos;.
+      lv_new = &apos;&apos;.
+      ADD 1 TO indx.
+      PERFORM change USING indx.
+    WHEN &apos;SPOS&apos;.
+      PERFORM save.
+    WHEN &apos;DELETE&apos;.
+      PERFORM delete.
+  ENDCASE.
+ENDMODULE.                 &quot; USER_COMMAND_1000  INPUT
+
+
+FORM change USING indx LIKE sy-tabix.
+  IF indx &lt; 1.
+    indx = 1.
+  ELSEIF indx &gt; max.
+    indx = max.
+  ENDIF.
+
+  READ TABLE it_main INTO wa_main INDEX indx.
+  pcm_bba = wa_main-zpcm_bba.
+  pcm_bbr = wa_main-zpcm_bbr.
+  pcm_bd = wa_main-zpcm_bd.
+  pcm_bl3 = wa_main-zpcm_bl3.
+  pcm_bci = wa_main-zpcm_bci.
+  pcm_bcl = wa_main-zpcm_bcl.
+  pcm_bgi = wa_main-zpcm_bgi.
+
+  SELECT SINGLE ztext FROM zfi_pcm_bba INTO pcm_bba_d
+    WHERE zpcm_bba = wa_main-zpcm_bba.
+  IF sy-subrc = 4.
+    pcm_bba_d = &apos;&apos;.
+  ENDIF.
+  SELECT SINGLE ztext FROM zfi_pcm_bbr INTO pcm_bbr_d
+    WHERE zpcm_bbr = wa_main-zpcm_bbr.
+  IF sy-subrc = 4.
+    pcm_bbr_d = &apos;&apos;.
+  ENDIF.
+  SELECT SINGLE ztext FROM zfi_pcm_bd INTO pcm_bd_d
+    WHERE zpcm_bd = wa_main-zpcm_bd.
+  IF sy-subrc = 4.
+    pcm_bd_d = &apos;&apos;.
+  ENDIF.
+  SELECT SINGLE ztext FROM zfi_pcm_bl3 INTO pcm_bl3_d
+    WHERE zpcm_bl3 = wa_main-zpcm_bl3.
+  IF sy-subrc = 4.
+    pcm_bl3_d = &apos;&apos;.
+  ENDIF.
+  SELECT SINGLE ztext FROM zfi_pcm_bci INTO pcm_bci_d
+    WHERE zpcm_bci = wa_main-zpcm_bci.
+  IF sy-subrc = 4.
+    pcm_bci_d = &apos;&apos;.
+  ENDIF.
+  SELECT SINGLE ztext FROM zfi_pcm_bcl INTO pcm_bcl_d
+    WHERE zpcm_bcl = wa_main-zpcm_bcl.
+  IF sy-subrc = 4.
+    pcm_bcl_d = &apos;&apos;.
+  ENDIF.
+  SELECT SINGLE ztext FROM zfi_pcm_bgi INTO pcm_bgi_d
+    WHERE zpcm_bgi = wa_main-zpcm_bgi.
+  IF sy-subrc = 4.
+    pcm_bgi_d = &apos;&apos;.
+  ENDIF.
+  lv_record = |Record { indx }/{ max }|.
+  PERFORM select.
+ENDFORM.
+
+FORM save.
+  READ TABLE it_main INTO wa_main INDEX indx.
+  IF lv_new &lt;&gt; &apos;X&apos;.
+    MOVE-CORRESPONDING wa_main TO wa_store.
+    &quot;Remove current record and re-create. Helps with consistency checks.
+    &quot;It&apos;s either this or I have to exclude it in the select during the cosistency check.
+    DELETE zfin_struct_attr FROM wa_store.
+  ENDIF.
+  PERFORM check_hierarchy.
+
+  IF lv_new &lt;&gt; &apos;X&apos;.
+    wa_store-zpcm_bba = pcm_bba.
+    wa_store-zpcm_bbr = pcm_bbr.
+    wa_store-zpcm_bd = pcm_bd.
+    wa_store-zpcm_bl3 = pcm_bl3.
+    wa_store-zpcm_bci = pcm_bci.
+    wa_store-zpcm_bcl = pcm_bcl.
+    wa_store-zpcm_bgi = pcm_bgi.
+    MODIFY zfin_struct_attr FROM wa_store.
+    IF sy-subrc = 0.
+      MESSAGE &apos;Record updated successfully.&apos; TYPE &apos;S&apos;.
+    ELSE.
+      MESSAGE &apos;Update failed. Please verify your values are correct.&apos; TYPE &apos;W&apos; DISPLAY LIKE &apos;E&apos;.
+    ENDIF.
+  ELSEIF lv_new = &apos;X&apos;.
+    wa_store-zpcm_bba = pcm_bba.
+    wa_store-zpcm_bbr = pcm_bbr.
+    wa_store-zpcm_bd = pcm_bd.
+    wa_store-zpcm_bl3 = pcm_bl3.
+    wa_store-zpcm_bci = pcm_bci.
+    wa_store-zpcm_bcl = pcm_bcl.
+    wa_store-zpcm_bgi = pcm_bgi.
+    INSERT zfin_struct_attr FROM wa_store.
+    IF sy-subrc = 0.
+      MESSAGE &apos;Record created successfully.&apos; TYPE &apos;S&apos;.
+    ELSE.
+      MESSAGE &apos;Create failed. Duplicate record.&apos; TYPE &apos;W&apos; DISPLAY LIKE &apos;E&apos;.
+    ENDIF.
+  ENDIF.
+  SELECT * FROM zfin_struct_attr INTO CORRESPONDING FIELDS OF TABLE it_main.
+  DESCRIBE TABLE it_main LINES max.
+  PERFORM change USING indx.
+
+  LEAVE TO SCREEN 1000.
+ENDFORM.
+
+FORM delete.
+  DATA lv_ans TYPE char01.
+  CALL FUNCTION &apos;POPUP_TO_CONFIRM&apos;
+    EXPORTING
+      text_question = &apos;Are you sure you wish to delete this record?&apos;
+    IMPORTING
+      answer        = lv_ans.
+
+  IF lv_ans = &apos;1&apos;.
+    READ TABLE it_main INTO wa_main INDEX indx.
+    MOVE-CORRESPONDING wa_main TO wa_store.
+    DELETE zfin_struct_attr FROM wa_store.
+    IF sy-subrc = 0.
+      MESSAGE &apos;Record deleted successfully.&apos; TYPE &apos;S&apos;.
+    ELSE.
+      MESSAGE &apos;Delete failed. Please verify your values are correct.&apos; TYPE &apos;W&apos; DISPLAY LIKE &apos;E&apos;.
+    ENDIF.
+
+    SELECT * FROM zfin_struct_attr INTO CORRESPONDING FIELDS OF TABLE it_main.
+    DESCRIBE TABLE it_main LINES max.
+    PERFORM change USING indx.
+  ENDIF.
+ENDFORM.
+
+FORM check_hierarchy.
+  &quot;Check that new record fits consistency.
+  DATA: lv_value TYPE string,
+        lv_hold  TYPE string.
+  DATA: lt_fields TYPE TABLE OF dfies,
+        wa_fields LIKE LINE OF lt_fields,
+        wa_parent LIKE LINE OF lt_fields,
+        lv_where  TYPE string,
+        lv_len    TYPE i.
+
+  CALL FUNCTION &apos;DDIF_FIELDINFO_GET&apos;
+    EXPORTING
+      tabname   = &apos;ZFIN_STRUCT_ATTR&apos;
+    TABLES
+      dfies_tab = lt_fields.
+
+  DELETE lt_fields WHERE fieldname = &apos;MANDT&apos;.
+*  SORT lt_fields BY position DESCENDING.
+
+  LOOP AT lt_fields INTO wa_fields.
+
+    lv_len = strlen( wa_fields-fieldname ) - 1.
+    lv_where = |{ wa_fields-fieldname } = { wa_fields-fieldname+1(lv_len) }|.
+    READ TABLE lt_fields INTO wa_parent INDEX sy-tabix + 1.
+    IF sy-subrc = 0.
+      lv_len = strlen( wa_parent-fieldname ) - 1.
+
+      lv_hold = wa_parent-fieldname+1(lv_len).
+      ASSIGN (lv_hold) TO FIELD-SYMBOL(&lt;fs&gt;).
+      lv_hold = &lt;fs&gt;.
+
+      SELECT (wa_parent-fieldname) FROM zfin_struct_attr
+        INTO lv_value
+        WHERE (lv_where).
+        IF lv_hold IS NOT INITIAL AND lv_hold &lt;&gt; lv_value.
+          MESSAGE |Consistency error. { wa_parent-fieldname } : { lv_hold } should be { lv_value } | TYPE &apos;S&apos; DISPLAY LIKE &apos;E&apos;.
+          LEAVE TO SCREEN 1000.
+        ENDIF.
+      ENDSELECT.
+    ENDIF.
+  ENDLOOP.
+
+ENDFORM.
+
+FORM select.
+  IF indx &lt;&gt; 0.
+    wa_main-selected = &apos;&apos;.
+    LOOP AT it_main.
+      MODIFY it_main FROM wa_main TRANSPORTING selected.
+    ENDLOOP.
+
+    wa_main-selected = &apos;X&apos;.
+    MODIFY it_main FROM wa_main INDEX indx TRANSPORTING selected.
+  ENDIF.
+ENDFORM.
+*&amp;---------------------------------------------------------------------*
+*&amp;      Module  MARK  OUTPUT
+*&amp;---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+MODULE mark OUTPUT.
+  LOOP AT SCREEN.
+    IF screen-name = &apos;WA_MAIN-SELECTED&apos;.
+      screen-invisible = 1.
+      MODIFY SCREEN.
+    ENDIF.
+  ENDLOOP.
+ENDMODULE.                 &quot; MARK  OUTPUT</source>
+ </PROG>
+</nugget>

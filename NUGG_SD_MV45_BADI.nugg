@@ -1,0 +1,1692 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="MV45_BADI">
+ <PROG NAME="ZSD_MV45AFZZ_BADI" VARCL="X" SUBC="I" APPL="V" RSTAT="P" RMAND="300" RLOAD="E" UCCHECK="X">
+  <textPool>
+   <language SPRAS="E">
+    <textElement ID="R" ENTRY="Include ZSD_MV45AFZZ_BADI" LENGTH="25 "/>
+   </language>
+  </textPool>
+  <source>*&amp;---------------------------------------------------------------------*
+*&amp;  Include           ZSD_MV45AFZZ_BADI
+*&amp;---------------------------------------------------------------------*
+
+************************************************************************
+* Title         : Include ZSD_MV45AFZZ_BADI                            *
+*                                                                      *
+* Description   : BAdI Implementation for Sales Order processing       *
+*                                                                      *
+* RFC / PRJ     : CHM111885560                                         *
+*                                                                      *
+* Creation Date : 17 June 2016                                         *
+*                                                                      *
+* Author        : Brendan van Vliet                                    *
+*                                                                      *
+************************************************************************
+*----------------------------------------------------------------------*
+*                M O D I F I C A T I O N   L O G                       *
+*----------------------------------------------------------------------*
+* Date         Programmer          RFC No                   Change ID  *
+*   Description                                                        *
+*----------------------------------------------------------------------*
+* dd-mmm-yyyy  xxxxxxxxxxxxxxx     RFCxxxxx                 &quot;xxxx     *
+*   xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx      *
+*                                                                      *
+************************************************************************
+
+tables vbrk.
+data gr_badi_mv45afzz type ref to zsd_enh_sls_mv45afzz.
+data gx_badi_mv45afzz type abap_bool value abap_undefined.
+
+form badi_get_handle.                                       &quot; BvV-01
+
+  if gx_badi_mv45afzz &lt;&gt; abap_undefined
+  or gr_badi_mv45afzz is bound.
+    return.
+  endif.
+
+  gx_badi_mv45afzz = abap_false.
+
+  try.
+      get badi gr_badi_mv45afzz.
+      gx_badi_mv45afzz = abap_true.
+    catch cx_badi.
+  endtry.
+
+endform.
+
+form badi_delete_document.                                  &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;delete_document
+      exporting
+        ft180  = t180
+      changing
+        fvbak  = vbak
+        fxvbap = xvbap[]
+        fxvbkd = xvbkd[]
+        fxvbpa = xvbpa[]
+        fxvbep = xvbep[]
+        fxvbuk = xvbuk[].
+  endif.
+
+endform.                    &quot;BADI_DELETE_DOCUMENT
+
+form badi_move_field_to_vbak.
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;move_field_to_vbak
+      exporting
+        i_tvak  = tvak
+        i_tabix = svbak-tabix
+        i_xvbap = xvbap[]
+        i_xvbpa = xvbpa[]
+        i_xvbkd = xvbkd[]
+        i_kuagv = kuagv
+        i_kuwev = kuwev
+      changing
+        c_vbak  = vbak
+        c_rv45a = rv45a.
+  endif.
+
+endform.                    &quot;BADI_MOVE_FIELD_TO_VBAK
+
+form badi_move_field_to_vbap.                               &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;move_field_to_vbap
+      exporting
+        f_tvap    = tvap
+        f_tvak    = tvak
+        f_tabix   = svbap-tabix
+        fvbak     = vbak
+        f_maapv   = maapv
+        f_kuagv   = kuagv
+        fxvbap    = xvbap[]
+        fxvbkd    = xvbkd[]
+        fvbap_old = *vbap
+      changing
+        fvbap     = vbap
+        ivbap     = ivbap[]
+        f_rv45a   = rv45a.
+  endif.
+
+endform.                    &quot;BADI_MOVE_FIELD_TO_VBAP
+
+form badi_move_field_to_vbep.                               &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;move_field_to_vbep
+      exporting
+        i_vbak     = vbak
+        i_vbap_old = *vbap
+        i_vbap_new = vbap
+        i_vbep_old = *vbep
+      changing
+        c_vbep_new = vbep.
+  endif.
+
+endform.                    &quot;BADI_MOVE_FIELD_TO_VBEP
+
+form badi_move_field_to_vbkd.                               &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;move_field_to_vbkd
+      exporting
+        fxvbkd    = xvbkd[]
+        fxvbap    = xvbap[]
+        fxvbpa    = xvbpa[]
+        fvbak     = vbak
+        f_tabix   = svbkd-tabix
+        f_tvap    = tvap
+        f_tvak    = tvak
+        fvbap     = vbap
+        fvbkd_old = *vbkd
+        f_t001    = t001
+        fvbak_old = *vbak
+        fvbap_old = *vbap
+        f_t180    = t180
+        f_t683v   = t683v
+        f_rv02p   = rv02p
+        fyvbkd    = yvbkd[]
+      changing
+        fvbkd     = vbkd
+        x_vbak    = vbak.
+  endif.
+
+endform.                    &quot;BADI_MOVE_FIELD_TO_VBKD
+
+form badi_number_range using us_range_intern.               &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;number_range
+      exporting
+        is_t180         = t180
+        is_vbak         = vbak
+        it_xvbup        = xvbup[]
+        it_yvbup        = yvbup[]
+        it_xvbap        = xvbap[]
+        it_yvbap        = yvbap[]
+        it_xvbkd        = xvbkd[]
+        it_yvbkd        = yvbkd[]
+        it_xvbep        = xvbep[]
+        it_yvbep        = yvbep[]
+        is_tvak         = tvak
+      changing
+        cv_range_intern = us_range_intern.
+  endif.
+
+endform.                    &quot;BADI_NUMBER_RANGE
+
+form badi_pricing_prepare_tkomk.                            &quot; BvV-01
+
+  data lv_propagate type xfeld.
+  data ls_tkomk type komk.
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    lv_propagate = abap_false.
+    ls_tkomk = tkomk.
+    call badi gr_badi_mv45afzz-&gt;pricing_prepare_tkomk
+      exporting
+        fxvbap       = xvbap[]
+        fxvbpa       = xvbpa[]
+        fvbak        = vbak
+        ft180        = t180
+        fxvbuk       = xvbuk[]
+        fxvbkd       = xvbkd[]
+        f_t001       = t001
+        fvbkd        = vbkd
+        fvbap        = vbap
+      changing
+        cv_propagate = lv_propagate
+        ftkomk       = tkomk.
+    if lv_propagate = abap_true and ls_tkomk &lt;&gt; tkomk.
+      read table tkomk[] transporting no fields with table key
+        key_uc = tkomk-key_uc.
+      if sy-subrc is initial.
+        tkomk-ix_komk = sy-tabix.
+        modify tkomk index sy-tabix.
+      endif.
+    endif.
+  endif.
+
+endform.                    &quot;BADI_PRICING_PREPARE_TKOMK
+
+form badi_pricing_prepare_tkomp.                            &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;pricing_prepare_tkomp
+      exporting
+        fxvbap = xvbap[]
+        fxvbpa = xvbpa[]
+        fvbak  = vbak
+        ft180  = t180
+        fxvbuk = xvbuk[]
+        fxvbkd = xvbkd[]
+        ftkomk = tkomk
+        f_t001 = t001
+        fvbkd  = vbkd
+        fvbap  = vbap
+      changing
+        ftkomp = tkomp.
+  endif.
+
+endform.                    &quot;BADI_PRICING_PREPARE_TKOMP
+
+form badi_read_document.                                    &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;read_document
+      exporting
+        ft180  = t180
+      changing
+        fvbak  = vbak
+        fxvbap = xvbap[]
+        fxvbkd = xvbkd[]
+        fxvbpa = xvbpa[]
+        fxvbep = xvbep[]
+        fxvbuk = xvbuk[]
+        fxvbuv = xvbuv[].
+  endif.
+
+endform.                    &quot;BADI_READ_DOCUMENT
+
+form badi_save_document.                                    &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;save_document
+      exporting
+        ft180   = t180
+        f_updkz = xvbak_updkz
+        fvbrk   = vbrk
+        ftvko   = tvko
+      changing
+        fvbak   = vbak
+        fxvbap  = xvbap[]
+        fxkomv  = xkomv[]
+        fxvbapf = xvbapf[]
+        fxvbfa  = xvbfa[]
+        fxvbep  = xvbep[]
+        fxvbkd  = xvbkd[]
+        fxvbpa  = xvbpa[]
+        fxvbuk  = xvbuk[]
+        fxvbup  = xvbup[]
+        fxfpla  = xfpla[]
+        fxfplt  = xfplt[]
+        fyvbak  = yvbak
+        fyvbap  = yvbap[]
+        fyvbapf = yvbapf[]
+        fyvbfa  = yvbfa[]
+        fyvbep  = yvbep[]
+        fyvbkd  = yvbkd[]
+        fyvbpa  = yvbpa[]
+        fyvbuk  = yvbuk[]
+        fyvbup  = yvbup[]
+        fyfpla  = yfpla[]
+        fyfplt  = yfplt[]
+        fxvbadr = xvbadr[]
+        fyvbadr = yvbadr[]
+        fxvblb  = xvblb[]
+        fyvblb  = yvblb[]
+        fxveda  = xveda[].
+  endif.
+
+endform.                    &quot;BADI_SAVE_DOCUMENT
+
+form badi_save_document_prepare.                            &quot; BvV-01
+
+  perform badi_get_handle.
+
+  if gr_badi_mv45afzz is bound.
+    call badi gr_badi_mv45afzz-&gt;save_document_prepare
+      exporting
+        ft180   = t180
+      changing
+        fvbak   = vbak
+        fxvbap  = xvbap[]
+        fxkomv  = xkomv[]
+        fxvbapf = xvbapf[]
+        fxvbfa  = xvbfa[]
+        fxvbep  = xvbep[]
+        fxvbkd  = xvbkd[]
+        fxvbpa  = xvbpa[]
+        fxvbuk  = xvbuk[]
+        fxvbup  = xvbup[]
+        fxfpla  = xfpla[]
+        fxfplt  = xfplt[]
+        fyvbak  = yvbak
+        fyvbap  = yvbap[]
+        fyvbapf = yvbapf[]
+        fyvbfa  = yvbfa[]
+        fyvbep  = yvbep[]
+        fyvbkd  = yvbkd[]
+        fyvbpa  = yvbpa[]
+        fyvbuk  = yvbuk[]
+        fyvbup  = yvbup[]
+        fyfpla  = yfpla[]
+        fyfplt  = yfplt[]
+        fxvbadr = xvbadr[]
+        fyvbadr = yvbadr[]
+        fxvblb  = xvblb[]
+        fyvblb  = yvblb[]
+        fxvbuv  = xvbuv[]
+        fyvbuv  = yvbuv[].
+  endif.
+
+endform.                    &quot;BADI_SAVE_DOCUMENT_PREPARE</source>
+ </PROG>
+ <PROG NAME="MV45AFZZ" SQLX="X" VARCL="X" SUBC="I" APPL="V" LEVL="11F" RSTAT="P" RMAND="000" RLOAD="D">
+  <source>***INCLUDE MV45AFZZ .
+*{   INSERT         GLDK919459                                        1
+*-----------------------------------------------------------------------
+* Modification History
+*-----------------------------------------------------------------------
+* Author         : J Rynbout
+* Date           : 15/04/2003
+* Change Request : GLDK907009
+* Siebel Request :
+* Modifications  : Take include code from RMMMGL00 and place in user
+*                : User-exit
+*-----------------------------------------------------------------------
+* Author         : J Rynbout
+* Date           : 31.10.01
+* Change Request : DEVK914860
+* Siebel Request : 1-2XTST
+* Modifications  : When rejecting a sales order ensure that the buy
+*                : price and sell price conditions are zero.
+*-----------------------------------------------------------------------
+* Author         : Katrina Burke Brightstar
+* Date           : 16/07/2001
+* Change Request : DEVK913230
+* Siebel Request : 1-191OL
+* Identifier:  MOD0002 KMB
+* Modifications  : Fix the Sales Office assignment when creating
+*                  order with reference by selecting individual line.
+*                  items.  This required adding another user command
+*                  to the if statement in userexit_move_field_to_vbak.
+*-----------------------------------------------------------------------
+* Author         : Gerhard Seegers
+* Date           : 02/07/2001
+* Change Request : DEVK912970
+* Siebel Request : 1-11PN1
+* Modifications  : After reading table ZSPPR2 the active/inactive field
+*                  of table ZSPPR1 was used instead of ZSPPR2.
+*                  Inserted breakpoint to debug and solve problem if
+*                  the error occurs again.
+*-----------------------------------------------------------------------
+* Author         : VM
+* Date           : 30/01/2001
+* Change Request : DEVK911275
+* Siebel Request : N/A
+* Modifications  : Fix the Sales Office assignment when creating
+*                  order with reference.
+*-----------------------------------------------------------------------
+* Author         : Ryno Boyens (Core People)
+* Date           : 29/01/2010
+* Change Request :
+* RFC            : RFC8979
+* Modifications  : Dummy profit centre (ZDSADUMMY) should not be allowed
+*                  for Sales Orders and Contracts.
+* Search ID      : RFC8979
+*-----------------------------------------------------------------------
+* Author         : P Low Yeun (Core People)
+* Date           : 03/03/2011
+* Change Request : GLDK932498
+* RFC            : RFC13250
+* Modifications  : Block changes to account manager and account executive
+*                  for Sales Orders if billing has ben created.
+* Search ID      : RFC13250
+*-----------------------------------------------------------------------
+* Author         : Ryno Boyens
+* Date           : 02/10/2013
+* Change Request : S2A GT
+* Modifications  : Allow saving of the ZMM_B2BCONFIGGER records when
+*                  performing a Change BDC as well
+* Search ID      : RB-001
+*-----------------------------------------------------------------------
+* Author         : Rob Minnaar
+* Date           : 04/12/2013
+* Change Request : S2A GT
+* Modifications  :  Check for a preferred vendor and ensure Purchase Req
+*                  has the same vendor else overwrite the PReq&apos;s vendor
+* Search ID      : S2A 04/12/2013
+*-----------------------------------------------------------------------
+* Author         : Gerald Roux
+* Date           : 10/01/2014
+* Change Request : S2A GT
+* Modifications  : Mark deleted quote items in OMW control tables and
+*                  clear other items
+* Search ID      : GR01 S2A
+*-----------------------------------------------------------------------
+* Author         : Rob Minnaar
+* Date           : 15/01/2014 &amp; 05/06/2014 (search Rob S2A 05/06/2014)
+* Change Request : S2A GT
+* Modifications  :  Ensure Condition MWST is in the pricing else prevent
+*                  save
+*-----------------------------------------------------------------------
+* Author         : Rob Minnaar
+* Date           : 30/01/2014
+* Change Request : S2A GT
+* Modifications  : Pricing Date to be set to line creation date only
+*                : For YEXC condtion.
+* Search ID      : S2A Rob 30/01/2014
+*-----------------------------------------------------------------------
+* Author         : Ryno Boyens
+* Date           : 07/03/2014
+* Change Request : S2A GT
+* Modifications  : Default Order Qty from Target Qty from ZCA_GENERIC_VAR
+* Search ID      : RB-002
+*-----------------------------------------------------------------------
+* Author         : Bernard Hangelbroek
+* Date           : 10/03/2014
+* Change Request : S2A
+* Modifications  : Determine Storage Location
+*                : INCLUDE zsd_mv45afzz_set_sloc.
+* Search ID      : S2A BH001
+*-----------------------------------------------------------------------
+* Author         : Ryno Boyens
+* Date           : 16.04.2014
+* Change Request : S2A GT
+* Modifications  : Send notification for Credit Limit Block
+* Search ID      : RB-003
+* Transport Req  : GTDK905344
+*-----------------------------------------------------------------------
+* Author         : P Low Yeun
+* Date           : 04.10.2014
+* Change Request : S2A GT
+* Modifications  : In our alignment of our VAT codes, The Material VAT
+*                : Code for services has changed from 5 in the Legacy
+*                : system to 4 in GTP.      &quot;Donald Creighton
+* Search ID      : PL-001
+* Transport Req  : GTDK907083
+*-----------------------------------------------------------------------
+* Author         : Bernard Hangelbroek
+* Date           : 28.11.2014
+* Change Request : S2A
+* Modifications  : Results Analysis Key Substitution
+*                : INCLUDE zsd_mv45afzz_set_ra_key.
+* Search ID      : BH002
+*-----------------------------------------------------------------------
+* Author         : Derrick Bingham
+* Date           : 16.02.2015
+* Change Request : S2A
+* Modifications  : Complete re-write of B2B Add-Data A routines
+*                : INCLUDE: zsd_mv45afzz_b2b_routines
+* Search ID      : DPB-001
+*-----------------------------------------------------------------------
+* Author         : Ryno Boyens
+* Date           : 17.02.2015
+* Change Request : CHM?
+* Transport No.  : GTDK908579
+* Modifications  : Change the Schedule line categories for Order Reason
+*                  Y49 for the IGA process for Sales ORders
+*                  INCLUDE: zsd_exit_move_field_to_vbep
+* Search ID      : RB-004
+*-----------------------------------------------------------------------
+* Author         : Bernard Hangelbroek
+* Date           : 01.04.2015
+* Change Request : CHM18556849
+* Transport No.  : GTDK909042
+* Modifications  : Serial Number check. Change to read SER02 using
+*                : current SalesOrder. Not Precing Invoice??
+* Search ID      : BH003
+*-----------------------------------------------------------------------
+* Author         : Gerald Roux
+* Date           : 01.04.2015
+* Change Request : CHM1757648
+* Transport No.  : GTDK909200
+* Modifications  : As part of Automated Contract Renewal, a contract
+*                  reference table has been added to Additional Data A
+*                  screen of contract processing
+* Search ID      : GR02
+*-----------------------------------------------------------------------
+* Author         : Bernard Hangelbroek
+* Date           : 10.06.2015
+* Change Request : CHM18621796
+* Transport No.  : GTDK909681
+* Modifications  : Forex Hedging changes
+* Search ID      : BH004
+*-----------------------------------------------------------------------
+* Author         : Ryno Boyens
+* Date           : 07.04.2016
+* Change Request : CHM111062857
+* Transport No.  : GTDK912342
+* Modifications  : Implement Ireland specific (2/3rd) VAT rules as per Note 88004
+* Search ID      : RB-006
+*-----------------------------------------------------------------------
+* Author         : Ryno Boyens
+* Date           : 03.06.2016
+* Change Request : CHM111727862
+* Transport No.  : GTDK913286
+* Modifications  : Copy GOS URL from Quotation to Contract or Sales Order
+*                  Clean up some of the code in this Exit
+* Search ID      : RB-007
+*-----------------------------------------------------------------------
+* Author         : Brendan van Vliet
+* Date           : 17.06.2016
+* Change Request : CHM111885560
+* Transport No.  : GTDK913286
+* Modifications  : BAdI implementation for Sales Order processing
+* Search ID      : BvV-01
+*-----------------------------------------------------------------------
+
+************************************************************************
+*}   INSERT
+
+************************************************************************
+*                                                                      *
+* This include is reserved for user modifications                      *
+*                                                                      *
+* Forms for sales document processing                                  *
+*                                                                      *
+* The name of modification modules should begin with &apos;ZZ&apos;.             *
+*                                                                      *
+************************************************************************
+*&lt;&lt; START OF DELETION: RB-007 &gt;&gt;*
+**{   INSERT         GLDK919459                                        2
+*TABLES : zsd_sppr5, zsd_mv452.                              &quot;DEVK909229
+*DATA : ue_t001w LIKE t001w.                                 &quot;DEVK907953
+*DATA : ue_t001l LIKE t001l.                                 &quot;DEVK907953
+**}   INSERT
+*&lt;&lt;&lt; END OF DELETION: RB-007 &gt;&gt;&gt;*
+
+*---------------------------------------------------------------------*
+*       FORM ZZEXAMPLE                                                *
+*---------------------------------------------------------------------*
+*       text......................................                    *
+*---------------------------------------------------------------------*
+*FORM ZZEXAMPLE.
+
+*  ...
+
+*ENDFORM.
+
+*eject
+
+INCLUDE zsd_mv45afzz_badi.                                  &quot; BvV-01
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_DELETE_DOCUMENT                                 *
+*---------------------------------------------------------------------*
+*       This userexit can be used to delete data in additional tables *
+*       when a sales document is deleted.                             *
+*                                                                     *
+*      This form is called in dialog at the end of form BELEG_LOESCHEN*
+*      just before form BELEG_SICHERN is performed to delete the      *
+*      datas on the database.                                         *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_delete_document.
+
+*&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; Start of modificaiton GR01 S2A
+  IF vbak-vbtyp EQ &apos;B&apos;.  &quot;Quotation.
+    UPDATE zsd_ordcnf_cntrl
+      SET status  = &apos;D&apos;
+      WHERE cust_ord EQ vbak-vbeln
+        AND status EQ space.
+    DELETE FROM zmm_b2bconfigger WHERE docno EQ vbak-vbeln.
+    DELETE FROM zsd_ordcnf_items WHERE cust_ord EQ vbak-vbeln.
+  ENDIF.
+*&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; End of modificaiton GR01 S2A
+
+  PERFORM  badi_delete_document.                            &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_DELETE_DOCUMENT
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_FIELD_MODIFICATION                              *
+*---------------------------------------------------------------------*
+*       This userexit can be used to modify the attributes of         *
+*       screen fields.                                                *
+*       This form is processed for each field in the screen.          *
+*                                                                     *
+*       The use of the fields screen-group1 to screen-group4 is:      *
+*                                                                     *
+*       Screen-group1: Automatic modification contolles by transaction*
+*                      MFAW.                                          *
+*       Screen-group2: Contents &apos;LOO&apos; for steploop-fields.            *
+*       Screen-group3: Used for modififaction, which are dependent on *
+*                      control tables or other fix information.       *
+*       Screen-group4: Unused                                         *
+*                                                                     *
+*       For field mofifications, which are dependent on the document  *
+*       status, you can use the status field in the workareas         *
+*       XVBAP for item status and XVBUK for header status.            *
+*                                                                     *
+*       This form is called from module FELDAUSWAHL.                  *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_field_modification.
+
+*{   INSERT         GLDK919459                                        1
+* *** ***************************************************************
+* *** Include for routines that will check if PO Number has value ***
+* *** to instruct the uploading of a configurator file via a      ***
+* *** windows path select dialogue                                ***
+*
+
+  INCLUDE: zsd_mv45afzz_config_getfile.
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+* *** ***************************************************************
+
+* *** ***************************************************************
+* *** Include for routines that will check the customer group one ***
+* *** field against a table to see what percentage the order      ***
+* *** probability needs to be set to                              ***
+*                                                                 ***
+  INCLUDE: zsd_mv45afzz_ordr_probability.
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+
+* *** ***************************************************************
+* *** Process to change total colour for a higher level item      ***
+*                                                                 ***
+  PERFORM mod-screen-total-line.
+
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+* *** ***************************************************************
+*}   INSERT
+
+* BH004 CHM18621796 Start
+* Exchange rate for Accounting Doc. Display only
+  PERFORM mod_screen_acc_excrate.
+* BH004 CHM18621796 End
+
+
+ENDFORM.                    &quot;USEREXIT_FIELD_MODIFICATION
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_MOVE_FIELD_TO_VBAK                              *
+*---------------------------------------------------------------------*
+*       This userexit can be used to move some fields into the sales  *
+*       dokument header workaerea VBAK.                               *
+*                                                                     *
+*       SVBAK-TABIX = 0:  Create header                               *
+*       SVBAK-TABIX &gt; 0:  Change header                               *
+*                                                                     *
+*       This form is called at the end of form VBAK_FUELLEN.          *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_move_field_to_vbak.
+
+*{   INSERT         GLDK919459                                        1
+* *** ***************************************************************
+* *** Include for routines that will manager the quote numbering  ***
+* *** with reference to an inquiry or previous quote of the same  ***
+* *** numbering sequence.                                         ***
+*                                                                 ***
+  INCLUDE: zsd_mv45afzz_quote_numbering.
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+* *** ***************************************************************
+
+
+* *** ***************************************************************
+* *** Include for routines that will manager the copying of the   ***
+* *** sales representitives from the quotation document into the  ***
+* *** sales order. On order create and done with reference        ***
+*                                                                 ***
+
+  IF sy-tcode = &apos;VA01&apos;.
+    IF NOT vbak-vgbel IS INITIAL.
+      IF sc_comm_load IS INITIAL.
+
+        MOVE &apos;X&apos;        TO sc_comm_load.
+        MOVE vbak-vgbel TO vbak-vbeln.
+        PERFORM z_za_comm_read_data.
+        CLEAR: vbak-vbeln.
+
+      ENDIF.
+    ENDIF.
+  ENDIF.
+
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+* *** ***************************************************************
+
+
+*----------------------------------------------------------------------*
+* USER EXIT to replace the sales office on copied orders!
+* If the current transaction is &quot;CREATE SALES ORDER&apos; and the last
+* function selected is &quot;CREATE WITH REFERENCE&quot;....
+*----------------------------------------------------------------------*
+  IF sy-tcode = &apos;VA01&apos;  AND
+     sy-ucomm = &apos;UEBR&apos; OR sy-ucomm = &apos;RUEB&apos;                 &quot; 0001
+     OR sy-ucomm = &apos;RUE1&apos;.                                  &quot; 0002 KMB
+*   if  vbak-vkbur is initial.
+    IF cvbak-vkbur &lt;&gt; space.
+      vbak-vkbur = cvbak-vkbur.
+    ELSEIF cvbrp-vkbur &lt;&gt; space.
+      vbak-vkbur = cvbrp-vkbur.
+    ENDIF.
+*   endif.
+  ENDIF.
+
+
+  IF ( sy-tcode = &apos;VA11&apos; OR sy-tcode = &apos;VA21&apos; ) AND
+      sy-ucomm = &apos;UEBR&apos;.
+
+    DATA repid LIKE sy-repid.
+    GET PARAMETER ID &apos;SPA&apos; FIELD repid.
+    vbak-spart = repid.
+
+  ENDIF.
+
+* CHM18621796 &amp; CHM19610882 BH004
+* New Forex Include
+  INCLUDE zsd_mv45afzz_to_vbak_forex.
+
+
+*}   INSERT
+
+*  vbak-zzfield = xxxx-zzfield2.
+
+  PERFORM  badi_move_field_to_vbak.                         &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_MOVE_FIELD_TO_VBAK
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_MOVE_FIELD_TO_VBAP                              *
+*---------------------------------------------------------------------*
+*       This userexit can be used to move some fields into the sales  *
+*       dokument item workaerea VBAP                                  *
+*                                                                     *
+*       SVBAP-TABIX = 0:  Create item                                 *
+*       SVBAP-TABIX &gt; 0:  Change item                                 *
+*                                                                     *
+*       This form is called at the end of form VBAP_FUELLEN.          *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_move_field_to_vbap.
+
+*{   INSERT         GLDK919459                                        1
+* *** Include for defaulting the Valuation type when a sales order is
+* *** CREATED for Item Categories as per table ZSD_VALTYPE
+
+*/ RB-002 Default Order Qty from Target Qty per table ZCA_GENERIC_VAR for Data Migration
+  INCLUDE zsd_def_order_qty.
+
+  INCLUDE zsd_def_val_type.
+*Start S2A Rob 18/02/2014
+  INCLUDE zsd_mv45afzz_set_ra_key.
+*End  S2A Rob 18/02/2014
+
+* S2A BH001 Start
+* Set Storage Location
+  INCLUDE zsd_mv45afzz_set_sloc.
+* S2A BH001 End.
+
+
+*}   INSERT
+
+*  VBAP-zzfield = xxxx-zzfield2.
+
+  PERFORM  badi_move_field_to_vbap.                         &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_MOVE_FIELD_TO_VBAP
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_MOVE_FIELD_TO_VBEP                              *
+*---------------------------------------------------------------------*
+*       This userexit can be used to move some fields into the sales  *
+*       dokument schedule line workaerea VBEP                         *
+*                                                                     *
+*       SVBEP-TABIX = 0:  Create schedule line                        *
+*       SVBEP-TABIX &gt; 0:  Change schedule line                        *
+*                                                                     *
+*       This form is called at the end of form VBEP_FUELLEN.          *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_move_field_to_vbep.
+
+*  VBEP-zzfield = xxxx-zzfield2.
+* CHM18556849 BH001
+* Comment out for now.
+*  INCLUDE zsd_exit_move_field_to_vbep.  &quot;RB-004
+* CHM18556849
+
+  PERFORM  badi_move_field_to_vbep.                         &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_MOVE_FIELD_TO_VBEP
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_MOVE_FIELD_TO_VBKD                              *
+*---------------------------------------------------------------------*
+*       This userexit can be used to move some fields into the sales  *
+*       dokument business data workaerea VBKD                         *
+*                                                                     *
+*       SVBKD-TABIX = 0:  Create data                                 *
+*       SVBKD-TABIX &gt; 0:  Change data                                 *
+*                                                                     *
+*       This form is called at the end of form VBKD_FUELLEN.          *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_move_field_to_vbkd.
+
+*{   INSERT         GLDK919459                                        1
+* *** ***************************************************************
+* *** Include for determining the exchange rate when the document
+* *** currency differs from the Local currency - determined from table
+* *** ZSD_EXRATE_TYPE
+
+  INCLUDE zsd_exrates_sorg.
+
+*}   INSERT
+
+*  VBKD-zzfield = xxxx-zzfield2.
+
+* CHM111364375: Master Data Alignment with Governance Rules
+  INCLUDE zsd_mv45afzz_mdata_align_vbkd.
+
+  PERFORM  badi_move_field_to_vbkd.                         &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_MOVE_FIELD_TO_VBKD
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_NUMBER_RANGE                                    *
+*---------------------------------------------------------------------*
+*       This userexit can be used to determine the numberranges for   *
+*       the internal document number.                                 *
+*                                                                     *
+*       US_RANGE_INTERN - internal number range                       *
+*                                                                     *
+*       This form is called from form BELEG_SICHERN                   *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_number_range USING us_range_intern.
+
+* Example: Numer range from TVAK like in standard
+* US_RANGE_INTERN = TVAK-NUMKI.
+
+  PERFORM  badi_number_range USING us_range_intern.         &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_NUMBER_RANGE
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_PRICING_PREPARE_TKOMK                           *
+*---------------------------------------------------------------------*
+*       This userexit can be used to move additional fields into the  *
+*       communication table which is used for pricing:                *
+*                                                                     *
+*       TKOMK for header fields                                       *
+*                                                                     *
+*       This form is called from form PREISFINDUNG_VORBEREITEN.       *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_pricing_prepare_tkomk.
+
+
+*{   INSERT         GLDK919459                                        1
+* *** ***************************************************************
+* *** Process to total up items belong to a higher level          ***
+*                                                                 ***
+  PERFORM process-higher-level-totals.
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+*}   INSERT
+
+*  TKOMK-zzfield = xxxx-zzfield2.
+
+  PERFORM  badi_pricing_prepare_tkomk.                      &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_PRICING_PREPARE_TKOMK
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_PRICING_PREPARE_TKOMP                           *
+*---------------------------------------------------------------------*
+*       This userexit can be used to move additional fields into the  *
+*       communication table which is used for pricing:                *
+*                                                                     *
+*       TKOMP for item fields                                         *
+*                                                                     *
+*       This form is called from form PREISFINDUNG_VORBEREITEN.       *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_pricing_prepare_tkomp.
+
+  DATA: lf_mtart TYPE mara-mtart,
+        lf_mfrnr TYPE mara-mfrnr.
+
+*/ RB-002 Default Order Qty from Target Qty per table ZCA_GENERIC_VAR for Data Migration
+  INCLUDE zsd_def_order_qty.
+
+*{   INSERT         GLDK919459                                        1
+* *** ***************************************************************
+* *** Process to re-determine the Purchase Req price based on     ***
+* *** totals depending on the Sales Org                           ***
+*                                                                 ***
+  PERFORM process-purchase-req-at-price.
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+* *** ***************************************************************
+
+*{   INSERT         DEVK900730                                        1
+  PERFORM xvbpa_lesen(sapfv45k)                             &quot;DEVK900730
+  USING &apos;LF&apos; vbap-posnr syst-tabix.                         &quot;DEVK900730
+  tkomp-userf1_txt = xvbpa-lifnr.                           &quot;DEVK905919
+  tkomp-userf2_txt = vbap-pstyv.                            &quot;DEVK906789
+
+* Sales deal for pricing
+*  tkomp-zzknuma_ag = vbak-zzknuma_ag.
+*}   INSERT
+*  TKOMP-zzfield = xxxx-zzfield2.
+
+*Populating the field tkomp-mtart - material type
+* S2A BERNARDHANGE
+**  SELECT mtart INTO tkomp-mtart FROM mara WHERE matnr = xvbap-matnr.
+**
+**  ENDSELECT.
+***Manny G - September 2002
+***}   INSERT
+
+  CLEAR: lf_mtart,
+         lf_mfrnr.
+  SELECT SINGLE mtart mfrnr
+    INTO (lf_mtart, lf_mfrnr)
+    FROM mara
+   WHERE matnr = xvbap-matnr.
+
+  IF sy-subrc = 0.
+    tkomp-mtart   = lf_mtart.
+    tkomp-zzmfrnr = lf_mfrnr.
+  ENDIF.
+
+* WBS Element required for Condition Tables.
+  tkomp-zzps_psp_pnr = tkomp-ps_psp_pnr.
+* S2A BERNARDHANGE.
+
+*  TKOMP-zzfield = xxxx-zzfield2.
+
+*S2A Rob 30/01/2014
+  READ TABLE xkomv WITH KEY kposn = vbap-posnr
+                            kschl = &apos;YEXC&apos;.
+  IF sy-subrc = 0.
+    IF xkomv-kdatu NE xvbap-erdat.
+      xkomv-kdatu  = xvbap-erdat.
+      MODIFY xkomv INDEX sy-tabix.
+    ENDIF.
+  ENDIF.
+
+  PERFORM  badi_pricing_prepare_tkomp.                      &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_PRICING_PREPARE_TKOMP
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_READ_DOCUMENT                                   *
+*---------------------------------------------------------------------*
+*       This userexit can be used to read data in additional tables   *
+*       when the program reads a sales document.                      *
+*                                                                     *
+*       This form is called at the end of form BELEG_LESEN.           *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_read_document.
+
+*{   INSERT         GLDK919459                                        1
+* *** ***************************************************************
+* *** Collect existing CA/AM entries for the existing order
+  PERFORM z_za_comm_read_data.
+* *** ***************************************************************
+
+* *** ***************************************************************
+* *** Routines to save B2B required Data from IDOC Create         ***
+  PERFORM z_za_b2b_get_data.
+* *** Routines to save B2B required Data from IDOC Create         ***
+* *** ***************************************************************
+
+* *** ***************************************************************
+* *** Include for routines that will save the customer group one  ***
+* *** field for later verification so that the order probability  ***
+* *** only changes when the group changes                         ***
+*                                                                 ***
+  INCLUDE: zsd_mv45afzz_save_probability.
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+* *** ***************************************************************
+
+* *** ***************************************************************
+* *** Automate the creation of an order from quote when deal won ***
+*                                                                 ***
+  PERFORM initial-higher-level-totals.
+*                                                                 ***
+* *** ***************************************************************
+* *** ***************************************************************
+* *** ***************************************************************
+
+  MOVE vbak-netwr TO ln_netwr.
+*}   INSERT
+
+*---- Contract Renewal Reference - Initialise and load data  &quot;GR02
+  PERFORM  addit_data_a_contr_ref_init.                      &quot;GR02
+
+  PERFORM  badi_read_document.                              &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_READ_DOCUMENT
+*eject
+
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_SAVE_DOCUMENT                                   *
+*---------------------------------------------------------------------*
+*       This userexit can be used to save data in additional tables   *
+*       when a document is saved.                                     *
+*                                                                     *
+*       If field T180-TRTYP contents &apos;H&apos;, the document will be        *
+*       created, else it will be changed.                             *
+*                                                                     *
+*       This form is called at from form BELEG_SICHERN, before COMMIT *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_save_document.
+
+*{   INSERT         GLDK919459                                        1
+* *** ***************************************************************
+* *** Automate the creation of an order from quote when deal won ***
+  PERFORM auto-create-quote-event.
+* *** Automate the creation of an order from quote when deal won ***
+* *** ***************************************************************
+
+* *** ***************************************************************
+* *** Routines to save Rep required Data for Commission System    ***
+  PERFORM z_za_comm_save_data.
+* *** Routines to save Rep required Data for Commission System    ***
+* *** ***************************************************************
+
+* *** ***************************************************************
+* *** Routines to save B2B Data from IDOC/BDC session             ***
+  PERFORM z_za_b2b_save_data.
+* *** Routines to save B2B Data from IDOC/BDC session             ***
+* *** ***************************************************************
+
+* *** ***************************************************************
+* SOS System - initiate IDOC process on SO create/change
+  INCLUDE: zsd_sos_mv45afzz_socreate.
+* SOS System - initiate IDOC process on SO create/change
+* *** ***************************************************************
+
+* ITSM System - Initiate ITSM recording of contract update
+  INCLUDE: zdd_itsm_trigger_event_con.
+* ITSM System - Initiate ITSM recording of contract update
+
+* *** ***************************************************************
+* *** Check for a preferred vendor and ensure Purchase Req        ***
+* *** has the same vendor else overwrite the PReq&apos;s vendor        ***
+* *** S2A 04/12/2013
+  READ TABLE xvbpa WITH KEY parvw = &apos;YV&apos;.
+
+  IF sy-subrc = 0.
+    INCLUDE: zsd_mv45afzz_preq_vendor.
+  ENDIF.
+
+  INCLUDE: zsd_credit_limit_notif. &quot;RB-003
+
+* Example:
+* CALL FUNCTION &apos;ZZ_EXAMPLE&apos;
+*      IN UPDATE TASK
+*      EXPORTING
+*           ZZTAB = ZZTAB.
+
+*---- Contract Renewal Reference - Save data                 &quot;GR02
+  PERFORM  addit_data_a_contr_ref_update.                    &quot;GR02
+
+  PERFORM  badi_save_document.                              &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_SAVE_DOCUMENT
+*eject
+*---------------------------------------------------------------------*
+*       FORM USEREXIT_SAVE_DOCUMENT_PREPARE                           *
+*---------------------------------------------------------------------*
+*       This userexit can be used for changes or checks, before a     *
+*       document is saved.                                            *
+*                                                                     *
+*       If field T180-TRTYP contents &apos;H&apos;, the document will be        *
+*       created, else it will be changed.                             *
+*                                                                     *
+*       This form is called at the beginning of form BELEG_SICHERN    *
+*                                                                     *
+*---------------------------------------------------------------------*
+FORM userexit_save_document_prepare.
+
+* *** *****************************************************************
+* ***  ready commission rep information                             ***
+*                                                                   ***
+  PERFORM z_za_comm_prepare_data.
+*                                                                   ***
+* *** *****************************************************************
+
+*---- Contract Renewal Reference - Save data                 &quot;GR02
+  PERFORM  addit_data_a_contr_ref_prepar.                    &quot;GR02
+
+* *** *****************************************************************
+* *** Copy header SERVICE DOMAIN to all BLANK line service domains  ***
+*                                                                   ***
+  PERFORM zitsm_copy_sdom_hed2lne.
+*                                                                   ***
+* *** *****************************************************************
+
+* *** *****************************************************************
+* *** Include for routines that will setup the purchase requisition ***
+* *** pricing requirements at the save of the document.             ***
+*                                                                   ***
+  PERFORM process-purchase-req-at-save.
+*                                                                   ***
+* *** ***************************************************************
+* *** ***************************************************************
+* *** ***************************************************************
+
+*---------------------------------------------------------------------*
+* Check RA Key at Save Prepare
+*---------------------------------------------------------------------*
+
+  INCLUDE zsd_mv45afzz_set_ra_key_save.
+
+*&lt;&lt; START OF DELETION: RB-007 &gt;&gt;* Not used anymore!
+** *** ***************************************************************
+** *** Include for routines that will check that the division for  ***
+** *** all the lines are not set to &apos;00&apos;.                          ***
+**                                                                 ***
+*  IF sy-tcode = &apos;VA22&apos; OR sy-tcode = &apos;VA21&apos; OR sy-tcode = &apos;Z_ZA_VA21&apos;.
+*    SELECT SINGLE * FROM zsd_quote_probpc WHERE z_kvgr1 = vbak-kvgr1.
+*    IF sy-subrc EQ 0.
+*      IF zsd_quote_probpc-z_perc = 100.
+*        LOOP AT xvbap.
+*          IF xvbap-spart EQ &apos;00&apos;.
+*            MESSAGE e000(z_za) WITH &apos;Division on line:&apos;
+*                                    xvbap-posnr
+*                                    &apos; is still [00]. Cannot Save&apos;.
+*            EXIT.
+*          ENDIF.
+*        ENDLOOP.
+*      ENDIF.
+*    ENDIF.
+*  ENDIF.
+*&lt;&lt;&lt; END OF DELETION: RB-007 &gt;&gt;&gt;*
+
+* *** Temporaraly removed until problem fixed ***
+* IF vbak-auart = &apos;YISM&apos;.
+*   IF t180-trtyp NE &apos;H&apos;.
+*     IF vbak-netwr NE ln_netwr.
+*       MESSAGE e000(zz)
+*          WITH &apos;One can not change an Intercompany Order&apos;.
+*     ENDIF.
+*   ENDIF.
+* ENDIF.
+
+* for Return orders check if there is a SN and mack it with the
+* delivery order SN and if the warranty period is still valid
+
+*&lt;&lt; START OF DELETION: RB-007 &gt;&gt;* Move code to ZSD_MV45AFZZ_SAVE_DOC_PREP_SER
+*  DATA:wa_ser02 TYPE objk-sernr,
+*       wa_ser01 TYPE objk-sernr,
+*       wa_objnr TYPE equi-objnr,
+*       wa_gwldt TYPE bgmkobj-gwldt.
+*  DATA: cnt_ser02 TYPE i,
+*        cnt_ser01 TYPE i,
+*        cnt_ser00(8) TYPE n,
+*        sw1 TYPE n.
+*  DATA: BEGIN OF iser01 OCCURS 0,
+*           sernr LIKE objk-sernr,
+*        END OF iser01,
+*        BEGIN OF iser02 OCCURS 0,
+*           sernr LIKE objk-sernr,
+*        END OF iser02.
+*  DATA: BEGIN OF iser04 OCCURS 0.
+*          INCLUDE STRUCTURE rserob.
+*  DATA: END OF iser04.
+*  DATA: ls_rserob TYPE rserob.
+*  IF sy-tcode EQ &apos;VA01&apos; OR sy-tcode EQ &apos;VA02&apos;.
+*    IF vbak-auart EQ &apos;YRE&apos;.
+*      CLEAR wa_ser01.
+*      CLEAR wa_ser02.
+*      REFRESH iser01.
+*      REFRESH iser02.
+*      LOOP AT xvbap.
+*        CHECK xvbap-updkz NE &apos;D&apos;.
+** get the Delivery order for the Return orders
+*        SELECT * FROM vbfa WHERE vbeln = xvbap-vgbel &quot;vbeln
+*                             AND posnn = xvbap-vgpos &quot;posnr
+*                             AND vbtyp_v = &apos;J&apos;.
+*        ENDSELECT.
+*        IF sy-subrc EQ 0.
+*          ls_rserob-taser   = &apos;SER02&apos;.
+** BH003 01.04.2015 Start
+** Use Sales Doc to determine Serials. Not vgbel as this would be Invoice Nr??
+*          ls_rserob-sdaufnr = xvbap-vbeln. &quot;vbeln
+*          ls_rserob-posnr   = xvbap-posnr. &quot;posnr
+**          ls_rserob-sdaufnr = xvbap-vgbel. &quot;vbeln
+**          ls_rserob-posnr   = xvbap-vgpos. &quot;posnr
+** BH003 01.04.2015 End
+*          DATA: BEGIN OF isernr OCCURS 0,
+*                    sernr LIKE ripw0-sernr,
+*                 END OF isernr.
+*          REFRESH isernr.
+*          IMPORT isernr FROM MEMORY ID &apos;ZSDWARR&apos;.
+*          IF sy-subrc NE 0.
+*            REFRESH isernr.
+*          ENDIF.
+*          REFRESH iser04.
+*          LOOP AT isernr.
+*            MOVE isernr-sernr TO iser04-sernr.
+*            APPEND iser04.
+*          ENDLOOP.
+*          IF isernr IS INITIAL.
+*            CALL FUNCTION &apos;GET_SERNOS_OF_DOCUMENT&apos;
+*              EXPORTING
+*                key_data            = ls_rserob
+**               STATUS_PRE_READ     = &apos; &apos;
+**               EQUNR_CORR          = &apos;X&apos;
+**               NO_DELETED          = &apos; &apos;
+*              TABLES
+*                sernos              = iser04
+**               serxx               =
+*              EXCEPTIONS
+*                key_parameter_error = 1
+*                no_supported_access = 2
+*                no_data_found       = 3
+*                OTHERS              = 4.
+*            IF sy-subrc &lt;&gt; 0.
+** Implement suitable error handling here
+*            ENDIF.
+*          ENDIF.
+** get the serial number for return order
+**          SELECT b~sernr INTO TABLE iser02
+**                          FROM ( ser02 AS a
+**                    INNER JOIN    objk AS b
+**                            ON b~obknr   = a~obknr )
+**                         WHERE a~sdaufnr = xvbap-vbeln
+**                           AND a~posnr   = xvbap-posnr.
+*          SORT iser04 BY sernr.
+** Check for Duplicate serial numbers on Return order
+*          CLEAR wa_ser02.
+*          LOOP AT iser04.
+*            IF iser04-sernr EQ wa_ser02.
+*              MESSAGE e000(zz) WITH &apos;Serial Number&apos; wa_ser02 &apos;already exists&apos;.
+*            ENDIF.
+*            wa_ser02 = iser04-sernr.
+*          ENDLOOP.
+*          LOOP AT iser04.
+*            MOVE iser04-sernr TO iser02-sernr.
+*            APPEND iser02.
+*          ENDLOOP.
+*          IF sy-subrc NE 0.
+*            CLEAR wa_ser02.
+*          ENDIF.
+*          CLEAR cnt_ser02.
+*          DESCRIBE TABLE iser02 LINES cnt_ser02.
+*          IF vbak-augru EQ &apos;Y43&apos; AND cnt_ser02 EQ 0.
+*            MESSAGE e000(zz) WITH &apos;Please fill serial numbers in&apos;.
+*          ENDIF.
+*          IF cnt_ser02 GT 0.
+*            cnt_ser00 = xvbap-kwmeng / 1000.
+*            cnt_ser01 = cnt_ser00.
+*            IF cnt_ser01 NE cnt_ser02.
+*              MESSAGE e000(zz) WITH xvbap-posnr &apos;requires exactly&apos; xvbap-kwmeng &apos;serial numbers for this&apos;.
+*            ENDIF.
+*          ENDIF.
+** check if serial numbers equals the order quantity
+** get the serial number for delivery order
+*          SELECT b~sernr INTO TABLE iser01
+*                          FROM ( ser01 AS a
+*                    INNER JOIN    objk AS b
+*                            ON b~obknr   = a~obknr )
+*                         WHERE a~lief_nr = vbfa-vbelv
+*                           AND a~posnr   = vbfa-posnv.
+*          IF sy-subrc NE 0.
+*            CLEAR wa_ser01.
+*          ENDIF.
+**S2A take out temp. 2013/06/14
+*          sw1 = 0.
+*          LOOP AT iser02 INTO wa_ser02.
+*            READ TABLE iser01 WITH KEY sernr = wa_ser02 INTO wa_ser01.
+*            IF sy-subrc NE 0.
+*              CLEAR wa_ser01.
+*            ENDIF.
+*            IF wa_ser02 NE wa_ser01.
+*              MESSAGE e000(zz) WITH &apos;SN not found in referenced document&apos;.
+*              sw1 = 1.
+*            ENDIF.
+*          ENDLOOP.
+*          CLEAR iser02.
+*          LOOP AT iser02 INTO wa_ser02.
+** get the equipment object for the material and S/N combination
+*            SELECT SINGLE objnr INTO wa_objnr FROM equi
+*                               WHERE matnr = xvbap-matnr
+*                                 AND sernr = wa_ser02.
+*            IF sy-subrc EQ 0.
+** check if the document date on which received falls in the warranty period
+*              SELECT SINGLE gwldt INTO wa_gwldt FROM bgmkobj
+*                             WHERE j_objnr = wa_objnr
+*                               AND gaart   = &apos;1&apos;
+*                               AND gwldt   LE xvbak-audat
+*                               AND gwlen   GE xvbak-audat.
+*              IF sy-subrc NE 0.
+*                SELECT SINGLE gwldt INTO wa_gwldt FROM bgmkobj
+*                               WHERE j_objnr = wa_objnr
+*                                 AND gaart   = &apos;2&apos;
+*                                 AND gwldt   LE xvbak-audat
+*                                 AND gwlen   GE xvbak-audat.
+*                IF sy-subrc NE 0.
+*                  IF vbak-augru EQ &apos;Y43&apos;.
+*                    MESSAGE e000(zz) WITH &apos;SN falls outside of warranty period&apos;.
+*                  ELSE.
+*                    MESSAGE w000(zz) WITH &apos;SN falls outside of warranty period&apos;.
+*                  ENDIF.
+*                  sw1 = 1.
+*                ELSE.
+**                  MESSAGE i000(zz) WITH &apos;Equipment is under Manufacturer warranty. Please set order reason to Warranty return&apos;.
+*                  CALL FUNCTION &apos;POPUP_TO_DISPLAY_TEXT&apos;
+*                    EXPORTING
+**                     TITEL        = &apos; &apos;
+*                      textline1    = &apos;Equipment is under Manufacturer warranty.&apos;
+*                      textline2    = &apos; &apos;
+**                     START_COLUMN = 25
+**                     START_ROW    =                                                                                                                                          6
+*                    .
+*                ENDIF.
+*              ELSE.
+**                MESSAGE i000(zz) WITH &apos;Equipment is under Customer warranty. Please set order reason to Warranty return&apos;.
+*                CALL FUNCTION &apos;POPUP_TO_DISPLAY_TEXT&apos;
+*                  EXPORTING
+**                   TITEL        = &apos; &apos;
+*                    textline1    = &apos;Equipment is under Customer warranty.&apos;
+*                    textline2    = &apos; &apos;
+**                   START_COLUMN = 25
+**                   START_ROW    =                                                                                                                                          6
+*                  .
+*              ENDIF.
+*            ENDIF.
+*          ENDLOOP.
+*          IF sy-subrc EQ 0.
+*            IF sw1 EQ 0.
+*              IF vbak-augru NE &apos;Y43&apos;.
+*                CALL FUNCTION &apos;POPUP_TO_DISPLAY_TEXT&apos;
+*                  EXPORTING
+**                   TITEL        = &apos; &apos;
+*                    textline1    = &apos;Order reason will be set to Warranty return&apos;
+*                    textline2    = &apos; &apos;
+**                   START_COLUMN = 25
+**                   START_ROW    =                                                                                                                                          6
+*                  .
+*                vbak-augru = &apos;Y43&apos;.
+*                xvbak-augru = &apos;Y43&apos;.
+*              ENDIF.
+*            ENDIF.
+*          ENDIF.
+*        ENDIF.
+*      ENDLOOP.
+*    ENDIF.
+*  ENDIF.
+*&lt;&lt;&lt; END OF DELETION: RB-007 &gt;&gt;*
+
+  INCLUDE: zsd_mv45afzz_save_doc_prep_ser. &quot;RB-007
+
+************************************************************************
+* Profit Center Determination
+************************************************************************
+
+  INCLUDE: zsd_mv45afzz_profit_center_de.
+***********************************************************************
+*
+*---------------------------------------------------------------------
+*}   INSERT
+
+*&lt;&lt; START OF DELETION: RB-007 &gt;&gt;*
+**&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; START OF INSERTION: RFC8979 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;*
+***// Dummy profit centre (ZDSADUMMY) should not be allowed
+*  CHECK xvbak_updkz NE updkz_delete.
+*
+*  CHECK vbak-vbtyp = &apos;G&apos; OR vbak-vbtyp = &apos;C&apos;.
+*
+*  LOOP AT xvbap WHERE updkz &lt;&gt; &apos;D&apos; AND prctr = &apos;ZDSADUMMY&apos;.
+*    MESSAGE e000(zz) WITH &apos;Line item:&apos; xvbap-posnr &apos;. Profit Centre not allowed.&apos;.
+*  ENDLOOP.
+**&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt;&lt; END OF INSERTION: RFC8979 &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;*
+*
+* RB-007 Move code to new include below
+**Start S2A Rob 15/01/2014.
+*  IF sy-tcode = &apos;VA01&apos; OR sy-tcode = &apos;VA02&apos;.
+**loop through all items
+**Rob S2A 05/06/2014   LOOP AT xvbap.
+*
+*    LOOP AT xvbap WHERE updkz NE &apos;D&apos;.                   &quot;Rob S2A 05/06/2014
+*      READ TABLE xkomv WITH KEY kschl = &apos;MWST&apos;
+*                                kposn = xvbap-posnr.
+*      IF sy-subrc NE 0.
+*
+**check if line is being deleted then ignore the check.
+*        READ TABLE yvbap WITH KEY posnr = xvbap-posnr
+*                                  updkz = &apos;D&apos;.
+*        IF sy-subrc NE 0.
+*
+*          SHIFT  xvbap-posnr LEFT DELETING LEADING &apos;0&apos;.
+*          MESSAGE e000(z_za) WITH &apos;[&apos; xvbap-posnr
+*                                  &apos;] Pricing error: Condition MWST is missing&apos;.
+*        ENDIF.
+*      ENDIF.
+*    ENDLOOP.
+*  ENDIF.
+**End S2A Rob 15/01/2014.
+*&lt;&lt;&lt; END OF DELETION: RB-007 &gt;&gt;&gt;*
+
+  INCLUDE zsd_mv45afzz_save_doc_prep_tax. &quot;RB-007
+
+  PERFORM determine_vat_ireland.  &quot;RB-006
+
+* CHM111364375: Master Data Alignment with Governance Rules
+  INCLUDE zsd_mv45afzz_mdata_save_prep.
+
+  PERFORM  badi_save_document_prepare.                      &quot; BvV-01
+
+ENDFORM.                    &quot;USEREXIT_SAVE_DOCUMENT_PREPARE
+*eject</source>
+ </PROG>
+ <INTF CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" VERSION="1" LANGU="E" DESCRIPT="Interface for BAdI: ZSD_ENH_SLS_MV45AFZZ" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" UNICODE="X">
+  <include CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" REFCLSNAME="IF_BADI_INTERFACE" VERSION="1" STATE="1"/>
+  <types CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="GTY_VEDAVB_T" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " TYPTYPE="4" SRCROW1="30 " SRCCOLUMN1="4 " SRCROW2="30 " SRCCOLUMN2="45 " TYPESRC_LENG="44 " TYPESRC="GTY_VEDAVB_T type STANDARD TABLE OF VEDAVB
+"/>
+  <typeUsage CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" TYPEGROUP="ABAP" VERSION="1" TPUTYPE="0" IMPLICIT="X"/>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="DELETE_DOCUMENT" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_DELETE_DOCUMENT" EXPOSURE="2" STATE="1" EDITORDER="1 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="DELETE_DOCUMENT" SCONAME="FT180" VERSION="1" LANGU="E" DESCRIPT="Screen Sequence Control: Transaction Default Values" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T180"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="DELETE_DOCUMENT" SCONAME="FVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="DELETE_DOCUMENT" SCONAME="FXVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="DELETE_DOCUMENT" SCONAME="FXVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="DELETE_DOCUMENT" SCONAME="FXVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="DELETE_DOCUMENT" SCONAME="FXVBEP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBEPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBEPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="DELETE_DOCUMENT" SCONAME="FXVBUK" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUKBV" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUKVB_T"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_MOVE_FIELD_TO_VBAK" EXPOSURE="2" STATE="1" EDITORDER="2 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="I_TVAK" VERSION="1" LANGU="E" DESCRIPT="Sales Documents: Types" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TVAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="I_TABIX" VERSION="1" LANGU="E" DESCRIPT="SVBAK-TABIX, Current Line Index" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-TABIX"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="I_XVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="I_XVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="I_XVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="I_KUAGV" VERSION="1" LANGU="E" DESCRIPT="Sold-to Party View of the Customer Master Record" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="KUAGV"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="I_KUWEV" VERSION="1" LANGU="E" DESCRIPT="Ship-to Party&apos;s View of the Customer Master Record" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="KUWEV"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="C_VBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAK" SCONAME="C_RV45A" VERSION="1" LANGU="E" DESCRIPT="Data Fields for SAPMV45A" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="RV45A"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_MOVE_FIELD_TO_VBAP" EXPOSURE="2" STATE="1" EDITORDER="3 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="F_TVAP" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Categories" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TVAP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="F_TVAK" VERSION="1" LANGU="E" DESCRIPT="Sales Documents: Types" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TVAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="FVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="F_MAAPV" VERSION="1" LANGU="E" DESCRIPT="Material Master View: Sales Screen 1" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="MAAPV"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="F_KUAGV" VERSION="1" LANGU="E" DESCRIPT="Sold-to Party View of the Customer Master Record" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="KUAGV"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="FXVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="F_TABIX" VERSION="1" LANGU="E" DESCRIPT="Internal Tables, Current Line Index" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-TABIX"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="FXVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="FVBAP_OLD" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Old Item Data (*VBAP)" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAP" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="FVBAP" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="IVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure DPBP_VBAP" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="DPBP_INVBAP" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBAP" SCONAME="F_RV45A" VERSION="1" LANGU="E" DESCRIPT="Data Fields for SAPMV45A" CMPTYPE="1" MTDTYPE="0" EDITORDER="12 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="RV45A" PAROPTIONL="X"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBEP" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_MOVE_FIELD_TO_VBEP" EXPOSURE="2" STATE="1" EDITORDER="4 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBEP" SCONAME="I_VBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBEP" SCONAME="I_VBAP_OLD" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBEP" SCONAME="I_VBAP_NEW" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBEP" SCONAME="I_VBEP_OLD" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Schedule Line Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBEP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBEP" SCONAME="C_VBEP_NEW" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Schedule Line Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBEP"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_MOVE_FIELD_TO_VBKD" EXPOSURE="2" STATE="1" EDITORDER="5 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FXVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FXVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="F_TABIX" VERSION="1" LANGU="E" DESCRIPT="Internal Tables, Current Line Index" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="SY-TABIX"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="F_TVAP" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Categories" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TVAP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="F_TVAK" VERSION="1" LANGU="E" DESCRIPT="Sales Documents: Types" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TVAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FXVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="F_T001" VERSION="1" LANGU="E" DESCRIPT="Company Codes" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T001" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FVBAP" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAP" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FVBKD_OLD" VERSION="1" LANGU="E" DESCRIPT="*Sales Document: Commercial Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBKD" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FVBAK_OLD" VERSION="1" LANGU="E" DESCRIPT="*SD Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FVBAP_OLD" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="12 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAP" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="F_T180" VERSION="1" LANGU="E" DESCRIPT="Screen Sequence Control: Transaction Default Values" CMPTYPE="1" MTDTYPE="0" EDITORDER="13 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T180" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="F_T683V" VERSION="1" LANGU="E" DESCRIPT="Pricing Procedures: Determination in Sales Docs." CMPTYPE="1" MTDTYPE="0" EDITORDER="14 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T683V" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="F_RV02P" VERSION="1" LANGU="E" DESCRIPT="Screen Fields for Partner Dialog Modules in SAPDV02P" CMPTYPE="1" MTDTYPE="0" EDITORDER="15 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="RV02P" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FYVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="16 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="FVBKD" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Business Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="17 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBKD"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="MOVE_FIELD_TO_VBKD" SCONAME="X_VBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="18 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK" PAROPTIONL="X"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_NUMBER_RANGE" EXPOSURE="2" STATE="1" EDITORDER="11 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IS_T180" VERSION="1" LANGU="E" DESCRIPT="Transaction Default Values" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T180"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IS_VBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IT_XVBUP" VERSION="1" LANGU="E" DESCRIPT="Table Type for XVBUP/YVBUP" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TAB_XYVBUP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IT_YVBUP" VERSION="1" LANGU="E" DESCRIPT="Table Type for XVBUP/YVBUP" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TAB_XYVBUP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IT_XVBAP" VERSION="1" LANGU="E" DESCRIPT="Table Type for XVBAP/YVBAP" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TAB_XYVBAP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IT_YVBAP" VERSION="1" LANGU="E" DESCRIPT="Table Type for XVBAP/YVBAP" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TAB_XYVBAP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IT_XVBKD" VERSION="1" LANGU="E" DESCRIPT="Table Type for XVBKD/YVBKD" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TAB_XYVBKD"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IT_YVBKD" VERSION="1" LANGU="E" DESCRIPT="Table Type for XVBKD/YVBKD" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TAB_XYVBKD"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IT_XVBEP" VERSION="1" LANGU="E" DESCRIPT="Table Type for XVBEP/YVBEP" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TAB_XYVBEP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IT_YVBEP" VERSION="1" LANGU="E" DESCRIPT="Table Type for XVBEP/YVBEP" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TAB_XYVBEP"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="IS_TVAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document Types" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TVAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="NUMBER_RANGE" SCONAME="CV_RANGE_INTERN" VERSION="1" LANGU="E" DESCRIPT="Number range in the case of internal number assignment" CMPTYPE="1" MTDTYPE="0" EDITORDER="12 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="NUMKI"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_PRICING_PREPARE_TKOMK" EXPOSURE="2" STATE="1" EDITORDER="6 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FXVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FT180" VERSION="1" LANGU="E" DESCRIPT="Screen Sequence Control: Transaction Default Values" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T180"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FXVBUK" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUKBV" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUKVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FXVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FXVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="F_T001" VERSION="1" LANGU="E" DESCRIPT="Company Codes" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T001" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FVBKD" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Business Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBKD" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FVBAP" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAP" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="CV_PROPAGATE" VERSION="1" LANGU="E" DESCRIPT="Force propagation of data changes" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="XFELD" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMK" SCONAME="FTKOMK" VERSION="1" LANGU="E" DESCRIPT="Communication Header for Pricing" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="KOMK"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_PRICING_PREPARE_TKOMP" EXPOSURE="2" STATE="1" EDITORDER="7 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FXVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FXVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FT180" VERSION="1" LANGU="E" DESCRIPT="Screen Sequence Control: Transaction Default Values" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T180"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FXVBUK" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUKBV" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUKVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FXVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FTKOMK" VERSION="1" LANGU="E" DESCRIPT="Structure KOMK" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="KOMK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="F_T001" VERSION="1" LANGU="E" DESCRIPT="Company Codes" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T001" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FVBAP" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Item Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAP" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FVBKD" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Business Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBKD" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="PRICING_PREPARE_TKOMP" SCONAME="FTKOMP" VERSION="1" LANGU="E" DESCRIPT="Structure KOMP" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="KOMP"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_READ_DOCUMENT" EXPOSURE="2" STATE="1" EDITORDER="8 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" SCONAME="FT180" VERSION="1" LANGU="E" DESCRIPT="Screen Sequence Control: Transaction Default Values" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T180"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" SCONAME="FVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" SCONAME="FXVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" SCONAME="FXVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" SCONAME="FXVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" SCONAME="FXVBEP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBEPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBEPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" SCONAME="FXVBUK" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUKBV" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUKVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="READ_DOCUMENT" SCONAME="FXVBUV" VERSION="1" LANGU="E" DESCRIPT="Table Type for VBUVVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUVVB_T" PAROPTIONL="X"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_SAVE_DOCUMENT" EXPOSURE="2" STATE="1" EDITORDER="9 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="F_UPDKZ" VERSION="1" LANGU="E" DESCRIPT="Update Indicator" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="UPDKZ_D" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FT180" VERSION="1" LANGU="E" DESCRIPT="Screen Sequence Control: Transaction Default Values" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T180"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FVBRK" VERSION="1" LANGU="E" DESCRIPT="Billing Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="VBRK" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FTVKO" VERSION="1" LANGU="E" DESCRIPT="Organizational Unit: Sales Organizations" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="TVKO" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBLB" VERSION="1" LANGU="E" DESCRIPT="Table Type for Structure VBLBVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBLBVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBLB" VERSION="1" LANGU="E" DESCRIPT="Table Type for Structure VBLBVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBLBVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBADR" VERSION="1" LANGU="E" DESCRIPT="Addresses: Reference Table Type for XVBADR" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="SHP_SADRVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBADR" VERSION="1" LANGU="E" DESCRIPT="Addresses: Reference Table Type for XVBADR" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="SHP_SADRVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBFA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBFAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBFAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBEP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBEPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBEPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="12 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBUK" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUKBV" CMPTYPE="1" MTDTYPE="0" EDITORDER="13 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUKVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBUP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="14 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYFPLA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure FPLAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="15 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_FPLAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYFPLT" VERSION="1" LANGU="E" DESCRIPT="Table for Structure FPLTVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="16 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_FPLTVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="17 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="18 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXKOMV" VERSION="1" LANGU="E" DESCRIPT="Table for Structure KOMV" CMPTYPE="1" MTDTYPE="0" EDITORDER="19 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_KOMV_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBAPF" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPF" CMPTYPE="1" MTDTYPE="0" EDITORDER="20 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPF_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBFA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBFAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="21 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBFAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBEP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBEPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="22 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBEPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="23 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="24 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBUK" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUKBV" CMPTYPE="1" MTDTYPE="0" EDITORDER="25 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUKVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVBUP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="26 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXFPLA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure FPLAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="27 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_FPLAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXFPLT" VERSION="1" LANGU="E" DESCRIPT="Table for Structure FPLTVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="28 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_FPLTVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="29 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBAPF" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPF" CMPTYPE="1" MTDTYPE="0" EDITORDER="30 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPF_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FYVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="31 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT" SCONAME="FXVEDA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VEDAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="32 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="GTY_VEDAVB_T"/>
+  </method>
+  <method CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" VERSION="1" LANGU="E" DESCRIPT="Replacement for USEREXIT_SAVE_DOCUMENT_PREPARE" EXPOSURE="2" STATE="1" EDITORDER="10 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FT180" VERSION="1" LANGU="E" DESCRIPT="Screen Sequence Control: Transaction Default Values" CMPTYPE="1" MTDTYPE="0" EDITORDER="1 " DISPID="0 " PARDECLTYP="0" PARPASSTYP="1" TYPTYPE="1" TYPE="T180"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBLB" VERSION="1" LANGU="E" DESCRIPT="Table Type for Structure VBLBVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="2 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBLBVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBLB" VERSION="1" LANGU="E" DESCRIPT="Table Type for Structure VBLBVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="3 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBLBVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBADR" VERSION="1" LANGU="E" DESCRIPT="Table for Structure SADRVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="4 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="SHP_SADRVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBADR" VERSION="1" LANGU="E" DESCRIPT="Table for Structure SADRVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="5 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="SHP_SADRVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBFA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBFAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="6 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBFAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBEP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBEPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="7 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBEPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="8 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="9 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBUK" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUKBV" CMPTYPE="1" MTDTYPE="0" EDITORDER="10 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUKVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBUP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="11 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYFPLA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure FPLAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="12 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_FPLAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYFPLT" VERSION="1" LANGU="E" DESCRIPT="Table for Structure FPLTVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="13 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_FPLTVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="14 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="15 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXKOMV" VERSION="1" LANGU="E" DESCRIPT="Table for Structure KOMV" CMPTYPE="1" MTDTYPE="0" EDITORDER="16 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_KOMV_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBAPF" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPF" CMPTYPE="1" MTDTYPE="0" EDITORDER="17 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPF_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBFA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBFAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="18 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBFAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBEP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBEPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="19 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBEPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBKD" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBKDVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="20 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBKDVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBPA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBPAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="21 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBPAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBUK" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUKBV" CMPTYPE="1" MTDTYPE="0" EDITORDER="22 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUKVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBUP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="23 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXFPLA" VERSION="1" LANGU="E" DESCRIPT="Table for Structure FPLAVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="24 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_FPLAVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXFPLT" VERSION="1" LANGU="E" DESCRIPT="Table for Structure FPLTVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="25 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_FPLTVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBAK" VERSION="1" LANGU="E" DESCRIPT="Sales Document: Header Data" CMPTYPE="1" MTDTYPE="0" EDITORDER="26 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VBAK"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBAPF" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPF" CMPTYPE="1" MTDTYPE="0" EDITORDER="27 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPF_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBAP" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBAPVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="28 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBAPVB_T"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FXVBUV" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUVVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="29 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUVVB_T" PAROPTIONL="X"/>
+   <parameter CLSNAME="ZIF_SD_ENH_SLS_MV45AFZZ" CMPNAME="SAVE_DOCUMENT_PREPARE" SCONAME="FYVBUV" VERSION="1" LANGU="E" DESCRIPT="Table for Structure VBUVVB" CMPTYPE="1" MTDTYPE="0" EDITORDER="30 " DISPID="0 " PARDECLTYP="2" PARPASSTYP="1" TYPTYPE="1" TYPE="VA_VBUVVB_T" PAROPTIONL="X"/>
+  </method>
+ </INTF>
+ <ENHS spot_name="ZSD_ENH_SLS" shorttext="General Enhancements for Sales Order Processing">
+  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+   <asx:values>
+    <IMPLS>
+     <ENH_BADI_DATA>
+      <BADI_NAME>ZSD_ENH_SLS_MV45AFZZ</BADI_NAME>
+      <INTERFACE_NAME>ZIF_SD_ENH_SLS_MV45AFZZ</INTERFACE_NAME>
+      <SINGLE_USE/>
+      <CONTEXT_MODE>N</CONTEXT_MODE>
+      <SORTER_BADI/>
+      <DEFAULT_CLASS/>
+      <BADI_SHORTTEXT>Enhancements for Sales Order Processing: INCL MV45AFZZ</BADI_SHORTTEXT>
+      <BADI_SHORTTEXT_ID>0050568B57A51ED68D8AC494593F6081</BADI_SHORTTEXT_ID>
+      <BADI_LONGTEXT_ID/>
+      <FILTERS/>
+      <INTERNAL_USE/>
+      <SAMPLE_IMPLS/>
+      <MENU_ELEMENTS/>
+      <SCREEN_ELEMENTS/>
+      <MIG_FROM_BADI/>
+      <IMG_DOCU_ID/>
+      <USE_FALLBACK_CLASS/>
+      <FILTER_LIMITATION/>
+      <EXCEPTION_EXPECTED/>
+     </ENH_BADI_DATA>
+    </IMPLS>
+   </asx:values>
+  </asx:abap>
+ </ENHS>
+</nugget>

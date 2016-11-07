@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<nugget name="MDG_TWEAK_PRCTR">
+ <CLAS CLSNAME="ZCL_MDGF_GUIBB_PCTR" VERSION="1" LANGU="E" DESCRIPT="Custom Feeder Class" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk" REFCLSNAME="CL_MDGF_GUIBB_PCTR">
+  <localImplementation>*&quot;* use this source file for the definition and implementation of
+*&quot;* local helper classes, interface definitions and type
+*&quot;* declarations</localImplementation>
+  <localTypes>*&quot;* use this source file for any type of declarations (class
+*&quot;* definitions, interfaces or type declarations) you need for
+*&quot;* components in the private section</localTypes>
+  <localMacros>*&quot;* use this source file for any macro definitions you need
+*&quot;* in the implementation part of the class</localMacros>
+  <inheritance CLSNAME="ZCL_MDGF_GUIBB_PCTR" REFCLSNAME="CL_MDGF_GUIBB_PCTR" VERSION="1" STATE="1">
+   <redefinition CLSNAME="ZCL_MDGF_GUIBB_PCTR" REFCLSNAME="CL_MDGF_GUIBB_PCTR" VERSION="1" MTDNAME="HANDLE_COMP_CODE_ASSIGNMTS" EXPOSURE="1"/>
+  </inheritance>
+  <method CLSNAME="CL_MDGF_GUIBB_PCTR" CMPNAME="HANDLE_COMP_CODE_ASSIGNMTS" VERSION="0" EXPOSURE="0" STATE="0" EDITORDER="0 " DISPID="0 " MTDTYPE="0" MTDDECLTYP="0" BCMTDCAT="00" BCMTDSYN="0">
+   <source>METHOD handle_comp_code_assignmts.
+*! This method handles the relation of the profit center to its assigned
+*  company codes. A profit center has to be assigned to at least a single
+*  company code. The list of allowed company codes is determined according
+*  to the profit center’s controlling area.
+*  If the method is called during the creation of a profit center, it adds
+*  all existing company codes.
+*  If the method is called during the change of a profit center, it checks
+*  whether the currently assigned company codes are still valid or not.
+    TYPES: BEGIN OF t_pcccass,
+             /1md/0gcoarea    TYPE kokrs,
+             /1md/0gpctr      TYPE usmdz1_pctr,
+             /1md/0gcompcode  TYPE bukrs,
+             usmd_edtn_number TYPE usmd_edition_number,
+             usmd_active      TYPE usmd_active,
+             usmd_o_pcccass   TYPE usmd_obsolete,
+             /1md/0gpctrccass TYPE usmdz1_pcccassign,
+           END OF t_pcccass.
+
+    DATA: it_pcccass TYPE TABLE OF t_pcccass,
+          wa_pcccass LIKE LINE OF it_pcccass.
+
+    DATA: lo_model_gen_adapter     TYPE REF TO if_usmd_model_gen_adapter.
+    DATA: lf_sid                   TYPE usmd_flg.
+    DATA: lt_message               TYPE usmd_t_message.
+    DATA: lt_log_phys_name TYPE if_usmd_model_gen_adapter=&gt;t_log_phys_name,
+          wa_log           LIKE LINE OF lt_log_phys_name.
+    DATA: lv_where    TYPE edpline.
+
+    DATA:
+      lo_assignments       TYPE REF TO if_bol_entity_col,
+      lo_message_container TYPE REF TO cl_crm_genil_global_mess_cont,
+      lo_entity            TYPE REF TO cl_crm_bol_entity,
+      lo_iterator          TYPE REF TO if_bol_entity_col_iterator,
+      ls_attributes        TYPE /mdg/_s_0g_pp_pcccass,
+      lt_comp_codes        TYPE usmdz1_ts_compcode,
+      lv_attribute         TYPE name_komp,
+      lv_company_code      TYPE usmdz1_compcode,
+      lv_controlling_area  TYPE usmd_value,
+      lv_profit_center     TYPE usmd_value,
+      lv_pctrccass         TYPE usmdz1_pcccassign.
+
+    DATA: io_model TYPE REF TO if_usmd_model_ext.
+    DATA: it_sel TYPE usmd_ts_sel,
+          wa_sel LIKE LINE OF it_sel.
+
+    FIELD-SYMBOLS:
+      &lt;ls_comp_code&gt; LIKE LINE OF lt_comp_codes.
+
+    IF me-&gt;mo_entity IS NOT BOUND.
+      RETURN.
+    ENDIF.
+
+    &quot;get company codes for the controlling area
+    lv_attribute = if_usmdz_cons_entitytypes=&gt;gc_entity_coarea.
+    me-&gt;mo_entity-&gt;get_property_as_value(
+      EXPORTING iv_attr_name = lv_attribute
+      IMPORTING ev_result    = lv_controlling_area ).
+    lv_attribute = if_usmdz_cons_entitytypes=&gt;gc_entity_pctr.
+    me-&gt;mo_entity-&gt;get_property_as_value(
+      EXPORTING iv_attr_name = lv_attribute
+      IMPORTING ev_result    = lv_profit_center ).
+    IF lv_controlling_area IS INITIAL
+      OR lv_profit_center IS INITIAL.
+      RETURN.
+    ENDIF.
+    TRY.
+        me-&gt;mo_appl_services-&gt;get_assigned_compcodes(
+          EXPORTING id_co_area            = lv_controlling_area
+          IMPORTING et_assigned_compcodes = lt_comp_codes ).
+      CATCH cx_usmdz_exception.
+        RETURN.
+    ENDTRY.
+    IF lt_comp_codes IS INITIAL.
+      RETURN.
+    ENDIF.
+    &quot;Retrieve the generated tables. └@(･ｪ･)@┐
+    CALL METHOD cl_usmd_adapter_provider=&gt;get_model_generation_adapter
+      EXPORTING
+        i_usmd_model         = &apos;0G&apos;
+      IMPORTING
+        eo_model_gen_adapter = lo_model_gen_adapter
+        et_message           = lt_message.
+
+
+    CALL METHOD lo_model_gen_adapter-&gt;get_generated_objects
+      EXPORTING
+        if_former_versions = &apos;X&apos;
+        if_sid_tab         = lf_sid
+      IMPORTING
+        et_message         = lt_message
+        et_log_phys_name   = lt_log_phys_name.
+
+    &quot;Retrieve the data from the generated tables (all versions) for our current profit centre.
+    lv_where = |/1md/0gpctr = &apos;{ lv_profit_center }&apos;|.
+
+    LOOP AT lt_log_phys_name INTO wa_log WHERE entity = &apos;PCTR&apos; AND entity_cont = &apos;PCCCASS&apos;.
+      DATA(table) = wa_log-phys_name.
+
+      SELECT * FROM (table)
+        APPENDING CORRESPONDING FIELDS OF TABLE it_pcccass
+        WHERE (lv_where).
+    ENDLOOP.
+
+    &quot;get currently assigned company codes
+    lo_assignments = me-&gt;mo_entity-&gt;get_related_entities( iv_relation_name = if_usmdz10_constants=&gt;gc_rel_pctr2pcccass ).
+    lo_iterator = lo_assignments-&gt;get_iterator( ).
+
+    &quot;compare currently existing assignments with company codes
+    lv_attribute = if_usmdz_cons_entitytypes=&gt;gc_entity_company_code.
+
+    DO lo_assignments-&gt;size( ) TIMES.
+      CLEAR: lo_entity, lv_company_code.
+      lo_entity = lo_iterator-&gt;get_by_index( iv_index = sy-index ).
+      ASSERT lo_entity IS BOUND.
+      lv_company_code = lo_entity-&gt;get_property_as_string( iv_attr_name = lv_attribute ).
+
+      &quot;Apply the information from the Generated Tables to the assignments when editing a profit centre.
+      READ TABLE it_pcccass INTO wa_pcccass WITH KEY /1md/0gcompcode = lv_company_code
+                                                     /1md/0gcoarea = lv_controlling_area
+                                                     /1md/0gpctr = lv_profit_center.
+
+      IF sy-subrc = 0.
+        ls_attributes-coarea    = wa_pcccass-/1md/0gcoarea.
+        ls_attributes-pctr      = wa_pcccass-/1md/0gpctr.
+        ls_attributes-compcode  = wa_pcccass-/1md/0gcompcode.
+        ls_attributes-pctrccass = wa_pcccass-/1md/0gpctrccass.
+      ELSE.
+        ls_attributes-coarea    = lv_controlling_area.
+        ls_attributes-pctr      = lv_profit_center.
+        ls_attributes-compcode  = lv_company_code.
+        ls_attributes-pctrccass = abap_false.
+      ENDIF.
+      lo_entity-&gt;set_properties( is_attributes = ls_attributes ).
+      cl_crm_bol_core=&gt;get_instance( )-&gt;modify( ).
+
+      DELETE lt_comp_codes WHERE company_code = lv_company_code.
+      IF sy-subrc EQ 4.
+        &quot;the current assignment is invalid
+        IF iv_check_only EQ abap_false.
+          lo_entity-&gt;delete( ).
+          cl_crm_bol_core=&gt;get_instance( )-&gt;modify( ).
+        ELSE.
+          &quot;message: Profit center assignments to company codes are invalid
+          MESSAGE w003(usmdz10) INTO sy-ucomm.
+          lo_message_container = cl_crm_bol_core=&gt;get_instance( )-&gt;get_global_message_cont( ).
+          ASSERT lo_message_container IS BOUND.
+          lo_message_container-&gt;add_message(
+            iv_msg_type       = cl_crm_genil_global_mess_cont=&gt;if_genil_message_container~mt_warning
+            iv_msg_id         = me-&gt;gc_message_class
+            iv_msg_number     = 003
+            iv_show_only_once = abap_true ).
+          me-&gt;mv_assignment_status = abap_false.
+          RETURN.
+        ENDIF.
+      ENDIF.
+    ENDDO.
+    &quot;check for left-overs
+    LOOP AT lt_comp_codes ASSIGNING &lt;ls_comp_code&gt;.
+      IF iv_check_only EQ abap_false.
+        CLEAR: lo_entity, ls_attributes.
+        lo_entity = me-&gt;mo_entity-&gt;create_related_entity( iv_relation_name = if_usmdz10_constants=&gt;gc_rel_pctr2pcccass ).
+        ASSERT lo_entity IS BOUND.
+        ls_attributes-coarea    = lv_controlling_area.
+        ls_attributes-pctr      = lv_profit_center.
+        ls_attributes-compcode  = &lt;ls_comp_code&gt;-company_code.
+        &quot;Changed to uncheck postable flag on create of a new profit centre.
+        ls_attributes-pctrccass = abap_false.
+        lo_entity-&gt;set_properties( is_attributes = ls_attributes ).
+        cl_crm_bol_core=&gt;get_instance( )-&gt;modify( ).
+      ELSE.
+        &quot;message: Profit center assignments to company codes are invalid
+        MESSAGE w003(usmdz10) INTO sy-ucomm.
+        lo_message_container = cl_crm_bol_core=&gt;get_instance( )-&gt;get_global_message_cont( ).
+        ASSERT lo_message_container IS BOUND.
+        lo_message_container-&gt;add_message(
+          iv_msg_type       = cl_crm_genil_global_mess_cont=&gt;if_genil_message_container~mt_warning
+          iv_msg_id         = me-&gt;gc_message_class
+          iv_msg_number     = 003
+          iv_show_only_once = abap_true ).
+        me-&gt;mv_assignment_status = abap_false.
+        RETURN.
+      ENDIF.
+    ENDLOOP.
+
+    &quot;finally set the status
+    IF me-&gt;mv_assignment_status EQ abap_undefined.
+      me-&gt;mv_assignment_status = abap_true.
+    ENDIF.
+
+  ENDMETHOD.</source>
+  </method>
+ </CLAS>
+</nugget>
