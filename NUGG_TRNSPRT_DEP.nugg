@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <nugget name="TRNSPRT_DEP">
  <ACID NAME="ZATDT" LANGU="E" DESCRIPT="ATDT"/>
- <TRAN TCODE="ZATDT" DYPNO="0000" CINFO="08">
-  <tstct SPRSL="E" TCODE="ZATDT" TTEXT="Another Transport Dependency Tool"/>
-  <tstcc TCODE="ZATDT" S_WEBGUI="1" S_WIN32="X" S_PLATIN="X"/>
-  <tstcp TCODE="ZATDT" PARAM="\CLASS=ZCL_BC_ATDT\METHOD=_RUN"/>
-  <rsstcd CLASSNAME="ZCL_BC_ATDT" METHOD="_RUN" DEVCLASS="$TMP"/>
- </TRAN>
  <CLAS CLSNAME="ZCL_BC_ATDT" VERSION="1" LANGU="E" DESCRIPT="Another Transport Dependency Tool (Beta)" CATEGORY="00" EXPOSURE="2" STATE="1" RELEASE="0" CLSFINAL="X" CLSCCINCL="X" FIXPT="X" UNICODE="X" CLSBCCAT="00" DURATION_TYPE="0 " RISK_LEVEL="0 " ZSAPLINK_PLUGIN_MAJOR_VERSION="0 " ZSAPLINK_PLUGIN_MINOR_VERSION="1 " ZSAPLINK_PLUGIN_BUILD_VERSION="0 " ZSAPLINK_PLUGIN_INFO1="ZSAPLINK_CLASS is part of the main ZSAPLINK project --&gt; This plugin found there instead of ZSAPLINK_PLUGINS projects" ZSAPLINK_PLUGIN_INFO2="SAPLINK homepage: https://www.assembla.com/spaces/saplink/wiki" ZSAPLINK_PLUGIN_INFO3="Download from https://www.assembla.com/code/saplink/subversion/nodes" ZSAPLINK_PLUGIN_INFO4="and navigate to:  trunk -&gt; core -&gt; ZSAPLINK -&gt; CLAS -&gt; ZSAPLINK_CLASS.slnk">
   <types CLSNAME="ZCL_BC_ATDT" CMPNAME="GTY_LEVEL_S" VERSION="1" LANGU="E" EXPOSURE="2" STATE="1" EDITORDER="1 " TYPTYPE="4" SRCROW1="10 " SRCCOLUMN1="4 " SRCROW2="13 " SRCCOLUMN2="27 " TYPESRC_LENG="0 " TYPESRC="begin of gty_level_s.
     types trkorr type trkorr.
@@ -1861,4 +1855,10 @@ endmethod.</source>
   endmethod.</source>
   </method>
  </CLAS>
+ <TRAN TCODE="ZATDT" PGMNA="ZATDT" DYPNO="0000" CINFO="80">
+  <tstct SPRSL="E" TCODE="ZATDT" TTEXT="Another Transport Dependency Tool"/>
+  <tstcc TCODE="ZATDT" S_WEBGUI="1" S_WIN32="X" S_PLATIN="X"/>
+  <tstcp/>
+  <rsstcd ST_PROG="X" DEVCLASS="$TMP"/>
+ </TRAN>
 </nugget>
