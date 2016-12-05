@@ -693,6 +693,10 @@ endmethod.</source>
 
   &quot; deleted workbench objects no longer have directory entries and would have been discarded
 
+  if gt_discarded[] is initial.
+    return.
+  endif.
+
   select
       e071~trkorr e071~as4pos e071~pgmid
       e071~object e071~obj_name e071~objfunc
