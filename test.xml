@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/" xmlns:dc="http://purl.org/dc/elements/1.1/"> 
+	<channel>                                                                                                                    
+		<title>Trailers</title>
+		<link>http://vdgryp.ddns.net</link>
+		<description>Movie and TV show trailers that are published on IMDb</description>                                     
+		<category>Trailers</category>                                                                                        
+		<item>
+			<title>The Meg</title>
+			<link>http://vdgryp.ddns.net/mediafeeds/Trailers/vi3497834521.mp4</link>
+			<description>&lt;img src=&quot;http://image.tmdb.org/t/p/w92/eZ3eHi2fFDbCTeSzaPKAwJoKA7j.jpg&quot; alt=&quot;&quot; /&gt;</description>
+			<guid>http://image.tmdb.org/t/p/w92/eZ3eHi2fFDbCTeSzaPKAwJoKA7j.jpg</guid>
+			<media:content url="http://image.tmdb.org/t/p/w92/eZ3eHi2fFDbCTeSzaPKAwJoKA7j.jpg" type="image/jpeg" />
+			<media:title>The Meg</media:title>
+			<media:text type="html">&lt;img src=&quot;http://image.tmdb.org/t/p/w92/eZ3eHi2fFDbCTeSzaPKAwJoKA7j.jpg&quot; /&gt;</media:text>
+			<media:thumbnail url="http://image.tmdb.org/t/p/w92/eZ3eHi2fFDbCTeSzaPKAwJoKA7j.jpg" />
+		</item>
+	</channel>
+</rss>
